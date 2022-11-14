@@ -1,4 +1,4 @@
-package com.cntt2.order;
+package com.cntt2.order.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
