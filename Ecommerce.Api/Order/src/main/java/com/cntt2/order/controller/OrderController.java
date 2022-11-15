@@ -1,10 +1,11 @@
-package com.cntt2.order;
+package com.cntt2.order.controller;
 
+import com.cntt2.order.model.Order;
+import com.cntt2.order.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -19,22 +20,22 @@ public record OrderController(OrderService orderService) {
 
     //get single order
     @GetMapping(path = "{orderId}")
-    public Optional<Order> getSingleOrder(@PathVariable("orderId") String id) {
+    public Order getSingleOrder(@PathVariable("orderId") String id) {
         return orderService.getSingleOrder(id);
     }
 
     //create order
     @PostMapping
-    public void createOrder(@RequestBody OrderRequest orderRequest) {
+    public Order createOrder(@RequestBody OrderRequest orderRequest) {
         log.info("New order created {}", orderRequest);
-        orderService.createOrder(orderRequest);
+        return orderService.createOrder(orderRequest);
     }
 
     //update order
-//    @PutMapping(path = "{orderId}")
-//    public void updateOrder(@PathVariable("orderId") String id, @RequestBody OrderRequest orderRequest) {
-//        orderService.updateOrder(id, orderRequest);
-//    }
+    @PutMapping(path = "{orderId}")
+    public Order updateOrder(@PathVariable("orderId") String id, @RequestBody OrderRequest orderRequest) {
+        return orderService.updateOrder(id, orderRequest);
+    }
 
     //delete order
     @DeleteMapping(path = "{orderId}")

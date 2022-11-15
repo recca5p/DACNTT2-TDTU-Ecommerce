@@ -7,6 +7,7 @@
     <module>User</module>
     <module>Order</module>
       <module>Product</module>
+    <module>Order</module>
   </modules>
 
   <parent>

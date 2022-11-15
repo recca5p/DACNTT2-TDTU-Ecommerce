@@ -1,8 +1,5 @@
-package com.cntt2.order;
+package com.cntt2.user.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,21 +7,18 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "orders")
-//@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@Table(name = "users")
 @Setter @Getter
-public class Order {
+public class User {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -32,13 +26,32 @@ public class Order {
     @Column(name = "id", columnDefinition = "VARCHAR(255)")
     private String id;
 
-    @Column(name="products")
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<OrderProductItem> products;
+    @Column(name="isActive")
+    private boolean isActive;
 
     @NotNull
-    @Column(name="total")
-    private Integer total;
+    @Column(name="username")
+    private String username;
+
+    @NotNull
+    @Column(name="password")
+    private String password;
+
+    @Column(name="fullname")
+    private String fullname;
+
+    @Column(name="email")
+    private String email;
+
+    @Column(name="phone")
+    private Long phone;
+
+    @Column(name="avatar")
+    private String avatar;
+
+    @NotNull
+    @Column(name="balance")
+    private BigDecimal balance;
 
     @CreationTimestamp
     @Column(name="createdDate", nullable = false, updatable = false)

@@ -1,8 +1,8 @@
-package com.cntt2.order;
+package com.cntt2.order.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.UUID;
+import com.cntt2.order.model.Order;
 
 public interface OrderRepository extends JpaRepository<Order, String> {
 }
