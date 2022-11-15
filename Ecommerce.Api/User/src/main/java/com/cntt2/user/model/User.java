@@ -30,7 +30,7 @@ public class User {
     private boolean isActive;
 
     @NotNull
-    @Column(name="username")
+    @Column(name="username", unique = true)
     private String username;
 
     @NotNull

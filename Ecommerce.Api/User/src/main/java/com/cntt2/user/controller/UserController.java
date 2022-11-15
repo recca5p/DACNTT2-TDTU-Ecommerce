@@ -23,13 +23,6 @@ public record UserController(UserService userService) {
         return userService.getSingleUser(id);
     }
 
-    //create user
-    @PostMapping
-    public User createUser(@RequestBody UserRequest userRequest) {
-        log.info("New user created {}", userRequest);
-        return userService.createUser(userRequest);
-    }
-
     //update user
     @PutMapping(path = "{userId}")
     public User updateUser(@PathVariable("userId") String id, @RequestBody UserRequest userRequest) {
