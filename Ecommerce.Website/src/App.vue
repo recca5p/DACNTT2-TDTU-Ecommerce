@@ -1,120 +1,81 @@
 <template>
-  <div class="container">
-    <mainMenu>
-      <btn btnColor="btn btn-small btn-info btn-popup"
-         :cartIcon="true"
-         @click.native="showPopupCart()">
-         Cart
-        <span class="btn-circle" v-if="hasProduct()">
-           {{ getProductsInCart.length }}
-        </span>
-      </btn>
-      <transition name="appear">
-        <popupcart class="cart" v-if="getPopupCart"/>
-      </transition>
-    </mainMenu>
-    <transition name="leave">
-      <router-view></router-view>
-    </transition>
-    <maskBg v-if="getPopupCart" @click.native="showPopupCart()"/>
+  <Navbar
+    :cartCount="cartCount"
+    @resetCartCount="resetCartCount"
+    v-if="!['Signup', 'Signin'].includes($route.name)"
+  />
+  <div style="min-height: 60vh">
+    <router-view
+      v-if="products && categories"
+      :baseURL="baseURL"
+      :products="products"
+      :categories="categories"
+      @fetchData="fetchData"
+    >
+    </router-view>
   </div>
+  <Footer v-if="!['Signup', 'Signin'].includes($route.name)" />
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import mainMenu from './components/Menu';
-import btn from './components/Btn';
-import popupcart from './components/Popupcart';
-import maskBg from './components/Mask';
-
+import Navbar from './components/Navbar.vue';
+import Footer from './components/Footer.vue';
 export default {
-  components: {
-    mainMenu,
-    btn,
-    popupcart,
-    maskBg,
+  data() {
+    return {
+      baseURL: 'https://limitless-lake-55070.herokuapp.com/',
+      //baseURL: "http://localhost:8080/",
+      products: null,
+      categories: null,
+      key: 0,
+      token: null,
+      cartCount: 0,
+    };
   },
+
+  components: { Footer, Navbar },
   methods: {
-    ...mapActions([
-      'showOrHiddenPopupCart',
-    ]),
-    hasProduct() {
-      return this.getProductsInCart.length > 0;
+    async fetchData() {
+      // fetch products
+      await axios
+        .get(this.baseURL + 'product/')
+        .then((res) => (this.products = res.data))
+        .catch((err) => console.log(err));
+
+      //fetch categories
+      await axios
+        .get(this.baseURL + 'category/')
+        .then((res) => (this.categories = res.data))
+        .catch((err) => console.log(err));
+
+      //fetch cart items
+      if (this.token) {
+        await axios.get(`${this.baseURL}cart/?token=${this.token}`).then(
+          (response) => {
+            if (response.status == 200) {
+              // update cart
+              this.cartCount = Object.keys(response.data.cartItems).length;
+            }
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
     },
-    showPopupCart() {
-      this.showOrHiddenPopupCart();
+    resetCartCount() {
+      this.cartCount = 0;
     },
   },
-  computed: {
-    ...mapGetters([
-      'getProductsInCart',
-      'getPopupCart',
-    ]),
+  mounted() {
+    this.token = localStorage.getItem('token');
+    this.fetchData();
   },
 };
 </script>
 
 <style>
-  @import './assets/css/normalize.css';
-  @import url('https://fonts.googleapis.com/css?family=Roboto');
-  body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #FAFAFA;
-  }
-
-  a {
-    color: #000;
-    text-decoration: none;
-  }
-
-  .container {
-    width: 100%;
-  }
-
-  .cart {
-    position: absolute;
-    top: 75px;
-    right: 300px;
-  }
-
-  .btn-circle {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background-color: #fff;
-    color: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .leave-enter-active, .leave-leave-active {
-    transition: all 1.2s;
-  }
-  .leave-enter, .leave-leave-to {
-    opacity: 0;
-    transform: translateX(-50%);
-  }
-
-  .appear-enter-active {
-    animation: appear-animation .5s;
-  }
-
-  .appear-leave-active {
-    animation: appear-animation .5s reverse;
-  }
-
-  @keyframes appear-animation {
-    0% {
-      transform: translateY(-50%);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0%);
-      opacity: 1;
-    }
-  }
+html {
+  overflow-y: scroll;
+}
 </style>

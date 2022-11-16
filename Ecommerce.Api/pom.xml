@@ -8,6 +8,7 @@
     <module>Order</module>
       <module>Product</module>
     <module>Order</module>
+      <module>Product</module>
   </modules>
 
   <parent>

@@ -1,26 +1,31 @@
-# vue-cart
+# ecommerce-ui-product-category
 
-> A Vue.js project
-> This project was made using vue, vuex and vue-router.
-
-### https://crisgon.github.io/vue-cart/dist/
-
-![Shop Cart](https://i.imgur.com/yKYJdV3.gif)
-
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
+```
+The base URL of API is present in App.vue
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## Important GuideLines
+
+- All the api requests should be made using axios module.
+
+## Project setup
+
+1. Rename `.env.example` to `.env` and paste your Stripe Token
+
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+
+```
+npm run serve
+or
+npm run serve -- --port 8001
+```
+
+### Compiles and minifies for production
+
+```
+npm run build
+```
