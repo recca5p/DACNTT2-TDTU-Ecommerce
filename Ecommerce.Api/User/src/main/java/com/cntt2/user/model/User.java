@@ -49,10 +49,6 @@ public class User {
     @Column(name="avatar")
     private String avatar;
 
-    @NotNull
-    @Column(name="balance")
-    private BigDecimal balance;
-
     @CreationTimestamp
     @Column(name="createdDate", nullable = false, updatable = false)
     private Date createdDate;

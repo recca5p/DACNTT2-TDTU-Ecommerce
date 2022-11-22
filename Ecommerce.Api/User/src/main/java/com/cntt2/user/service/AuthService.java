@@ -31,7 +31,6 @@ public record AuthService(UserRepository userRepository) {
                 .password(request.password())
                 .fullname(request.fullname())
                 .avatar(request.avatar())
-                .balance(request.balance())
                 .build();
 
         return userRepository.save(user);

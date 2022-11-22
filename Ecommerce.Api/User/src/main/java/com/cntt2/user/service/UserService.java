@@ -27,7 +27,6 @@ public record UserService(UserRepository userRepository) {
                 .password(request.password())
                 .fullname(request.fullname())
                 .avatar(request.avatar())
-                .balance(request.balance())
                 .build();
 
         return userRepository.save(user);
@@ -41,7 +40,6 @@ public record UserService(UserRepository userRepository) {
         userData.setUsername(request.username());
         userData.setPassword(request.password());
         userData.setFullname(request.fullname());
-        userData.setBalance(request.balance());
         userData.setAvatar(request.avatar());
         return userRepository.save(userData);
     }

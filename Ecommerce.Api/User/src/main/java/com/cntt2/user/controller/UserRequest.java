@@ -6,8 +6,7 @@ public record UserRequest (
         String username,
         String password,
         String fullname,
-        String avatar,
-        BigDecimal balance
+        String avatar
 ) {
 
 }
