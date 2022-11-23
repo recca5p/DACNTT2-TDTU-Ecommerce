@@ -8,13 +8,14 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "com/cntt2/product")
+@Table(name = "product")
 @Setter @Getter
 public class Product {
 
@@ -22,7 +23,7 @@ public class Product {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", columnDefinition = "VARCHAR(255)")
-    private int id;
+    private String id;
 
     @Column(name="name")
     private String name;
@@ -38,4 +39,12 @@ public class Product {
 
     @Column(name="thumbnail")
     private String thumbnail;
+
+    @CreationTimestamp
+    @Column(name="createdDate", nullable = false, updatable = false)
+    private Date createdDate;
+
+    @UpdateTimestamp
+    @Column(name="updatedDate", nullable = false, updatable = true)
+    private Date updatedDate;
 }

@@ -14,8 +14,7 @@ public class AuthRequest {
             String username,
             String password,
             String fullname,
-            String avatar,
-            BigDecimal balance
+            String avatar
     ) {
 
     }
