@@ -8,6 +8,7 @@
     <module>Order</module>
     <module>Product</module>
     <module>Eureka-server</module>
+    <module>API-gateway</module>
   </modules>
 
   <parent>
