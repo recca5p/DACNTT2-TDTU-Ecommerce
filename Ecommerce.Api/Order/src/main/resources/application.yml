@@ -5,9 +5,9 @@ spring:
   application:
     name: order
   datasource:
-    url: jdbc:postgresql://localhost:5432/order
-    username: bmn
-    password: password
+    url: jdbc:postgresql://ec2-3-219-135-162.compute-1.amazonaws.com:5432/dfjp4dqud02kqg
+    username: rzucbebfaixzxp
+    password: da6a053f99b4f0759e5cc4ec6000f78637ebcfb72b34c0438b5faf50b29b148c
   jpa:
     hibernate:
       ddl-auto: update
