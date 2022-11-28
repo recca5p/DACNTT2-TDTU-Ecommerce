@@ -5,9 +5,9 @@ spring:
   application:
     name: user
   datasource:
-    url: jdbc:postgresql://localhost:5432/user
-    username: bmn
-    password: password
+    url: jdbc:postgresql://ec2-52-4-87-74.compute-1.amazonaws.com:5432/dddgvseoc1vplq
+    username: kekbwbfmpcqmzf
+    password: 18fc10bd741ec7fa0b715d574db0708535b94e740cf863681c1b5d83ddbf2d42
   jpa:
     hibernate:
       ddl-auto: update
