@@ -1,7 +1,9 @@
-function ProductDetail {
+import React from "react";
+
+const ProductDetail = () => {
   return (
     <div>
-      <p>Hello</p>
+      <p>Detal</p>
     </div>
   );
 };
