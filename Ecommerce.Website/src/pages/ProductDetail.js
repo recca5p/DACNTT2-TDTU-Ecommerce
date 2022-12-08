@@ -30,23 +30,23 @@ class ProductDetail extends React.Component {
     const { isLoaded, product } = this.state;
 
     return (
-      <div class="product_image_area">
-        <div class="container mx-auto flex items-center flex-wrap pt-4 pb-12">
-          <div class="row s_product_inner">
-            <div class="col-lg-6">
-              <div class="owl-carousel owl-theme s_Product_carousel">
-                <div class="single-prd-item">
-                  <img class="img-fluid" src={product.thumbnail} alt="" />
+      <div className="product_image_area">
+        <div className="container mx-auto flex items-center flex-wrap pt-4 pb-12">
+          <div className="row s_product_inner">
+            <div className="col-lg-6">
+              <div className="owl-carousel owl-theme s_Product_carousel">
+                <div className="single-prd-item">
+                  <img className="img-fluid" src={product.thumbnail} alt="" />
                 </div>
               </div>
             </div>
-            <div class="col-lg-5 offset-lg-1">
-              <div class="s_product_text">
+            <div className="col-lg-5 offset-lg-1">
+              <div className="s_product_text">
                 <h3>{product.name}</h3>
                 <h2>${product.price}</h2>
-                <ul class="list">
+                <ul className="list">
                   <li>
-                    <a class="active" href="#">
+                    <a className="active" href="#">
                       <span>Category</span> : Household
                     </a>
                   </li>
@@ -58,7 +58,7 @@ class ProductDetail extends React.Component {
                 </ul>
                 <p>{product.category}</p>
                 <div
-                  class="product_count"
+                  className="product_count"
                   style={{ display: "flex", alignItems: "center" }}
                 >
                   <label>Quantity:</label>
@@ -69,24 +69,24 @@ class ProductDetail extends React.Component {
                     size="2"
                     value={10}
                     title="Quantity:"
-                    class="input-text qty"
+                    className="input-text qty"
                     style={{ height: "30px" }}
                   />
                   <div style={{ paddingLeft: "20px" }}>
                     <button
-                      class="increase items-count"
+                      className="increase items-count"
                       style={{ position: "inherit" }}
                       type="button"
                     ></button>
                   </div>
                 </div>
-                <a class="button primary-btn" href="#">
+                <a className="button primary-btn" href="#">
                   Add to Cart
                 </a>
 
-                <div class="card_area d-flex align-items-center">
+                <div className="card_area d-flex align-items-center">
                   <button
-                    class="icon_btn"
+                    className="icon_btn"
                     style={{ cursor: "pointer", border: "none" }}
                   ></button>
                 </div>

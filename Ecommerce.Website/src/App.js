@@ -1,7 +1,9 @@
+import Home from "pages/home/Home";
+import ProductDetail from "pages/product/ProductDetail";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import Home from "./pages/Home";
-import ProductDetail from "./pages/ProductDetail";
+// import Home from "./pages/Home";
+// import ProductDetail from "./pages/ProductDetail";
 
 function App() {
   return (
