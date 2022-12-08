@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { getProductAPI } from "../api/product-api";
 import { numberWithCommas } from "../utils/convert";
 
@@ -33,6 +34,10 @@ class Home extends React.Component {
     //       });
     //     }
     //   )
+  }
+
+  storeProductId(id) {
+    localStorage.setItem("ProductId", id);
   }
 
   render() {
@@ -89,10 +94,15 @@ class Home extends React.Component {
               <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                 {products.map((product) => (
                   <a key={product.id} href={product.href}>
-                    <img
-                      className="hover:grow hover:shadow-lg"
-                      src={product.thumbnail}
-                    />
+                    <Link
+                      to={`/product/${product.id}`}
+                      onClick={() => this.storeProductId(product.id)}
+                    >
+                      <img
+                        className="hover:grow hover:shadow-lg"
+                        src={product.thumbnail}
+                      />
+                    </Link>
                     <div className="pt-3 flex items-center justify-between text-lg font-medium">
                       <p className="">{product.name}</p>
                       <svg
@@ -104,8 +114,8 @@ class Home extends React.Component {
                       </svg>
                     </div>
                     <p className="pt-1 text-orange-500 font-semibold text-xl">
-						{numberWithCommas(product.price)} đ
-					</p>
+                      {numberWithCommas(product.price)} đ
+                    </p>
                   </a>
                 ))}
               </div>
