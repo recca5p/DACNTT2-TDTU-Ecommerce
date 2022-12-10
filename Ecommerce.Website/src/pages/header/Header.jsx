@@ -1,7 +1,9 @@
 import React from "react";
-class Header extends React.Component {
-  render() {
-    return (
+import { NavLink } from "react-router-dom";
+
+const Header = () => {
+  return (
+    <>
       <header>
         <nav id="header" className="w-full z-30 top-0 py-1">
           <div className="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-6 py-3">
@@ -27,22 +29,22 @@ class Header extends React.Component {
               id="menu"
             >
               <nav>
-                <ul className="md:flex items-center justify-between text-base text-gray-700 pt-4 md:pt-0">
+                <ul className="md:flex items-center justify-between text-base text-gray-700 pt-4 md:pt-0 font-bold">
                   <li>
-                    <a
-                      className="inline-block no-underline hover:text-black hover:underline py-2 px-4"
-                      href="#"
+                    <NavLink
+                      className="inline-block  border-b-2 border-transparent hover:border-gray-900 hover:border-b-2 transition-all ease-linear duration-200 hover:text-gray-500 py-2 px-4"
+                      to={"/"}
                     >
                       Shop
-                    </a>
+                    </NavLink>
                   </li>
                   <li>
-                    <a
-                      className="inline-block no-underline hover:text-black hover:underline py-2 px-4"
-                      href="#"
+                    <NavLink
+                      className="inline-block  border-b-2 border-transparent hover:border-gray-900 hover:border-b-2 transition-all ease-linear duration-200 hover:text-gray-500 py-2 px-4"
+                      to={"/"}
                     >
                       About
-                    </a>
+                    </NavLink>
                   </li>
                 </ul>
               </nav>
@@ -106,7 +108,8 @@ class Header extends React.Component {
           </div>
         </nav>
       </header>
-    );
-  }
-}
+    </>
+  );
+};
+
 export default Header;

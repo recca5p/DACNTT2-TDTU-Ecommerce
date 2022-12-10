@@ -1,10 +1,7 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./index.css";
-import Layout from "./components/Layout/Layout";
-import Home from "./pages/Home";
 import App from "App";
+import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
+import "./index.css";
 
 ReactDOM.render(
   <BrowserRouter>

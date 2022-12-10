@@ -1,11 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 
 const ProductDetail = (props) => {
+  const [productId, setProductId] = useState();
+  const [isLoading, setisLoading] = useState(true);
+
   let infoProduct = [];
   if (localStorage.getItem("productDetail")) {
     infoProduct = JSON.parse(localStorage.getItem("productDetail"));
   }
   console.log(infoProduct);
+
+  // useEffect(() => {
+  //   async function fetchData(){
+
+  //     try {
+  //       let productId = localStorage.getItem("ProductId");
+  //       const result = await getProductAPI(`/${productId}`);
+  //       if (result.data) {
+  //       this.setState({
+  //         isLoaded: true,
+  //         product: result.data,
+  //       });
+  //     }
+  //     console.log(result.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+  // fetchData()
+
+  // }, [])
 
   const formatDate = new Date(infoProduct.updatedDate).toLocaleDateString(
     "vi-VI"
@@ -35,7 +59,7 @@ const ProductDetail = (props) => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    className="w-4 h-4 text-indigo-500"
+                    className="w-4 h-4 text-yellow-500"
                     viewBox="0 0 24 24"
                   >
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -46,7 +70,7 @@ const ProductDetail = (props) => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    className="w-4 h-4 text-indigo-500"
+                    className="w-4 h-4 text-yellow-500"
                     viewBox="0 0 24 24"
                   >
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -57,7 +81,7 @@ const ProductDetail = (props) => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    className="w-4 h-4 text-indigo-500"
+                    className="w-4 h-4 text-yellow-500"
                     viewBox="0 0 24 24"
                   >
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -68,7 +92,7 @@ const ProductDetail = (props) => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    className="w-4 h-4 text-indigo-500"
+                    className="w-4 h-4 text-yellow-500"
                     viewBox="0 0 24 24"
                   >
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -79,7 +103,7 @@ const ProductDetail = (props) => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    className="w-4 h-4 text-indigo-500"
+                    className="w-4 h-4 text-yellow-500"
                     viewBox="0 0 24 24"
                   >
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -91,12 +115,10 @@ const ProductDetail = (props) => {
                 </span>
               </div>
               <p className="leading-relaxed">
-                Fam locavore kickstarter distillery. Mixtape chillwave tumeric
-                sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo
-                juiceramps cornhole raw denim forage brooklyn. Everyday carry +1
-                seitan poutine tumeric. Gastropub blue bottle austin listicle
-                pour-over, neutra jean shorts keytar banjo tattooed umami
-                cardigan.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Recusandae quas, impedit dignissimos cupiditate eveniet quia
+                ipsum vero magnam? Neque nesciunt debitis, quasi deserunt et
+                provident quod laboriosam fuga. Minima, repellat!
               </p>
               <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                 <div className="flex">
@@ -134,7 +156,7 @@ const ProductDetail = (props) => {
                 <span className="title-font font-medium text-2xl text-gray-900">
                   {infoProduct.price.toLocaleString()} VND
                 </span>
-                <button className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
+                <button className="flex ml-auto text-white bg-gray-800 border border-transparent py-2 px-6 focus:outline-none hover:bg-gray-100 hover:text-gray-900 hover:border hover:border-gray-900 rounded transition-all ease-in-out duration-300">
                   Add to cart
                 </button>
                 <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
