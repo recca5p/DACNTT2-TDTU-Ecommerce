@@ -1,9 +1,11 @@
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        "primary-gradient": `linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);`,
+      },
+    },
   },
   plugins: [],
-}
+};
