@@ -3,15 +3,23 @@ package com.cntt2.product.service;
 import com.cntt2.product.controller.ProductRequest;
 import com.cntt2.product.model.Product;
 import com.cntt2.product.repository.ProductRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public record ProductService(ProductRepository productRepository) {
+@AllArgsConstructor
+public class ProductService {
+    private final ProductRepository productRepository;
 
-    public List<Product> getProducts() {
-        return productRepository.findAll();
+    public List<Product> getProducts(List<String> idList) {
+        if(idList == null || idList.isEmpty()) {
+            return productRepository.findAll();
+        }
+        
+        return productRepository.findByIdIn(idList);
     }
 
     public Product getSingleProduct(String productId) {
@@ -25,9 +33,11 @@ public record ProductService(ProductRepository productRepository) {
         Product product = Product.builder()
                 .name(request.name())
                 .price(request.price())
+                .quantity(request.quantity())
                 .brand(request.brand())
                 .category(request.category())
                 .thumbnail(request.thumbnail())
+                .images(request.images())
                 .build();
 
         return productRepository.save(product);
@@ -40,9 +50,11 @@ public record ProductService(ProductRepository productRepository) {
 
         productData.setName(request.name());
         productData.setPrice(request.price());
+        productData.setQuantity(request.quantity());
         productData.setBrand(request.brand());
         productData.setCategory(request.category());
         productData.setThumbnail(request.thumbnail());
+        productData.setImages(request.images());
 
         return productRepository.save(productData);
     }

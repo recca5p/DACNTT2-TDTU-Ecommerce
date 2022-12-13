@@ -17,9 +17,10 @@ import java.math.BigDecimal;
 public class OrderProductItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String uuid;
+    private String id;
     private String name;
-    private String image;
+    private String thumbnail;
     private BigDecimal price;
     private Integer quantity;
 }
