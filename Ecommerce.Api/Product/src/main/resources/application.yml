@@ -5,9 +5,9 @@ spring:
   application:
     name: product
   datasource:
-    url: jdbc:postgresql://ec2-52-70-45-163.compute-1.amazonaws.com:5432/ddk9u2la7mvbak
-    username: rxzrestnmkepkt
-    password: ba2b038d9af472c516dc658332e3755e2f8dc1889472a98490eec4acd9230502
+    url: jdbc:postgresql://containers-us-west-150.railway.app:7773/railway
+    username: postgres
+    password: A4SG1AG8vPrFY06hA6Az
   jpa:
     hibernate:
       ddl-auto: update

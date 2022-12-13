@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -31,6 +32,9 @@ public class Product {
     @Column(name="price")
     private BigDecimal price;
 
+    @Column(name="quantity")
+    private Integer quantity;
+
     @Column(name="brand")
     private String brand;
 
@@ -39,6 +43,10 @@ public class Product {
 
     @Column(name="thumbnail")
     private String thumbnail;
+
+    @Column(name="images")
+    @ElementCollection(targetClass=String.class)
+    private List<String> images;
 
     @CreationTimestamp
     @Column(name="createdDate", nullable = false, updatable = false)

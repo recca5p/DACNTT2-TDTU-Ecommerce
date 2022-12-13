@@ -3,12 +3,15 @@ package com.cntt2.user.service;
 import com.cntt2.user.controller.UserRequest;
 import com.cntt2.user.model.User;
 import com.cntt2.user.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public record UserService(UserRepository userRepository) {
+@AllArgsConstructor
+public class UserService {
+    private final UserRepository userRepository;
 
     public List<User> getUsers() {
         return userRepository.findAll();
