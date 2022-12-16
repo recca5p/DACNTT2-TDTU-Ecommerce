@@ -1,16 +1,18 @@
 package com.cntt2.order.service;
 
 import com.cntt2.order.controller.OrderRequest;
-import com.cntt2.order.controller.OrderRequestProduct;
 import com.cntt2.order.dto.ProductResponse;
 import com.cntt2.order.model.Order;
 
 import com.cntt2.order.model.OrderProductItem;
+import com.cntt2.order.model.OrderStatus;
 import com.cntt2.order.repository.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import javax.persistence.Transient;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,6 +21,15 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final WebClient.Builder webClientBuilder;
+
+    @Transient
+    public BigDecimal getTotalOrderPrice(List<OrderProductItem> orderProducts) {
+        BigDecimal sum = BigDecimal.valueOf(0);
+        for (OrderProductItem op : orderProducts) {
+            sum = sum.add(op.getPrice().multiply(BigDecimal.valueOf(op.getQuantity())));
+        }
+        return sum;
+    }
 
     public List<Order> getOrders() {
         return orderRepository.findAll();
@@ -56,8 +67,8 @@ public class OrderService {
         });
 
         Order order = Order.builder()
-                .status(request.status())
-                .total(request.total())
+                .status(OrderStatus.PENDING.name())
+                .total(getTotalOrderPrice(request.products()))
                 .products(request.products())
                 .build();
 
@@ -70,7 +81,7 @@ public class OrderService {
         );
 
         orderData.setStatus(request.status());
-        orderData.setTotal(request.total());
+        orderData.setTotal(getTotalOrderPrice(request.products()));
         orderData.setProducts(request.products());
         return orderRepository.save(orderData);
     }
