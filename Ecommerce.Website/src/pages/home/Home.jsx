@@ -13,9 +13,7 @@ const Home = (props) => {
     async function fetchData() {
       setLoading(true);
       try {
-        const resquest = await axios.get(
-          `https://6330601e591935f3c88eba4f.mockapi.io/api/products`
-        );
+        const resquest = await getProductAPI("");
         const result = resquest.data;
         setProduct(result);
       } catch (error) {
