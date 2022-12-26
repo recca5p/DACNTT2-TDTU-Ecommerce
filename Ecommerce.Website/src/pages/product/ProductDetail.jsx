@@ -114,12 +114,12 @@ const ProductDetail = (props) => {
                   Date: {formatDate}
                 </span>
               </div>
-              <p className="leading-relaxed">
+              {/* <p className="leading-relaxed">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 Recusandae quas, impedit dignissimos cupiditate eveniet quia
                 ipsum vero magnam? Neque nesciunt debitis, quasi deserunt et
                 provident quod laboriosam fuga. Minima, repellat!
-              </p>
+              </p> */}
               <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                 <div className="flex">
                   <span className="mr-3">Color</span>
