@@ -19,15 +19,14 @@ import java.util.List;
 @Table(name = "orders")
 @Setter @Getter
 public class Order {
-
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", columnDefinition = "VARCHAR(255)")
     private String id;
 
-    @Column(name="status")
-    private Integer status;
+    @Column(name="status", columnDefinition = "varchar(255) default 'CART'")
+    private String status;
 
     @Column(name="products")
     @OneToMany(cascade = CascadeType.ALL)
