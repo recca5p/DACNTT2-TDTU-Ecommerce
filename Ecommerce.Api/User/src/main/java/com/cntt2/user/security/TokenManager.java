@@ -15,7 +15,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class TokenManager implements Serializable {
 
     private static final long serialVersionUID = 7008375124389347049L;
-    public static final long TOKEN_VALIDITY = 10 * 60 * 60;
+    public static final long TOKEN_VALIDITY = 24 * 60 * 60;
     @Value("${secret}")
     private String jwtSecret;
 
@@ -23,7 +23,7 @@ public class TokenManager implements Serializable {
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder().setClaims(claims).setSubject(userId)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 1000 * 14))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
     }
 

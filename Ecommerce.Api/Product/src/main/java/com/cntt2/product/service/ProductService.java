@@ -28,7 +28,7 @@ public class ProductService {
         );
     }
 
-    public Product createProduct(ProductRequest request) {
+    public Product createProduct(ProductRequest request, String userId) {
 
         Product product = Product.builder()
                 .name(request.name())
@@ -38,12 +38,14 @@ public class ProductService {
                 .category(request.category())
                 .thumbnail(request.thumbnail())
                 .images(request.images())
+                .createdBy(userId)
+                .updatedBy(userId)
                 .build();
 
         return productRepository.save(product);
     }
 
-    public Product updateProduct(String productId, ProductRequest request) {
+    public Product updateProduct(String productId, ProductRequest request, String userId) {
         Product productData = productRepository.findById(productId).orElseThrow(
                 () -> new IllegalStateException("Product ID: " + productId + "not found!")
         );
@@ -55,6 +57,7 @@ public class ProductService {
         productData.setCategory(request.category());
         productData.setThumbnail(request.thumbnail());
         productData.setImages(request.images());
+        productData.setUpdatedBy(userId);
 
         return productRepository.save(productData);
     }

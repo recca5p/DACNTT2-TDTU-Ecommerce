@@ -26,7 +26,7 @@ public class Role {
     private String name;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "roles_authorities",
             joinColumns = @JoinColumn(

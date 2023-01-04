@@ -27,15 +27,22 @@ public record OrderController(OrderService orderService) {
 
     //create order
     @PostMapping
-    public Order createOrder(@RequestBody OrderRequest orderRequest) {
+    public Order createOrder(
+            @RequestBody OrderRequest orderRequest,
+            @RequestAttribute String userId
+    ) {
         log.info("New order created {}", orderRequest);
-        return orderService.createOrder(orderRequest);
+        return orderService.createOrder(orderRequest, userId);
     }
 
     //update order
     @PutMapping(path = "{orderId}")
-    public Order updateOrder(@PathVariable("orderId") String id, @RequestBody OrderRequest orderRequest) {
-        return orderService.updateOrder(id, orderRequest);
+    public Order updateOrder(
+            @PathVariable("orderId") String id,
+            @RequestBody OrderRequest orderRequest,
+            @RequestAttribute String userId
+    ) {
+        return orderService.updateOrder(id, orderRequest, userId);
     }
 
     //delete order
