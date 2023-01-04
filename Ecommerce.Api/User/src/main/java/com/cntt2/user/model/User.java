@@ -2,12 +2,18 @@ package com.cntt2.user.model;
 
 import com.sun.istack.NotNull;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +24,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Setter @Getter
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -56,4 +62,53 @@ public class User {
     @UpdateTimestamp
     @Column(name="updatedDate", nullable = false, updatable = true)
     private Date updatedDate;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private List<Role> roles;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<Authority> authorities = new ArrayList<>();
+        for (Role role : roles) {
+            authorities.addAll(role.getAuthorities());
+        }
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
