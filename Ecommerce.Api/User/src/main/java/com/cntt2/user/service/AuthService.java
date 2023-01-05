@@ -1,38 +1,136 @@
 package com.cntt2.user.service;
 
 import com.cntt2.user.controller.AuthRequest;
+import com.cntt2.user.dto.AuthResponse;
+import com.cntt2.user.model.Role;
 import com.cntt2.user.model.User;
+import com.cntt2.user.repository.RoleRepository;
 import com.cntt2.user.repository.UserRepository;
+import com.cntt2.user.security.TokenManager;
+import io.jsonwebtoken.ExpiredJwtException;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service
-public record AuthService(UserRepository userRepository) {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
-    public User signIn(AuthRequest.SignInRequest request) {
-        User userData = userRepository.findByUsername(request.username());
+@Service
+@AllArgsConstructor
+public class AuthService {
+    @Autowired
+    private final UserRepository userRepository;
+
+    @Autowired
+    private  final RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private TokenManager tokenManager;
+
+    public AuthResponse signIn(AuthRequest.SignInRequest request) {
+        User userData = userRepository.findByUsername(request.username()).orElseThrow();
         if(userData == null) {
             throw new IllegalStateException("Username is not correct!");
         }
-        if(!userData.getPassword().equals(request.password())) {
-            throw new IllegalStateException("Password!");
+        if(!passwordEncoder.matches(request.password(), userData.getPassword())) {
+            throw new IllegalStateException("Password is not correct!");
         }
-        return userData;
+
+        //generate token
+        final String jwtToken = tokenManager.generateJwtToken(userData.getId());
+
+        System.out.println(userData.getUsername());
+        //generate data response
+        AuthResponse response = new AuthResponse(userData);
+        response.setToken(jwtToken);
+
+        return response;
     }
 
-    public User signUp(AuthRequest.SignUpRequest request) {
+    public AuthResponse signUp(AuthRequest.SignUpRequest request) {
         //check username is exist
-        User userData = userRepository.findByUsername(request.username());
-        if(userData != null) {
-            throw new IllegalStateException("Username is exist!");
-        }
+//        Optional<User> userData = userRepository.findByUsername(request.username());
+//        if(userData != null) {
+//            throw new IllegalStateException("Username is exist!");
+//        }
+
+        List<Role> userRoles = setRoles(Arrays.asList("USER"));
 
         User user = User.builder()
                 .username(request.username())
-                .password(request.password())
+                .password(passwordEncoder.encode(request.password()))
                 .fullname(request.fullname())
                 .avatar(request.avatar())
+                .roles(userRoles)
                 .build();
 
-        return userRepository.save(user);
+        //save data in db
+        User saveUser = userRepository.save(user);
+        System.out.println(saveUser);
+
+
+        //generate token
+        final String jwtToken = tokenManager.generateJwtToken(user.getId());
+
+        //generate data response
+        AuthResponse response = new AuthResponse(user);
+        response.setToken(jwtToken);
+
+        return response;
+    }
+
+    public UserDetails checkAuth(String tokenHeader) {
+        String userId = null;
+        String token = null;
+
+        if (tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
+            token = tokenHeader.substring(7);
+            try {
+                userId = tokenManager.getUserIDFromToken(token);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalStateException("Unable to get JWT Token");
+            } catch (ExpiredJwtException e) {
+                throw new IllegalStateException("JWT Token has expired");
+            }
+        } else {
+            throw new IllegalStateException("Bearer String not found in token");
+        }
+
+        if (null != userId) {
+            User userData = userRepository.findById(userId).orElseThrow(
+                    () -> new IllegalStateException("UserID not found!")
+            );
+            if (tokenManager.validateJwtToken(token) && userData != null) {
+                return userData;
+            }
+        }
+
+        return null;
+    }
+
+    public List<Role> setRoles(List<String> roleNames) {
+        List<Role> roles = new ArrayList<>();
+        for (String roleName: roleNames) {
+            Role roleData = roleRepository.findByName(roleName);
+            if(roleData != null) {
+                roles.add(roleData);
+            } else {
+                Role newRole = Role.builder()
+                        .name(roleName)
+                        .build();
+                roleRepository.save(newRole);
+                roles.add(newRole);
+            }
+        }
+        return roles;
     }
 }

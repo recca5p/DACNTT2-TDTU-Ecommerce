@@ -40,7 +40,7 @@ public class OrderService {
                 () -> new IllegalStateException("Order ID: " + orderId + "not found!")
         );
     }
-    public Order createOrder(OrderRequest request) {
+    public Order createOrder(OrderRequest request, String userId) {
         //request product => list product id
         List<String> idList = request.products().stream()
                 .map(OrderProductItem::getId)
@@ -70,12 +70,14 @@ public class OrderService {
                 .status(OrderStatus.PENDING.name())
                 .total(getTotalOrderPrice(request.products()))
                 .products(request.products())
+                .createdBy(userId)
+                .updatedBy(userId)
                 .build();
 
         return orderRepository.save(order);
     }
 
-    public Order updateOrder(String orderId, OrderRequest request) {
+    public Order updateOrder(String orderId, OrderRequest request, String userId) {
         Order orderData = orderRepository.findById(orderId).orElseThrow(
                 () -> new IllegalStateException("Order ID: " + orderId + "not found!")
         );
@@ -83,6 +85,8 @@ public class OrderService {
         orderData.setStatus(request.status());
         orderData.setTotal(getTotalOrderPrice(request.products()));
         orderData.setProducts(request.products());
+        orderData.setUpdatedBy(userId);
+
         return orderRepository.save(orderData);
     }
 

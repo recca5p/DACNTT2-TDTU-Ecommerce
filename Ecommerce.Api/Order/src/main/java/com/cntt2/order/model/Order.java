@@ -36,9 +36,17 @@ public class Order {
     @Column(name="total")
     private BigDecimal total;
 
+    @NotNull
+    @Column(name="createdBy")
+    private String createdBy;
+
     @CreationTimestamp
     @Column(name="createdDate", nullable = false, updatable = false)
     private Date createdDate;
+
+    @NotNull
+    @Column(name="updatedBy")
+    private String updatedBy;
 
     @UpdateTimestamp
     @Column(name="updatedDate", nullable = false, updatable = true)
