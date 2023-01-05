@@ -7,8 +7,11 @@ import com.cntt2.user.model.User;
 import com.cntt2.user.repository.RoleRepository;
 import com.cntt2.user.repository.UserRepository;
 import com.cntt2.user.security.TokenManager;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -83,6 +86,35 @@ public class AuthService {
         response.setToken(jwtToken);
 
         return response;
+    }
+
+    public UserDetails checkAuth(String tokenHeader) {
+        String userId = null;
+        String token = null;
+
+        if (tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
+            token = tokenHeader.substring(7);
+            try {
+                userId = tokenManager.getUserIDFromToken(token);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalStateException("Unable to get JWT Token");
+            } catch (ExpiredJwtException e) {
+                throw new IllegalStateException("JWT Token has expired");
+            }
+        } else {
+            throw new IllegalStateException("Bearer String not found in token");
+        }
+
+        if (null != userId) {
+            User userData = userRepository.findById(userId).orElseThrow(
+                    () -> new IllegalStateException("UserID not found!")
+            );
+            if (tokenManager.validateJwtToken(token) && userData != null) {
+                return userData;
+            }
+        }
+
+        return null;
     }
 
     public List<Role> setRoles(List<String> roleNames) {

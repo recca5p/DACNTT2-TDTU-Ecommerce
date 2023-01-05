@@ -26,15 +26,22 @@ public record ProductController(ProductService productService) {
 
     //create product
     @PostMapping
-    public Product createProduct(@RequestBody ProductRequest productRequest) {
+    public Product createProduct(
+            @RequestBody ProductRequest productRequest,
+            @RequestAttribute String userId
+    ) {
         log.info("New product created {}", productRequest);
-        return productService.createProduct(productRequest);
+        return productService.createProduct(productRequest, userId);
     }
 
     //update product
     @PutMapping(path = "{productId}")
-    public Product updateProduct(@PathVariable("productId") String id, @RequestBody ProductRequest productRequest) {
-        return productService.updateProduct(id, productRequest);
+    public Product updateProduct(
+            @PathVariable("productId") String id,
+            @RequestBody ProductRequest productRequest,
+            @RequestAttribute String userId
+    ) {
+        return productService.updateProduct(id, productRequest, userId);
     }
 
     //delete product

@@ -44,28 +44,32 @@ public class AuthController {
 
     @GetMapping(value = {"authenticate"})
     public ResponseEntity<UserDetails> authenticate(@RequestParam(name = "token", required = true) String tokenHeader) throws Exception {
-        String userId = null;
-        String token = null;
+//        String userId = null;
+//        String token = null;
+//
+//        if (tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
+//            token = tokenHeader.substring(7);
+//            try {
+//                userId = tokenManager.getUserIDFromToken(token);
+//            } catch (IllegalArgumentException e) {
+//                throw new IllegalStateException("Unable to get JWT Token");
+//            } catch (ExpiredJwtException e) {
+//                throw new IllegalStateException("JWT Token has expired");
+//            }
+//        } else {
+//            throw new IllegalStateException("Bearer String not found in token");
+//        }
+//
+//        if (null != userId) {
+//            User userData = userService.getSingleUser(userId);
+//            if (tokenManager.validateJwtToken(token) && userData != null) {
+//                return new ResponseEntity<UserDetails>(userData, HttpStatus.OK);
+//            }
+//        }
+        UserDetails userData = authService.checkAuth(tokenHeader);
 
-        if (tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
-            token = tokenHeader.substring(7);
-            try {
-                userId = tokenManager.getUserIDFromToken(token);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalStateException("Unable to get JWT Token");
-            } catch (ExpiredJwtException e) {
-                throw new IllegalStateException("JWT Token has expired");
-            }
-        } else {
-            throw new IllegalStateException("Bearer String not found in token");
-        }
-        System.out.println(userId);
-
-        if (null != userId) {
-            User userData = userService.getSingleUser(userId);
-            if (tokenManager.validateJwtToken(token) && userData != null) {
-                return new ResponseEntity<UserDetails>(userData, HttpStatus.OK);
-            }
+        if(userData != null) {
+            return new ResponseEntity<UserDetails>(userData, HttpStatus.OK);
         }
 
         return new ResponseEntity<UserDetails>(HttpStatus.BAD_REQUEST);
