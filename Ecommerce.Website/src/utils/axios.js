@@ -4,9 +4,9 @@ const request = (method, endpoint, token, data, options = {}) => {
   const { headers = {}, ...rest } = options;
   const authHeaders = {
     Authorization: `Bearer ${token}`,
-	"Access-Control-Allow-Origin": "*"
+    "Access-Control-Allow-Origin": "*",
   };
-  
+
   return axios({
     ...rest,
     headers: token
@@ -21,4 +21,4 @@ const request = (method, endpoint, token, data, options = {}) => {
   });
 };
 
-export { request }
+export { request };

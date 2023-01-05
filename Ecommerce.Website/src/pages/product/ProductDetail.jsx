@@ -3,12 +3,30 @@ import React, { useState } from "react";
 const ProductDetail = (props) => {
   const [productId, setProductId] = useState();
   const [isLoading, setisLoading] = useState(true);
+  const [productCart, setProductCart] = useState([]);
 
   let infoProduct = [];
   if (localStorage.getItem("productDetail")) {
     infoProduct = JSON.parse(localStorage.getItem("productDetail"));
   }
   console.log(infoProduct);
+
+  const handleAddCart = () => {
+    const productInfo = {
+      id: infoProduct.id,
+      name: infoProduct.name,
+      category: infoProduct.category,
+      price: infoProduct.price,
+      quantity: 1,
+      thumbnail: infoProduct.thumbnail,
+      brand: infoProduct.brand,
+    };
+    setProductCart((prev) => [...prev, productInfo]);
+    const productString = localStorage.getItem("productDetail");
+    const productsObj = JSON.parse(productString || "[]");
+    const newProductObj = productsObj;
+    localStorage.setItem("productsCart", JSON.stringify(newProductObj));
+  };
 
   // useEffect(() => {
   //   async function fetchData(){
@@ -156,7 +174,10 @@ const ProductDetail = (props) => {
                 <span className="title-font font-medium text-2xl text-gray-900">
                   {infoProduct.price.toLocaleString()} VND
                 </span>
-                <button className="flex ml-auto text-white bg-gray-800 border border-transparent py-2 px-6 focus:outline-none hover:bg-gray-100 hover:text-gray-900 hover:border hover:border-gray-900 rounded transition-all ease-in-out duration-300">
+                <button
+                  onClick={() => handleAddCart()}
+                  className="flex ml-auto text-white bg-gray-800 border border-transparent py-2 px-6 focus:outline-none hover:bg-gray-100 hover:text-gray-900 hover:border hover:border-gray-900 rounded transition-all ease-in-out duration-300"
+                >
                   Add to cart
                 </button>
                 <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">

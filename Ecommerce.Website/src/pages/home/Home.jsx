@@ -1,13 +1,37 @@
 import { getProductAPI } from "api/product-api";
 import axios from "axios";
 import { LoadingSkeleton } from "components/loading";
+import SearchBar from "components/SearchBar";
 import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Home = (props) => {
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
+
+  const keys = ["name", "brand"];
+  const handleSearch = (product) => {
+    return product.filter((item) =>
+      keys.some((key) => item[key].toLowerCase().includes(searchText))
+    );
+  };
+
+  const { search } = window.location;
+  const query = new URLSearchParams(search).get("s");
+  const filterPosts = (product, query) => {
+    if (!query) {
+      return product;
+    }
+
+    return product.filter((post) => {
+      const postName = post.name.toLowerCase();
+      return postName.includes(query);
+    });
+  };
+  const [searchQuery, setSearchQuery] = useState(query || "");
+  const filteredPosts = filterPosts(product, searchQuery);
 
   useEffect(() => {
     async function fetchData() {
@@ -29,6 +53,7 @@ const Home = (props) => {
   return (
     <>
       <section className="text-gray-600 body-font">
+        <SearchBar handleSearch={handleSearch} setSearchText={setSearchText} />
         <div className="container px-5 py-24 mx-auto">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 -m-4">
             {loading && (
@@ -44,8 +69,8 @@ const Home = (props) => {
               </Fragment>
             )}
             {!loading &&
-              product.length > 0 &&
-              product.map((item) => (
+              filteredPosts.length > 0 &&
+              filteredPosts.map((item) => (
                 <Fragment key={item.id}>
                   <div className="w-full mt-2 mx-1 bg-primary-gradient shadow-md rounded-lg hover:shadow-lg transition-all ease-in-out duration-200 ">
                     <div
