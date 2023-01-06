@@ -1,11 +1,10 @@
 package com.cntt2.user.controller;
 
+import com.cntt2.user.dto.AuthRequest;
 import com.cntt2.user.dto.AuthResponse;
-import com.cntt2.user.model.User;
 import com.cntt2.user.security.TokenManager;
 import com.cntt2.user.service.AuthService;
 import com.cntt2.user.service.UserService;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,28 +43,6 @@ public class AuthController {
 
     @GetMapping(value = {"authenticate"})
     public ResponseEntity<UserDetails> authenticate(@RequestParam(name = "token", required = true) String tokenHeader) throws Exception {
-//        String userId = null;
-//        String token = null;
-//
-//        if (tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
-//            token = tokenHeader.substring(7);
-//            try {
-//                userId = tokenManager.getUserIDFromToken(token);
-//            } catch (IllegalArgumentException e) {
-//                throw new IllegalStateException("Unable to get JWT Token");
-//            } catch (ExpiredJwtException e) {
-//                throw new IllegalStateException("JWT Token has expired");
-//            }
-//        } else {
-//            throw new IllegalStateException("Bearer String not found in token");
-//        }
-//
-//        if (null != userId) {
-//            User userData = userService.getSingleUser(userId);
-//            if (tokenManager.validateJwtToken(token) && userData != null) {
-//                return new ResponseEntity<UserDetails>(userData, HttpStatus.OK);
-//            }
-//        }
         UserDetails userData = authService.checkAuth(tokenHeader);
 
         if(userData != null) {

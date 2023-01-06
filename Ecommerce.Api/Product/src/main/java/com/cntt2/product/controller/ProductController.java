@@ -1,5 +1,6 @@
 package com.cntt2.product.controller;
 
+import com.cntt2.product.dto.ProductRequest;
 import com.cntt2.product.model.Product;
 import com.cntt2.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
 package com.cntt2.user.service;
 
-import com.cntt2.user.controller.UserRequest;
+import com.cntt2.user.dto.UserRequest;
 import com.cntt2.user.model.User;
 import com.cntt2.user.repository.UserRepository;
 import lombok.AllArgsConstructor;

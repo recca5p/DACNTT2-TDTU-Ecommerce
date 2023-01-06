@@ -1,4 +1,4 @@
-package com.cntt2.user.controller;
+package com.cntt2.user.dto;
 
 import java.math.BigDecimal;
 
