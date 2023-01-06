@@ -1,4 +1,4 @@
-package com.cntt2.product.controller;
+package com.cntt2.product.dto;
 
 import java.math.BigDecimal;
 import java.util.List;

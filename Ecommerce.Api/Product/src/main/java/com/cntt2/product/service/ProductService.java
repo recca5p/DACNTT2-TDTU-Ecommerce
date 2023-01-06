@@ -1,10 +1,9 @@
 package com.cntt2.product.service;
 
-import com.cntt2.product.controller.ProductRequest;
+import com.cntt2.product.dto.ProductRequest;
 import com.cntt2.product.model.Product;
 import com.cntt2.product.repository.ProductRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.cntt2.user.service;
 
-import com.cntt2.user.controller.AuthRequest;
+import com.cntt2.user.dto.AuthRequest;
 import com.cntt2.user.dto.AuthResponse;
 import com.cntt2.user.model.Role;
 import com.cntt2.user.model.User;
@@ -10,8 +10,6 @@ import com.cntt2.user.security.TokenManager;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -57,12 +54,6 @@ public class AuthService {
     }
 
     public AuthResponse signUp(AuthRequest.SignUpRequest request) {
-        //check username is exist
-//        Optional<User> userData = userRepository.findByUsername(request.username());
-//        if(userData != null) {
-//            throw new IllegalStateException("Username is exist!");
-//        }
-
         List<Role> userRoles = setRoles(Arrays.asList("USER"));
 
         User user = User.builder()
