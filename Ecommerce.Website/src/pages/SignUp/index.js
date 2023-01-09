@@ -6,12 +6,19 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useDispatch, useSelector } from "react-redux";
+import * as Actions from 'actions';
 
 const SignUp = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const isLogedIn = useSelector(({ auth }) => auth.isLogedIn);
+
   const [form, setForm] = React.useState({
     username: "",
     password: "",
@@ -37,8 +44,16 @@ const SignUp = () => {
   //handle sign in
   const handleSignIn = (e) => {
     e.preventDefault();
-    console.log(form);
+    dispatch(Actions.signUpAccount(form));
   };
+
+  useEffect(() => {
+	if(isLogedIn) {
+	  navigate("/")
+	}
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLogedIn])
+
   return (
     <div className="w-full md:max-w-[440px] mx-auto text-center">
       <div className="font-bold text-5xl mb-4">Create an account</div>
@@ -62,6 +77,7 @@ const SignUp = () => {
             name="fullname"
             value={form.fullname}
             onChange={handleChangeForm}
+			spellCheck={false}
           />
         </FormControl>
         {/* username input */}
@@ -72,6 +88,7 @@ const SignUp = () => {
             name="username"
             value={form.username}
             onChange={handleChangeForm}
+			spellCheck={false}
           />
         </FormControl>
         {/* password input  */}
@@ -95,6 +112,7 @@ const SignUp = () => {
                 </IconButton>
               </InputAdornment>
             }
+			spellCheck={false}
           />
         </FormControl>
 		{/* email input */}
@@ -105,6 +123,7 @@ const SignUp = () => {
             name="email"
             value={form.email}
             onChange={handleChangeForm}
+			spellCheck={false}
           />
         </FormControl>
 		{/* phone input */}
@@ -115,6 +134,7 @@ const SignUp = () => {
             name="phone"
             value={form.phone}
             onChange={handleChangeForm}
+			spellCheck={false}
           />
         </FormControl>
         {/* sign in button  */}
