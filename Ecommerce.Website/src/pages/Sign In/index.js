@@ -1,18 +1,25 @@
-import {
-  Button,
-  Checkbox,
-  FormControl,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-} from "@mui/material";
-import React from "react";
-import { Link } from "react-router-dom";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import {
+	Button,
+	Checkbox,
+	FormControl,
+	IconButton,
+	InputAdornment,
+	InputLabel,
+	OutlinedInput
+} from "@mui/material";
+import * as Actions from 'actions';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignIn = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const isLogedIn = useSelector(({ auth }) => auth.isLogedIn);
+
   const [form, setForm] = React.useState({
     username: "",
     password: "",
@@ -34,11 +41,17 @@ const SignIn = () => {
   };
 
   //handle sign in
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
 	e.preventDefault();
-	console.log(form);
-	console.log(isStaySignedIn);
+	dispatch(Actions.signInAccount(form));
   };
+
+  useEffect(() => {
+	if(isLogedIn) {
+	  navigate("/")
+	}
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLogedIn])
 
   return (
     <div className="w-full md:max-w-[440px] mx-auto text-center">
@@ -59,6 +72,7 @@ const SignIn = () => {
             name="username"
             value={form.username}
             onChange={handleChangeForm}
+			spellCheck={false}
           />
         </FormControl>
         {/* password input  */}
@@ -82,6 +96,7 @@ const SignIn = () => {
                 </IconButton>
               </InputAdornment>
             }
+			spellCheck={false}
           />
         </FormControl>
         {/* stay signed in */}
