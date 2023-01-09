@@ -60,7 +60,8 @@ public class AuthService {
                 .username(request.username())
                 .password(passwordEncoder.encode(request.password()))
                 .fullname(request.fullname())
-                .avatar(request.avatar())
+                .email(request.email())
+                .phone(request.phone())
                 .roles(userRoles)
                 .build();
 
