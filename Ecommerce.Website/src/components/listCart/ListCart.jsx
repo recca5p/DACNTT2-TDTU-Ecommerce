@@ -1,16 +1,15 @@
 import { Menu, Transition } from "@headlessui/react";
+import { Button } from "@mui/material";
 import { postOrderAPI } from "api/order-api";
 import axios from "axios";
 import { Fragment } from "react";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function ListCart() {
   const navigate = useNavigate();
 
-  let productsCart = [];
-  if (localStorage.getItem("productsCart")) {
-    productsCart = JSON.parse(localStorage.getItem("productsCart"));
-  }
+  const productsCart = useSelector(({ cart }) => cart.data);
 
   const checkout = async () => {
     const data = {
@@ -35,7 +34,7 @@ export default function ListCart() {
   };
 
   return (
-    <div className="fixed  ">
+    <div className="z-50">
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="inline-flex w-full justify-center rounded-md text-black  px-4 py-2 text-sm font-medium ml-3 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
@@ -70,32 +69,46 @@ export default function ListCart() {
             <div className="p-5">
               <Menu.Item>
                 <Fragment>
-                  <div className="flex justify-start items-center gap-x-3">
-                    <img
-                      src={productsCart.thumbnail}
-                      alt={productsCart.brand}
-                      className="w-14 h-14 shadow-md p-1 rounded-md"
-                    />
-                    <span>{productsCart.name?.slice(0, 20) + "..."}</span>
-                    <span>SL: {productsCart.quantity}</span>
-                    <span>Giá: {productsCart.price?.toLocaleString()} VNĐ</span>
-                    <button
-                      onClick={() => {
-                        localStorage.removeItem("productsCart");
-                      }}
-                      className="bg-red-600 font-bold text-white p-2 rounded-md"
-                    >
-                      Xoá
-                    </button>
-                  </div>
-                  <div className="flex justify-end items-center text-white">
-                    <button
-                      onClick={() => checkout()}
-                      className="p-3 bg-sky-600 rounded-md border border-transparent transition-all ease-linear duration-200 hover:bg-white hover:text-sky-600 hover:border hover:border-sky-600"
-                    >
-                      Checkout
-                    </button>
-                  </div>
+                  {productsCart.length > 0 && (
+                    <div>
+                      {productsCart.map((item) => (
+                        <div className="flex justify-start items-center gap-x-3" key={item.id}>
+                          <img
+                            src={item.thumbnail}
+                            alt={item.name}
+                            className="w-14 h-14 shadow-md p-1 rounded-md"
+                          />
+                          <span className="flex-1">{item.name?.slice(0, 20) + "..."}</span>
+                          <span>SL: {item.quantity}</span>
+                          <span>
+                            Giá: {item.price?.toLocaleString()} VNĐ
+                          </span>
+                          <button
+                            onClick={() => {
+                              localStorage.removeItem("productsCart");
+                            }}
+                            className="bg-red-600 font-bold text-white p-2 rounded-md"
+                          >
+                            Xoá
+                          </button>
+                        </div>
+                      ))}
+                      <div className="flex justify-end items-center text-white">
+                        <Button
+						  component={Link}
+						  to={"/cart"}
+                          className="
+						    normal-case text-white
+						  	p-3 bg-indigo-700 rounded-md border
+							transition-all ease-linear duration-200 hover:bg-white 
+							hover:text-indigo-700 hover:border hover:border-indigo-700
+						  "
+                        >
+                          Checkout
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </Fragment>
               </Menu.Item>
             </div>
