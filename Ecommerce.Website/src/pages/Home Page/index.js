@@ -5,7 +5,7 @@ import SearchBar from "components/SearchBar";
 import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Home = (props) => {
+const HomePage = (props) => {
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
@@ -159,4 +159,4 @@ const Home = (props) => {
   );
 };
 
-export default Home;
+export default HomePage;
