@@ -33,6 +33,10 @@ spring:
           uri: lb://ORDER
           predicates:
             - Path=/api/v1/order/**
+        - id: image
+          uri: lb://IMAGE
+          predicates:
+            - Path=/api/v1/image/**
 
 eureka:
   client:

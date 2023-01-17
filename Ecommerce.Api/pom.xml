@@ -9,6 +9,7 @@
     <module>Product</module>
     <module>Eureka-server</module>
     <module>API-gateway</module>
+      <module>Image</module>
   </modules>
 
   <parent>
