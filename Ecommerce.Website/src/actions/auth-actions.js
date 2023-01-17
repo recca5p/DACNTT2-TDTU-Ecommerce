@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { signInAPI, signUpAPI } from "api/auth-api";
+import { signInAPI, signUpAPI } from "api";
 
 export const signInAccount = createAsyncThunk(
 	'POST Sign In',

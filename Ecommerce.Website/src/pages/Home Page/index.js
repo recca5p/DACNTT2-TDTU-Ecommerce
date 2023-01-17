@@ -1,5 +1,5 @@
 import { getProductAPI } from "api/product-api";
-import axios from "axios";
+import ImgComponent from "components/ImageComponent";
 import { LoadingSkeleton } from "components/loading";
 import SearchBar from "components/SearchBar";
 import React, { Fragment, useEffect, useState } from "react";
