@@ -35,11 +35,13 @@ public class Product {
     @Column(name="quantity")
     private Integer quantity;
 
-    @Column(name="brand")
-    private String brand;
+    @OneToOne
+    @JoinColumn(name = "brand")
+    private Brand brand;
 
-    @Column(name="category")
-    private String category;
+    @OneToOne
+    @JoinColumn(name = "category")
+    private Category category;
 
     @Column(name="thumbnail")
     private String thumbnail;
