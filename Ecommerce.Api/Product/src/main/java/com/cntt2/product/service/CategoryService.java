@@ -6,12 +6,25 @@ import com.cntt2.product.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.Normalizer;
 import java.util.List;
+import java.util.Locale;
+import java.util.regex.Pattern;
 
 @Service
 @AllArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
+
+    private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
+    private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
+
+    public static String toSlug(String input) {
+        String nowhitespace = WHITESPACE.matcher(input).replaceAll("-");
+        String normalized = Normalizer.normalize(nowhitespace, Normalizer.Form.NFD);
+        String slug = NONLATIN.matcher(normalized).replaceAll("");
+        return slug.toLowerCase(Locale.ENGLISH);
+    }
 
     public List<Category> getCategories() {
         return categoryRepository.findAll();
@@ -32,6 +45,7 @@ public class CategoryService {
 
         Category data = Category.builder()
                 .name(request.name())
+                .slug(toSlug(request.name()))
                 .thumbnail(request.thumbnail())
                 .parent(request.parent())
                 .build();

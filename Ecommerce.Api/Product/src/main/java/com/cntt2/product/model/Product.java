@@ -29,6 +29,9 @@ public class Product {
     @Column(name="name")
     private String name;
 
+    @Column(name="slug", unique = true)
+    private String slug;
+
     @Column(name="price")
     private BigDecimal price;
 

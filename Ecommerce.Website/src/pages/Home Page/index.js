@@ -84,18 +84,14 @@ const HomePage = (props) => {
                       }}
                     >
                       <img
-                        alt={item.brand}
+                        alt="thumbnail"
                         className="object-cover object-center block w-full h-full hover:scale-125 transition-all ease-out duration-200"
                         src={item.thumbnail}
                       />
                     </div>
                     <div className="mt-4 px-4 py-4 ">
                       <div className="flex justify-between items-center">
-                        <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
-                          {item.brand.length > 20
-                            ? item.brand.slice(0, 20) + "..."
-                            : item.brand}
-                        </h3>
+                        
                         <span className="text-gray-500 text-xs tracking-widest title-font mb-1">
                           date:{" "}
                           {new Date(item.updatedDate).toLocaleDateString(

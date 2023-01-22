@@ -29,6 +29,14 @@ spring:
           uri: lb://PRODUCT
           predicates:
             - Path=/api/v1/product/**
+        - id: brand
+          uri: lb://PRODUCT
+          predicates:
+            - Path=/api/v1/brand/**
+        - id: category
+          uri: lb://PRODUCT
+          predicates:
+            - Path=/api/v1/category/**
         - id: order
           uri: lb://ORDER
           predicates:
