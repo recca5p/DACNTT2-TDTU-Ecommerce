@@ -15,8 +15,12 @@ public record ProductController(ProductService productService) {
 
     //get all products
     @GetMapping
-    public List<Product> getProducts(@RequestParam(name = "id", required = false) List<String> idList) {
-        return productService.getProducts(idList);
+    public List<Product> getProducts(
+            @RequestParam(name = "id", required = false) List<String> idList,
+            @RequestParam(name = "s", required = false) String slug,
+            @RequestParam(name = "c", required = false) String category
+            ) {
+        return productService.getProducts(idList, slug, category);
     }
 
     //get single product

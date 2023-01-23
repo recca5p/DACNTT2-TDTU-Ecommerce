@@ -3,6 +3,7 @@ import HomeLayout from "layout/Home Layout";
 import CartPage from "pages/Cart Page";
 import HomePage from "pages/Home Page";
 import ProductDetail from "pages/Product Detail Page";
+import ProductListPage from "pages/Product List Page";
 import SignIn from "pages/Sign In Page";
 import SignUp from "pages/Sign Up Page";
 import { Routes, Route, Navigate } from "react-router-dom";
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route element={<HomeLayout />}>
           <Route path="/" element={<HomePage />} />
+		  <Route path="/product" element={<ProductListPage />} />
           <Route path="/product/:id" element={<ProductDetail />} />
 		  <Route path="/cart" element={<CartPage />} />
           <Route path="*" element={<p>Path not resolved</p>} />
