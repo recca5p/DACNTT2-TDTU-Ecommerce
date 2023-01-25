@@ -6,6 +6,8 @@ import java.util.List;
 public record ProductRequest (
     String name,
     BigDecimal price,
+    String condition,
+    String description,
     Integer quantity,
     String brand,
     String category,

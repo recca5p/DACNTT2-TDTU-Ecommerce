@@ -13,11 +13,5 @@ public class Image {
     @Id
     private String id;
 
-    private String title;
-
     private Binary image;
-
-    public Image(String title) {
-        this.title = title;
-    }
 }

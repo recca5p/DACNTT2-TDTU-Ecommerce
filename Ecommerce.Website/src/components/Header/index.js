@@ -7,6 +7,8 @@ import CustomButton from "components/CustomButton";
 import SearchIcon from '@mui/icons-material/Search';
 import { useSelector } from "react-redux";
 import { ListCart } from "components/listCart";
+import { slugGenerator } from "utils/convert";
+import qs from 'qs';
 
 export default function Header() {
 	const navigate = useNavigate();
@@ -23,14 +25,12 @@ export default function Header() {
 
 	const handleSearch = (e) => {
 		e.preventDefault();
-		if (!searchKeyword) return false;
 
-		let queryString = `/product?s=${searchKeyword}`;
-		if (searchCategory !== 'all') {
-			queryString += `&c=${searchCategory}`
-		}
+		const queryObject = {};
+		if(searchKeyword)  queryObject.s = slugGenerator(searchKeyword);
+		if(searchCategory !== 'all') queryObject.c = searchCategory;
 
-		navigate(queryString)
+		navigate(`/product?${qs.stringify(queryObject)}`);
 	}
 
 	return (
@@ -73,12 +73,12 @@ export default function Header() {
 					</div>
 				</div>
 
-				<div className="border-b-[2px]">
+				<div className="border-b-[2px] shadow-lg">
 					<div className="2xl:container 2xl:mx-auto 2xl:px-0 relative min-h-[65px] flex items-center px-[60px] py-4">
 						<Link to="/">
-							<img alt="Logo" src="/large-logo.png" className="absolute top-[-60px] left-[40px]" />
+							<img alt="Logo" src="/large-logo.png" />
 						</Link>
-						<div className="relative ml-[220px] px-2" onMouseLeave={handleCloseCategory}>
+						<div className="ml-4 relative px-2" onMouseLeave={handleCloseCategory}>
 							<button
 								className="py-[2px] px-4 max-w-[120px] text-gray-600 font-medium hover:text-indigo-700 bg-white
 					flex items-center border-[3px] border-transparent focus:border-inherit rounded"
@@ -87,8 +87,8 @@ export default function Header() {
 								<span className="mr-2">Shop by category</span>
 								{showCategory ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
 							</button>
-							{showCategory && categories.length > 0 && (
-								<div className="absolute border-[3px] min-w-[600px] bg-white">
+							{showCategory && Array.isArray(categories) && categories.length > 0 && (
+								<div className="absolute border-[3px] min-w-[600px] bg-white shadow-xl">
 									<div className="p-[20px] grid grid-cols-3 gap-3">
 										{categories.map((item, index) => (
 											<div key={index}>
@@ -135,7 +135,7 @@ export default function Header() {
 									onChange={(e) => setSearchCategory(e.target.value)}
 								>
 									<option value="all">All categories</option>
-									{categories.map((item, index) => (
+									{Array.isArray(categories) && categories.map((item, index) => (
 										<option key={index} value={item.slug}>{item.name}</option>
 									))}
 								</select>
