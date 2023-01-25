@@ -14,7 +14,7 @@ function App() {
         <Route element={<HomeLayout />}>
           <Route path="/" element={<HomePage />} />
 		  <Route path="/product" element={<ProductListPage />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/product/:slug" element={<ProductDetail />} />
 		  <Route path="/cart" element={<CartPage />} />
           <Route path="*" element={<p>Path not resolved</p>} />
         </Route>

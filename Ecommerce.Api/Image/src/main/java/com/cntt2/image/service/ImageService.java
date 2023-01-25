@@ -15,11 +15,12 @@ public class ImageService {
     @Autowired
     private ImageRepository imageRepository;
 
-    public String addPhoto(String title, MultipartFile file) throws IOException {
-        Image photo = new Image(title);
+    public String addPhoto(MultipartFile file) throws IOException {
+        Image photo = new Image();
         photo.setImage(
                 new Binary(BsonBinarySubType.BINARY, file.getBytes()));
-        photo = imageRepository.insert(photo); return photo.getId();
+        photo = imageRepository.insert(photo);
+        return photo.getId();
     }
 
     public Image getPhoto(String id) {

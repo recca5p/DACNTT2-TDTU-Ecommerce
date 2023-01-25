@@ -24,9 +24,9 @@ public record ProductController(ProductService productService) {
     }
 
     //get single product
-    @GetMapping(path = "{productId}")
-    public Product getSingleProduct(@PathVariable("productId") String id) {
-        return productService.getSingleProduct(id);
+    @GetMapping(path = "{productSlug}")
+    public Product getSingleProduct(@PathVariable("productSlug") String slug) {
+        return productService.getSingleProduct(slug);
     }
 
     //create product

@@ -76,9 +76,9 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product getSingleProduct(String productId) {
-        return productRepository.findById(productId).orElseThrow(
-                () -> new IllegalStateException("Product ID: " + productId + "not found!")
+    public Product getSingleProduct(String productSlug) {
+        return productRepository.findBySlug(productSlug).orElseThrow(
+                () -> new IllegalStateException("Product not found!")
         );
     }
 
@@ -105,6 +105,8 @@ public class ProductService {
                 .name(request.name())
                 .slug(toSlug(request.name()))
                 .price(request.price())
+                .condition(request.condition())
+                .description(request.description())
                 .quantity(request.quantity())
                 .brand(brandData)
                 .category(categoryChild)
@@ -143,6 +145,8 @@ public class ProductService {
         productData.setName(request.name());
         productData.setSlug(toSlug(request.name()));
         productData.setPrice(request.price());
+        productData.setCondition(request.condition());
+        productData.setDescription(request.description());
         productData.setQuantity(request.quantity());
         productData.setBrand(brandData);
         productData.setCategory(categoryChild);

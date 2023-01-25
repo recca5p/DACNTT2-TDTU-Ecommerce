@@ -17,7 +17,7 @@ const request = (method, endpoint, token, data, options = {}) => {
       : headers,
     method,
     data,
-    url: `${process.env.REACT_APP_API_URL}/api/v1/${endpoint}`
+    url: `${process.env.REACT_APP_API_URL}/${endpoint}`
   });
 };
 

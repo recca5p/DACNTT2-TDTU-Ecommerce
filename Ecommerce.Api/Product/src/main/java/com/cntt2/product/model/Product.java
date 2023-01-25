@@ -35,6 +35,12 @@ public class Product {
     @Column(name="price")
     private BigDecimal price;
 
+    @Column(name="condition")
+    private String condition;
+
+    @Column(name="description", columnDefinition = "TEXT")
+    private String description;
+
     @Column(name="quantity")
     private Integer quantity;
 
