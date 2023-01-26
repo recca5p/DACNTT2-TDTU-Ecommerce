@@ -1,6 +1,8 @@
+import { NotFound } from "components";
 import AuthLayout from "layout/Auth Layout";
 import HomeLayout from "layout/Home Layout";
 import CartPage from "pages/Cart Page";
+import CategoryPage from "pages/Category Page";
 import HomePage from "pages/Home Page";
 import ProductDetail from "pages/Product Detail Page";
 import ProductListPage from "pages/Product List Page";
@@ -15,8 +17,10 @@ function App() {
           <Route path="/" element={<HomePage />} />
 		  <Route path="/product" element={<ProductListPage />} />
           <Route path="/product/:slug" element={<ProductDetail />} />
+		  <Route path="/category" element={<></>} />
+		  <Route path="/category/:slug" element={<CategoryPage />} />
 		  <Route path="/cart" element={<CartPage />} />
-          <Route path="*" element={<p>Path not resolved</p>} />
+          <Route path="*" element={<NotFound />} />
         </Route>
 		<Route element={<AuthLayout />}>
 		  <Route path="/auth" element={<Navigate to="/auth/signin"/>} />
