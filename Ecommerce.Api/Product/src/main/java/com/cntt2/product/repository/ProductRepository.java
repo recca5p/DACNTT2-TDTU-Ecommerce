@@ -18,4 +18,6 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     List<Product> findByCategory_SlugIn(List<String> categories);
 
     List<Product> findBySlugContainingAndCategory_SlugIn(String slug, List<String> categories);
+
+    void deleteBySlug(String slug);
 }

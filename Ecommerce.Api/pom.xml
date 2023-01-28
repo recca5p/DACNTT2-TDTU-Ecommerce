@@ -10,6 +10,7 @@
     <module>Eureka-server</module>
     <module>API-gateway</module>
       <module>Image</module>
+      <module>Payment</module>
   </modules>
 
   <parent>

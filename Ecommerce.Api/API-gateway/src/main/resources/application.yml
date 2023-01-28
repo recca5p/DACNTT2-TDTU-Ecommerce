@@ -41,6 +41,10 @@ spring:
           uri: lb://ORDER
           predicates:
             - Path=/api/v1/order/**
+        - id: payment
+          uri: lb://PAYMENT
+          predicates:
+            - Path=/api/v1/payment/**
         - id: image
           uri: lb://IMAGE
           predicates:

@@ -4,7 +4,7 @@ import * as Actions from "actions";
 const categorySlice = createSlice({
   name: "category",
   initialState: {
-    data: []
+    data: null
   },
   reducers: {},
   extraReducers: (builder) => {

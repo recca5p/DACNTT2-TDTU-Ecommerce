@@ -40,18 +40,18 @@ public record ProductController(ProductService productService) {
     }
 
     //update product
-    @PutMapping(path = "{productId}")
+    @PutMapping(path = "{productSlug}")
     public Product updateProduct(
-            @PathVariable("productId") String id,
+            @PathVariable("productSlug") String slug,
             @RequestBody ProductRequest productRequest,
             @RequestAttribute String userId
     ) {
-        return productService.updateProduct(id, productRequest, userId);
+        return productService.updateProduct(slug, productRequest, userId);
     }
 
     //delete product
-    @DeleteMapping(path = "{productId}")
-    public void deleteProduct(@PathVariable("productId") String id) {
-        productService.deleteProduct(id);
+    @DeleteMapping(path = "{productSlug}")
+    public void deleteProduct(@PathVariable("productSlug") String slug) {
+        productService.deleteProduct(slug);
     }
 }

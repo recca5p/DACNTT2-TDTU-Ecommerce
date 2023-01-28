@@ -22,6 +22,15 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final WebClient.Builder webClientBuilder;
 
+    public static boolean containStatus(String input) {
+        for (OrderStatus o : OrderStatus.values()) {
+            if (o.name().equals(input)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Transient
     public BigDecimal getTotalOrderPrice(List<OrderProductItem> orderProducts) {
         BigDecimal sum = BigDecimal.valueOf(0);
@@ -31,16 +40,7 @@ public class OrderService {
         return sum;
     }
 
-    public List<Order> getOrders() {
-        return orderRepository.findAll();
-    }
-
-    public Order getSingleOrder(String orderId) {
-        return orderRepository.findById(orderId).orElseThrow(
-                () -> new IllegalStateException("Order ID: " + orderId + "not found!")
-        );
-    }
-    public Order createOrder(OrderRequest request, String userId) {
+    public void checkExistProducts(OrderRequest request) {
         //request product => list product id
         List<String> idList = request.products().stream()
                 .map(OrderProductItem::getId)
@@ -65,6 +65,25 @@ public class OrderService {
                 throw new IllegalArgumentException("Product is not in stock, please try again later");
             }
         });
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+
+    public List<Order> getOrders(List<String> status, String userId) {
+        if(status != null) {
+            return orderRepository.findByStatusInAndCreatedBy(status, userId);
+        }
+        return orderRepository.findByCreatedBy(userId);
+    }
+
+    public Order getSingleOrder(String orderId) {
+        return orderRepository.findById(orderId).orElseThrow(
+                () -> new IllegalStateException("Order ID: " + orderId + "not found!")
+        );
+    }
+    public Order createOrder(OrderRequest request, String userId) {
+        //check order request
+        checkExistProducts(request);
 
         Order order = Order.builder()
                 .status(OrderStatus.PENDING.name())
@@ -82,9 +101,21 @@ public class OrderService {
                 () -> new IllegalStateException("Order ID: " + orderId + "not found!")
         );
 
-        orderData.setStatus(request.status());
-        orderData.setTotal(getTotalOrderPrice(request.products()));
-        orderData.setProducts(request.products());
+        if(!containStatus(request.status())) {
+            throw new IllegalArgumentException("Invalid status");
+        }
+
+        if(request.status().equalsIgnoreCase(OrderStatus.PAID.name())) {
+            //check exist products
+            checkExistProducts(request);
+        }
+
+        //update
+        if(request.status() != null) { orderData.setStatus(request.status()); }
+        if(request.products() != null) {
+            orderData.setTotal(getTotalOrderPrice(request.products()));
+            orderData.setProducts(request.products());
+        }
         orderData.setUpdatedBy(userId);
 
         return orderRepository.save(orderData);

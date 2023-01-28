@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 export default function ListCart() {
   const navigate = useNavigate();
 
-  const productsCart = useSelector(({ cart }) => cart.data);
+  const productsCart = useSelector(({ cart }) => cart.list);
 
   const checkout = async () => {
     const data = {

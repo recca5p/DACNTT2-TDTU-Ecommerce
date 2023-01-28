@@ -27,7 +27,7 @@ const ProductResult = ({ slug }) => {
 				<div className='font-semibold'>{products?.length} Result(s)</div>
 				<div className='border-b border-[#ccc] mb-4 mt-2'></div>
 				<div className='grid grid-cols-4 gap-4'>
-					{[...products,...products,...products].map((item, index) => (
+					{products.map((item, index) => (
 						<div className="border p-2 max-w-[240px] mx-auto" key={index}>
 							<Link to={`/product/${item.slug}`} >
 								<div className="w-full rounded-lg bg-slate-100">

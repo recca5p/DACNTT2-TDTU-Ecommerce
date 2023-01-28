@@ -119,51 +119,56 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public Product updateProduct(String productId, ProductRequest request, String userId) {
+    public Product updateProduct(String productSlug, ProductRequest request, String userId) {
         //find product data
-        Product productData = productRepository.findById(productId).orElseThrow(
-                () -> new IllegalStateException("Product ID: " + productId + "not found!")
+        Product productData = productRepository.findBySlug(productSlug).orElseThrow(
+                () -> new IllegalStateException("Product slug: " + productSlug + "not found!")
         );
-        //find brand data
-        Brand brandData = brandRepository.findById(request.brand()).orElseThrow(
-                () -> new IllegalStateException("Brand ID: " + request.brand() + "not found!")
-        );
-        //find category data
-        List<Category> cateList = new ArrayList<>();
-        Category categoryChild = categoryRepository.findById(request.category()).orElseThrow(
-                () -> new IllegalStateException("Category child ID: " + request.category() + "not found!")
-        );
-        cateList.add(categoryChild);
 
-        if(!categoryChild.getParent().isEmpty()) {
-            Category categoryParent = categoryRepository.findById(categoryChild.getParent()).orElseThrow(
-                    () -> new IllegalStateException("Category parent ID: " + request.category() + "not found!")
-            );
-            cateList.add(categoryParent);
+        //update
+        if(request.name() != null) {
+            productData.setName(request.name());
+            productData.setSlug(toSlug(request.name()));
         }
+        if(request.price() != null) productData.setPrice(request.price());
+        if(request.condition() != null) productData.setCondition(request.condition());
+        if(request.description() != null) productData.setDescription(request.description());
+        if(request.quantity() != null) productData.setQuantity(request.quantity());
+        if(request.brand() != null) {
+            //find brand data
+            Brand brandData = brandRepository.findById(request.brand()).orElseThrow(
+                    () -> new IllegalStateException("Brand ID: " + request.brand() + "not found!")
+            );
+            productData.setBrand(brandData);
+        }
+        if(request.category() != null) {
+            //find category data
+            List<Category> cateList = new ArrayList<>();
+            Category categoryChild = categoryRepository.findById(request.category()).orElseThrow(
+                    () -> new IllegalStateException("Category child ID: " + request.category() + "not found!")
+            );
+            cateList.add(categoryChild);
 
-        productData.setName(request.name());
-        productData.setSlug(toSlug(request.name()));
-        productData.setPrice(request.price());
-        productData.setCondition(request.condition());
-        productData.setDescription(request.description());
-        productData.setQuantity(request.quantity());
-        productData.setBrand(brandData);
-        productData.setCategory(categoryChild);
-        productData.setThumbnail(request.thumbnail());
-        productData.setImages(request.images());
+            if(!categoryChild.getParent().isEmpty()) {
+                Category categoryParent = categoryRepository.findById(categoryChild.getParent()).orElseThrow(
+                        () -> new IllegalStateException("Category parent ID: " + request.category() + "not found!")
+                );
+                cateList.add(categoryParent);
+            }
+            productData.setCategory(categoryChild);
+        }
+        if(request.thumbnail() != null) productData.setThumbnail(request.thumbnail());
+        if(request.images() != null) productData.setImages(request.images());
         productData.setUpdatedBy(userId);
 
         return productRepository.save(productData);
     }
 
-    public void deleteProduct(String productId) {
-        boolean isExists = productRepository.existsById(productId);
-        if(!isExists) {
-            throw new IllegalStateException(
-                    "Product ID: " + productId + "not found!"
-            );
-        }
-        productRepository.deleteById(productId);
+    public void deleteProduct(String productSlug) {
+        //find product data
+        Product productData = productRepository.findBySlug(productSlug).orElseThrow(
+                () -> new IllegalStateException("Product slug: " + productSlug + "not found!")
+        );
+        productRepository.deleteBySlug(productSlug);
     }
 }

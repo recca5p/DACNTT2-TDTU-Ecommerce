@@ -1,30 +1,37 @@
 import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { numberWithCommas } from "utils/convert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import * as Actions from "actions";
+import { putOrderAPI } from "api";
+import { Loading } from "components";
 
 const CartPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [cartInfo, setCartInfo] = useState({
 	quantity: 0,
 	total: 0
   });
+
+  const cartList = useSelector(({ cart }) => cart.list);
   const cartData = useSelector(({ cart }) => cart.data);
+  const isLogedIn = useSelector(({ auth }) => auth.isLogedIn);
 
   const handleRemove = (id) => {
-    dispatch(Actions.removeFromCart(id));
+    dispatch(Actions.removeFromCart({ id, isLogedIn }));
   };
 
+
   useEffect(() => {
-	if(cartData?.length > 0) {
+	if(cartList?.length > 0) {
 	  let total = 0
 	  let quantity = 0
 
-	  cartData.map(item => {
+	  cartList.map(item => {
 		total += item.price
 		quantity += item.quantity
 		return null;
@@ -35,9 +42,9 @@ const CartPage = () => {
 		total
 	  })
 	}
-  }, [cartData])
+  }, [cartList])
 
-  if (cartData.length === 0)
+  if (cartList.length === 0)
     return (
       <div>
         <div className="font-bold text-4xl">Shopping cart</div>
@@ -63,18 +70,19 @@ const CartPage = () => {
       <div className="font-bold text-4xl">Shopping cart</div>
       <div className="flex mt-8 space-x-4">
         <div className="flex-1">
-          {cartData.map((item) => (
+          {cartList.map((item) => (
             <div className="border p-4 mb-4" key={item.id}>
               <div className="flex space-x-4">
-                <img
-                  src={item.thumbnail}
-                  alt="product-img"
-                  width={140}
-                  height={140}
-                />
+			  	<Link to={`/product/${item.slug}`} className='w-[140px]'>
+					<img 
+						className=' w-full h-full object-contain aspect-square
+						hover:scale-110 transition-all ease-out duration-200'
+						src={`${process.env.REACT_APP_API_URL}/image/${item.thumbnail}`} alt="product" 
+					/>
+				</Link>
                 <Link
-                  className="flex-1 font-semibold text-xl hover:underline"
-                  to={`/product/${item.id}`}
+                  className="flex-1 font-semibold text-xl hover:underline text-indigo-700"
+                  to={`/product/${item.slug}`}
                 >
                   {item.name}
                 </Link>
@@ -96,30 +104,32 @@ const CartPage = () => {
           ))}
         </div>
         <div className="w-full md:max-w-[400px] border p-4">
-          <Button
-            className="
-				bg-indigo-700 hover:bg-indigo-800 font-bold 
-				text-xl normal-case text-white my-[12px] 
-				py-3 rounded-full disabled:bg-slate-300 mb-4"
-            fullWidth
-          >
-            Go to checkout
-          </Button>
+			<Link to={`/checkout/${cartData.id}`}>
+			<Button
+				className="
+					bg-indigo-700 hover:bg-indigo-800 font-bold 
+					text-xl normal-case text-white my-[12px] 
+					py-3 rounded-full disabled:bg-indigo-800 mb-4"
+				fullWidth
+			>
+				Go to checkout
+			</Button>
+			</Link>
           <div className="flex justify-between text-lg">
             <div>Items ({cartInfo.quantity})</div>
-            <div>US ${cartInfo.total}</div>
+            <div>{numberWithCommas(cartInfo.total)} VND</div>
           </div>
           <div className="flex justify-between text-lg">
             <div>Shipping</div>
-            <div>US $5</div>
+            <div>0 VND</div>
           </div>
           <div className="flex justify-between text-lg">
             <div>Import charges</div>
-            <div>US $5</div>
+            <div>0 VND</div>
           </div>
           <div className="flex justify-between text-2xl font-semibold mt-8">
             <div>Subtotal</div>
-            <div>US ${cartInfo.total+10}</div>
+            <div>{numberWithCommas(cartInfo.total)} VND</div>
           </div>
         </div>
       </div>
