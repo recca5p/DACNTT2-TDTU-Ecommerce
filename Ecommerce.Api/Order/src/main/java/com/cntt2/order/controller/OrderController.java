@@ -15,8 +15,11 @@ public record OrderController(OrderService orderService) {
 
     //get all orders
     @GetMapping
-    public List<Order> getOrders() {
-        return orderService.getOrders();
+    public List<Order> getOrders(
+            @RequestParam(name = "status", required = false) List<String> status,
+            @RequestAttribute String userId) {
+
+        return orderService.getOrders(status, userId);
     }
 
     //get single order

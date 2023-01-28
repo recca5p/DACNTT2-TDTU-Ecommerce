@@ -28,6 +28,9 @@ public class OrderProductItem {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "slug")
+    private String slug;
+
     @Column(name = "thumbnail")
     private String thumbnail;
 

@@ -3,6 +3,7 @@ import AuthLayout from "layout/Auth Layout";
 import HomeLayout from "layout/Home Layout";
 import CartPage from "pages/Cart Page";
 import CategoryPage from "pages/Category Page";
+import CheckoutPage from "pages/Checkout Page";
 import HomePage from "pages/Home Page";
 import ProductDetail from "pages/Product Detail Page";
 import ProductListPage from "pages/Product List Page";
@@ -20,6 +21,7 @@ function App() {
 		  <Route path="/category" element={<></>} />
 		  <Route path="/category/:slug" element={<CategoryPage />} />
 		  <Route path="/cart" element={<CartPage />} />
+		  <Route path="/checkout/:orderId" element={<CheckoutPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 		<Route element={<AuthLayout />}>
