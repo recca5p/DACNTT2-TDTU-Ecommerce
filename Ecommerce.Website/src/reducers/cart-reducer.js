@@ -1,16 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as Actions from "actions";
+import { putOrderAPI } from "api";
 
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    data: JSON.parse(localStorage.getItem("cart")) ?? [],
+    list: JSON.parse(localStorage.getItem("cart")) ?? [],
+	data: null
   },
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(Actions.addToCart.fulfilled, (state, action) => {
-		const data = action.payload;
-		let currentCart = state.data;
+		const data = action.payload.data;
+		let currentCart = state.list;
 		const index = currentCart.findIndex(item => item.id === data.id);
 
 		if(index > -1) {
@@ -22,15 +24,29 @@ const cartSlice = createSlice({
 			})
 		}
 
-		localStorage.setItem('cart', JSON.stringify(currentCart));
-		state.data = currentCart;
+		state.list = currentCart;
+
+		//if user is not loged in
+		if(!action.payload.isLogedIn) {
+			localStorage.setItem('cart', JSON.stringify(currentCart));
+		} 
 	});
 	builder.addCase(Actions.removeFromCart.fulfilled, (state, action) => {
-		const id = action.payload;
-		const newCart = state.data?.filter(item => item.id !== id);
+		const id = action.payload.id;
+		const newCart = state.list?.filter(item => item.id !== id);
 
-		localStorage.setItem('cart', JSON.stringify(newCart));
-		state.data = newCart;
+		state.list = newCart;
+		
+		//if user is not loged in
+		if(action.payload.isLogedIn) {
+			localStorage.setItem('cart', JSON.stringify(newCart));
+		}
+	});
+	builder.addCase(Actions.updateCartData.fulfilled, (state, action) => {
+		state.data = action.payload;
+	});
+	builder.addCase(Actions.updateCartList.fulfilled, (state, action) => {
+		state.list = action.payload;
 	});
   },
 });
