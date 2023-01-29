@@ -1,5 +1,4 @@
 import { getProductAPI } from "api/product-api";
-import { LoadingSkeleton } from "components/loading";
 import SearchBar from "components/SearchBar";
 import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -57,14 +56,7 @@ const HomePage = (props) => {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 -m-4">
             {loading && (
               <Fragment>
-                <LoadingSkeleton />
-                <LoadingSkeleton />
-                <LoadingSkeleton />
-                <LoadingSkeleton />
-                <LoadingSkeleton />
-                <LoadingSkeleton />
-                <LoadingSkeleton />
-                <LoadingSkeleton />
+                
               </Fragment>
             )}
             {!loading &&

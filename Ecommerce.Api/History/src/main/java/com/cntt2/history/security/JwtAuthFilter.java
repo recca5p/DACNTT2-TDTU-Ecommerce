@@ -1,4 +1,4 @@
-package com.cntt2.payment.security;
+package com.cntt2.history.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

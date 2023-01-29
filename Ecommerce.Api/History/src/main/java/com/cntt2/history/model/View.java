@@ -1,35 +1,37 @@
-package com.cntt2.payment.model;
+package com.cntt2.history.model;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "payment")
+@Table(name = "view_product")
 @Setter
 @Getter
-public class Payment {
+public class View {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", columnDefinition = "VARCHAR(255)")
     private String id;
 
-    @Column(name="name")
-    private String name;
-
     @Column(name="type")
     private String type;
 
-    @Column(name="balance")
-    private BigDecimal balance;
+    @Column(name="productId")
+    private String productId;
 
     @Column(name="userId")
     private String userId;
+
+    @CreationTimestamp
+    @Column(name="createdDate", nullable = false, updatable = false)
+    private Date createdDate;
 }

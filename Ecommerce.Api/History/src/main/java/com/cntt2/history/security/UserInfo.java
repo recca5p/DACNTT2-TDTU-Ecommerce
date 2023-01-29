@@ -1,4 +1,4 @@
-package com.cntt2.payment.security;
+package com.cntt2.history.security;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

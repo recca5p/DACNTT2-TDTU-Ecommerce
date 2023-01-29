@@ -2,8 +2,9 @@ import React, { useEffect } from "react";
 import * as Actions from 'actions';
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { ProductImages, ProductInfo } from "./components";
+import { ProductImages, ProductInfo, ProductRatings } from "./components";
 import { CategoryHeader } from "components";
+import { historyType } from "utils/common";
 
 
 const ProductDetailPage = () => {
@@ -21,6 +22,16 @@ const ProductDetailPage = () => {
 			dispatch(Actions.clearProductState());
 		}
 	}, [dispatch, slug]);
+
+	useEffect(() => {
+		if(product) {
+			dispatch(Actions.getProductStatistics(product.id));
+			dispatch(Actions.postHistory({
+				type: historyType.VIEW,
+				productId: product.id
+			}))
+		}
+	}, [dispatch, product])
   
 	if (!loaded|| !product) return null;
 
@@ -31,6 +42,7 @@ const ProductDetailPage = () => {
 				<ProductImages />
 				<ProductInfo />
 			</div>
+			<ProductRatings />
 		</React.Fragment>
 	);
 }
