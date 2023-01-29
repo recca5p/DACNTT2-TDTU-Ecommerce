@@ -4,7 +4,8 @@ import * as Actions from "actions";
 const initialState = {
 	loaded: false,
 	list: [],
-    data: null
+    data: null,
+	statics: null
 }
 
 const productSlice = createSlice({
@@ -20,6 +21,9 @@ const productSlice = createSlice({
 		state.data = action.payload
 		state.loaded = true
 	});
+	builder.addCase(Actions.getProductStatistics.fulfilled, (state, action) => {
+		state.statics = action.payload
+	})
 	builder.addCase(Actions.clearProductState, (state) => {
 		state = initialState
 	});

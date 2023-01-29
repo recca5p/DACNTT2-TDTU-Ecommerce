@@ -11,3 +11,9 @@ export const orderStatus = {
 	"CANCELLED": "CANCELLED", 
 	"FINISHED": "FINISHED"
 }
+
+export const historyType = {
+	"VIEW": "VIEW",
+	"PURCHASE": "PURCHASE",
+	"RATING": "RATING"
+}

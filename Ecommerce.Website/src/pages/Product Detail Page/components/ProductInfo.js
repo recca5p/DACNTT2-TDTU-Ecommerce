@@ -22,6 +22,7 @@ function ProductInfo() {
 
 	const isLogedIn = useSelector(({ auth }) => auth.isLogedIn);
 	const product = useSelector(({ product }) => product.data);
+	const statistics = useSelector(({ product }) => product.statics);
 
 	const handleQuickBuy = async () => {
 		setLoading(true);
@@ -67,20 +68,51 @@ function ProductInfo() {
 		}));
 	};
 
+	const countPurchase = (data) => {
+		let result = 0;
+
+		if(!Array.isArray(data)) return result;
+
+		data.map(item => {
+			result += item.quantity
+			return item
+		})
+		return result
+	}
+
+	const countAvgRating = (data) => {
+		let result = 0;
+		if(!Array.isArray(data)) return result;
+		const average = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
+		return parseFloat(average(data.map(item => item.star)).toFixed(1));
+	}
+
 	return (
 		<div className="flex-1">
 			<div className="border-b border-[#ccc] pb-4">
 				<div className="font-bold text-2xl mb-2">{product.name}</div>
-				<div className="font-semibold text-indigo-700 flex items-center my-1">
-					<VisibilityIcon className="mr-2"/> 100 view(s)
-				</div>
-				<div className="font-semibold text-orange-600 flex items-center my-1">
-					<VerifiedIcon className="mr-2"/> 50 purchase(s)
-				</div>
-				<div className='flex items-center mt-2 font-semibold'>
-					<StarRating star={5} size={20}/>
-					<div className='text-slate-500 ml-2'>{numberWithCommas(1322)} rating(s)</div>
-				</div>
+				{statistics && (
+					<>
+					{Array.isArray(statistics.views) && statistics.views.length > 0 && (
+						<div className="font-semibold text-indigo-700 flex items-center my-1">
+							<VisibilityIcon className="mr-2"/> {statistics.views.length} view(s)
+						</div>
+					)}
+					{Array.isArray(statistics.purchases) && statistics.purchases.length > 0 && (
+						<div className="font-semibold text-orange-600 flex items-center my-1">
+							<VerifiedIcon className="mr-2"/> {countPurchase(statistics.purchases)} purchase(s)
+						</div>
+					)}
+					{Array.isArray(statistics.ratings) && statistics.ratings.length > 0 && (
+						<div className='flex items-center mt-2 font-semibold'>
+							<StarRating star={countAvgRating(statistics.ratings)} size={20}/>
+							<div className='text-slate-500 ml-2'>
+								{numberWithCommas(statistics.ratings.length)} rating(s)
+							</div>
+						</div>
+					)}
+					</>
+				)}
 			</div>
 			<div className="py-2 flex">
 				<div className="font-serif w-[100px] text-right text-gray-600">Condition :</div>

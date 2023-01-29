@@ -1,7 +1,8 @@
 import { getProductAPI, putOrderAPI, putPaymentAPI, putProductAPI } from 'api';
+import { postHistoryAPI } from 'api/history-api';
 import { CustomButton, Loading } from 'components';
 import React, { useState } from 'react'
-import { orderStatus } from 'utils/common';
+import { historyType, orderStatus } from 'utils/common';
 import { numberWithCommas } from 'utils/convert';
 
 const PriceDetail = ({ data, payment }) => {
@@ -33,6 +34,11 @@ const PriceDetail = ({ data, payment }) => {
 					const res = await getProductAPI(`/${item.slug}`);
 					if(res.data) {
 						await putProductAPI(`/${item.slug}`, { quantity: res.data.quantity - item.quantity })
+						await postHistoryAPI({
+							type: historyType.PURCHASE,
+							quantity: item.quantity,
+							productId: res.data.id
+						})
 					}
 				})
 			}
