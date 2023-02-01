@@ -4,56 +4,60 @@ import com.cntt2.user.dto.UserRequest;
 import com.cntt2.user.model.User;
 import com.cntt2.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
 
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    ///////////////////////////////////////////////////////////
+
+    public ResponseEntity<List<User>> getUsers() {
+        return ResponseEntity.ok(userRepository.findAll());
     }
 
-    public User getSingleUser(String userId) {
-        return userRepository.findById(userId).orElseThrow(
-                () -> new IllegalStateException("User ID: " + userId + "not found!")
-        );
-    }
-
-    public User createUser(UserRequest request) {
-
-        User user = User.builder()
-                .username(request.username())
-                .password(request.password())
-                .fullname(request.fullname())
-                .avatar(request.avatar())
-                .build();
-
-        return userRepository.save(user);
-    }
-
-    public User updateUser(String userId, UserRequest request) {
-        User userData = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalStateException("User ID: " + userId + "not found!")
-        );
-
-        userData.setUsername(request.username());
-        userData.setPassword(request.password());
-        userData.setFullname(request.fullname());
-        userData.setAvatar(request.avatar());
-        return userRepository.save(userData);
-    }
-
-    public void deleteUser(String userId) {
-        boolean isExists = userRepository.existsById(userId);
-        if(!isExists) {
-            throw new IllegalStateException(
-                    "User ID: " + userId + "not found!"
-            );
+    public ResponseEntity<User> getSingleUser(String userId) {
+        Optional<User> userData = userRepository.findById(userId);
+        if (userData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<User>(userData.get(), HttpStatus.OK);
+    }
+
+    public ResponseEntity<User> updateUser(String userId, UserRequest request) {
+        Optional<User> userData = userRepository.findById(userId);
+        if (userData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        if(request.username() != null)
+            userData.get().setUsername(request.username());
+        if(request.password() != null)
+            userData.get().setPassword(request.password());
+        if(request.fullname() != null)
+            userData.get().setFullname(request.fullname());
+        if(request.avatar() != null)
+            userData.get().setAvatar(request.avatar());
+
+
+        return new ResponseEntity<User>(
+                userRepository.save(userData.get()),
+                HttpStatus.OK) ;
+    }
+
+    public ResponseEntity deleteUser(String userId) {
+        Optional<User> userData = userRepository.findById(userId);
+        if (userData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
         userRepository.deleteById(userId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

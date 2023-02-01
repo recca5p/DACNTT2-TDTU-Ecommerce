@@ -4,6 +4,7 @@ import com.cntt2.user.dto.UserRequest;
 import com.cntt2.user.model.User;
 import com.cntt2.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,25 +15,25 @@ import java.util.List;
 public record UserController(UserService userService) {
     //get all users
     @GetMapping
-    public List<User> getUsers() {
+    public ResponseEntity<List<User>> getUsers() {
         return userService.getUsers();
     }
 
     //get single user
     @GetMapping(path = "{userId}")
-    public User getSingleUser(@PathVariable("userId") String id) {
+    public ResponseEntity<User> getSingleUser(@PathVariable("userId") String id) {
         return userService.getSingleUser(id);
     }
 
     //update user
     @PutMapping(path = "{userId}")
-    public User updateUser(@PathVariable("userId") String id, @RequestBody UserRequest userRequest) {
+    public ResponseEntity<User> updateUser(@PathVariable("userId") String id, @RequestBody UserRequest userRequest) {
         return userService.updateUser(id, userRequest);
     }
 
     //delete user
     @DeleteMapping(path = "{userId}")
-    public void deleteUser(@PathVariable("userId") String id) {
-        userService.deleteUser(id);
+    public ResponseEntity deleteUser(@PathVariable("userId") String id) {
+        return userService.deleteUser(id);
     }
 }

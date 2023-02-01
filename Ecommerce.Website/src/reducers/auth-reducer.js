@@ -9,9 +9,17 @@ const authSlice = createSlice({
     ),
     data: JSON.parse(localStorage.getItem("user-info")) ?? null,
     token: localStorage.getItem("token") ?? null,
+	alert: {
+		state: false,
+		type: "success",
+		content: ""
+	}
   },
   reducers: {},
   extraReducers: (builder) => {
+	builder.addCase(Actions.setAlertSnackbar.fulfilled, (state, action) => {
+		state.alert = action.payload
+	});
     builder.addMatcher(
       isAnyOf(Actions.signInAccount.fulfilled, Actions.signUpAccount.fulfilled),
       (state, action) => {

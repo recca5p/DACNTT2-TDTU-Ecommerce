@@ -31,13 +31,13 @@ public class AuthController {
 
     //sign in
     @PostMapping(path = "signin")
-    public AuthResponse signIn(@RequestBody AuthRequest.SignInRequest signInRequestRequest) {
+    public ResponseEntity<AuthResponse> signIn(@RequestBody AuthRequest.SignInRequest signInRequestRequest) {
         return authService.signIn(signInRequestRequest);
     }
 
     //sign up
     @PostMapping(path = "signup")
-    public AuthResponse signUp(@RequestBody AuthRequest.SignUpRequest signUpRequest) {
+    public ResponseEntity<AuthResponse> signUp(@RequestBody AuthRequest.SignUpRequest signUpRequest) {
         return authService.signUp((signUpRequest));
     }
 
