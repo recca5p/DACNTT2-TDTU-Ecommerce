@@ -9,18 +9,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ImageService {
     @Autowired
     private ImageRepository imageRepository;
 
-    public String addPhoto(MultipartFile file) throws IOException {
-        Image photo = new Image();
-        photo.setImage(
-                new Binary(BsonBinarySubType.BINARY, file.getBytes()));
-        photo = imageRepository.insert(photo);
-        return photo.getId();
+    public List<String> addPhoto(List<MultipartFile> files) throws IOException {
+        List<String> result = new ArrayList<>();
+        for(MultipartFile file : files) {
+            Image photo = new Image();
+            photo.setImage(
+                    new Binary(BsonBinarySubType.BINARY, file.getBytes()));
+            photo = imageRepository.insert(photo);
+            result.add(photo.getId());
+        }
+        return result;
     }
 
     public Image getPhoto(String id) {

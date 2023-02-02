@@ -5,9 +5,8 @@ spring:
     name: image
   data:
     mongodb:
-      host: localhost
-      port: 27017
-      database: springboot-mongo
+      uri: mongodb+srv://bmn:cntt2project@cluster0.xge7gs5.mongodb.net/?retryWrites=true&w=majority
+      database: images
   servlet:
     multipart:
       max-file-size: 256MB
