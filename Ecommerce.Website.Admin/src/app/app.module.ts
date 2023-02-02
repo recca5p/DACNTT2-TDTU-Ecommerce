@@ -13,12 +13,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsProviderModule } from './icons-provider.module';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { ProductComponent } from './pages/productmanagement/product/product.component';
+import { BrandComponent } from './pages/productmanagement/brand/brand.component';
+import { CategoryComponent } from './pages/productmanagement/category/category.component';
+import { OrderComponent } from './pages/order-manament/order/order.component';
+import { UserComponent } from './pages/user-manament/user/user.component';
 
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ProductComponent,
+    BrandComponent,
+    CategoryComponent,
+    OrderComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
