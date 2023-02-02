@@ -4,6 +4,7 @@ import com.cntt2.order.dto.ProductResponse;
 import com.cntt2.order.model.Order;
 import com.cntt2.order.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public record OrderController(OrderService orderService) {
 
     //get all orders
     @GetMapping
-    public List<Order> getOrders(
+    public ResponseEntity<List<Order>> getOrders(
             @RequestParam(name = "status", required = false) List<String> status,
             @RequestAttribute String userId) {
 
@@ -24,23 +25,22 @@ public record OrderController(OrderService orderService) {
 
     //get single order
     @GetMapping(path = "{orderId}")
-    public Order getSingleOrder(@PathVariable("orderId") String id) {
+    public ResponseEntity<Order> getSingleOrder(@PathVariable("orderId") String id) {
         return orderService.getSingleOrder(id);
     }
 
     //create order
     @PostMapping
-    public Order createOrder(
+    public ResponseEntity<Order> createOrder(
             @RequestBody OrderRequest orderRequest,
             @RequestAttribute String userId
     ) {
-        log.info("New order created {}", orderRequest);
         return orderService.createOrder(orderRequest, userId);
     }
 
     //update order
     @PutMapping(path = "{orderId}")
-    public Order updateOrder(
+    public ResponseEntity<Order> updateOrder(
             @PathVariable("orderId") String id,
             @RequestBody OrderRequest orderRequest,
             @RequestAttribute String userId
@@ -50,7 +50,7 @@ public record OrderController(OrderService orderService) {
 
     //delete order
     @DeleteMapping(path = "{orderId}")
-    public void deleteOrder(@PathVariable("orderId") String id) {
-        orderService.deleteOrder(id);
+    public ResponseEntity deleteOrder(@PathVariable("orderId") String id) {
+        return orderService.deleteOrder(id);
     }
 }

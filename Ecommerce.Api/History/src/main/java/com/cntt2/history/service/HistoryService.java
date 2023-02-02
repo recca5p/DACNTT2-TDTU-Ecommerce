@@ -10,6 +10,8 @@ import com.cntt2.history.repository.PurchaseRepository;
 import com.cntt2.history.repository.RatingRepository;
 import com.cntt2.history.repository.ViewRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ public class HistoryService {
         return false;
     }
 
-    public HistoryResponse getHistories(
+    public ResponseEntity<HistoryResponse> getHistories(
             List<String> productId,
             String userId
     ) {
@@ -54,10 +56,11 @@ public class HistoryService {
                 .purchases(purchaseData)
                 .ratings(ratingData)
                 .build();
-        return response;
+
+        return ResponseEntity.ok(response);
     }
 
-    public void postHistory(HistoryRequest request, String userId) {
+    public ResponseEntity postHistory(HistoryRequest request, String userId) {
         if(request.type() == null || !containType(request.type())) {
             throw new IllegalArgumentException("Invalid type");
         }
@@ -69,7 +72,7 @@ public class HistoryService {
                     .userId(userId)
                     .build();
             System.out.println(data);
-            viewRepository.save(data);
+            return ResponseEntity.ok(viewRepository.save(data));
         }
 
         if(request.type().equalsIgnoreCase(HistoryType.PURCHASE.name())) {
@@ -79,7 +82,7 @@ public class HistoryService {
                     .productId(request.productId())
                     .userId(userId)
                     .build();
-            purchaseRepository.save(data);
+            return ResponseEntity.ok(purchaseRepository.save(data));
         }
 
         if(request.type().equalsIgnoreCase(HistoryType.RATING.name())) {
@@ -90,7 +93,9 @@ public class HistoryService {
                     .productId(request.productId())
                     .userId(userId)
                     .build();
-            ratingRepository.save(data);
+            return ResponseEntity.ok(ratingRepository.save(data));
         }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

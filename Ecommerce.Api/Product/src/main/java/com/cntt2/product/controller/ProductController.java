@@ -4,6 +4,7 @@ import com.cntt2.product.dto.ProductRequest;
 import com.cntt2.product.model.Product;
 import com.cntt2.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public record ProductController(ProductService productService) {
 
     //get all products
     @GetMapping
-    public List<Product> getProducts(
+    public ResponseEntity<List<Product>> getProducts(
             @RequestParam(name = "id", required = false) List<String> idList,
             @RequestParam(name = "s", required = false) String slug,
             @RequestParam(name = "c", required = false) String category
@@ -25,13 +26,13 @@ public record ProductController(ProductService productService) {
 
     //get single product
     @GetMapping(path = "{productSlug}")
-    public Product getSingleProduct(@PathVariable("productSlug") String slug) {
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("productSlug") String slug) {
         return productService.getSingleProduct(slug);
     }
 
     //create product
     @PostMapping
-    public Product createProduct(
+    public ResponseEntity<Product> createProduct(
             @RequestBody ProductRequest productRequest,
             @RequestAttribute String userId
     ) {
@@ -41,7 +42,7 @@ public record ProductController(ProductService productService) {
 
     //update product
     @PutMapping(path = "{productSlug}")
-    public Product updateProduct(
+    public ResponseEntity<Product> updateProduct(
             @PathVariable("productSlug") String slug,
             @RequestBody ProductRequest productRequest,
             @RequestAttribute String userId
@@ -50,8 +51,8 @@ public record ProductController(ProductService productService) {
     }
 
     //delete product
-    @DeleteMapping(path = "{productSlug}")
-    public void deleteProduct(@PathVariable("productSlug") String slug) {
-        productService.deleteProduct(slug);
+    @DeleteMapping(path = "{productId}")
+    public ResponseEntity deleteProduct(@PathVariable("productId") String id) {
+        return productService.deleteProduct(id);
     }
 }

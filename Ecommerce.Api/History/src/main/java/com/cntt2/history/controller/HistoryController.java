@@ -4,6 +4,7 @@ import com.cntt2.history.dto.HistoryRequest;
 import com.cntt2.history.dto.HistoryResponse;
 import com.cntt2.history.service.HistoryService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 public record HistoryController(HistoryService historyService) {
     //get all histories
     @GetMapping
-    public HistoryResponse getHistories(
+    public ResponseEntity<HistoryResponse> getHistories(
             @RequestParam(name = "productId", required = false) List<String> productId,
             @RequestAttribute String userId) {
 
@@ -23,11 +24,11 @@ public record HistoryController(HistoryService historyService) {
 
     //create order
     @PostMapping
-    public void createOrder(
+    public ResponseEntity createOrder(
             @RequestBody HistoryRequest historyRequest,
             @RequestAttribute String userId
     ) {
-        historyService.postHistory(historyRequest, userId);
+        return historyService.postHistory(historyRequest, userId);
     }
 
 }

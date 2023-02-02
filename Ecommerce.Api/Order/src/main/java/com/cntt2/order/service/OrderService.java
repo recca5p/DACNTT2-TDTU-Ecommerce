@@ -8,6 +8,8 @@ import com.cntt2.order.model.OrderProductItem;
 import com.cntt2.order.model.OrderStatus;
 import com.cntt2.order.repository.OrderRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -15,6 +17,7 @@ import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -69,19 +72,22 @@ public class OrderService {
 
     ////////////////////////////////////////////////////////////////////////////////////////
 
-    public List<Order> getOrders(List<String> status, String userId) {
+    public ResponseEntity<List<Order>> getOrders(List<String> status, String userId) {
         if(status != null) {
-            return orderRepository.findByStatusInAndCreatedBy(status, userId);
+            return ResponseEntity.ok(orderRepository.findByStatusInAndCreatedBy(status, userId));
         }
-        return orderRepository.findByCreatedBy(userId);
+        return ResponseEntity.ok(orderRepository.findByCreatedBy(userId));
     }
 
-    public Order getSingleOrder(String orderId) {
-        return orderRepository.findById(orderId).orElseThrow(
-                () -> new IllegalStateException("Order ID: " + orderId + "not found!")
-        );
+    public ResponseEntity<Order> getSingleOrder(String orderId) {
+        Optional<Order> orderData = orderRepository.findById(orderId);
+        if (orderData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Order>(orderData.get(), HttpStatus.OK);
     }
-    public Order createOrder(OrderRequest request, String userId) {
+
+    public ResponseEntity<Order> createOrder(OrderRequest request, String userId) {
         //check order request
         checkExistProducts(request);
 
@@ -93,16 +99,17 @@ public class OrderService {
                 .updatedBy(userId)
                 .build();
 
-        return orderRepository.save(order);
+        return new ResponseEntity<Order>(orderRepository.save(order), HttpStatus.OK);
     }
 
-    public Order updateOrder(String orderId, OrderRequest request, String userId) {
-        Order orderData = orderRepository.findById(orderId).orElseThrow(
-                () -> new IllegalStateException("Order ID: " + orderId + "not found!")
-        );
+    public ResponseEntity<Order> updateOrder(String orderId, OrderRequest request, String userId) {
+        Optional<Order> orderData = orderRepository.findById(orderId);
+        if(orderData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         if(!containStatus(request.status())) {
-            throw new IllegalArgumentException("Invalid status");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         if(request.status().equalsIgnoreCase(OrderStatus.PAID.name())) {
@@ -111,23 +118,22 @@ public class OrderService {
         }
 
         //update
-        if(request.status() != null) { orderData.setStatus(request.status()); }
+        if(request.status() != null) { orderData.get().setStatus(request.status()); }
         if(request.products() != null) {
-            orderData.setTotal(getTotalOrderPrice(request.products()));
-            orderData.setProducts(request.products());
+            orderData.get().setTotal(getTotalOrderPrice(request.products()));
+            orderData.get().setProducts(request.products());
         }
-        orderData.setUpdatedBy(userId);
+        orderData.get().setUpdatedBy(userId);
 
-        return orderRepository.save(orderData);
+        return new ResponseEntity<Order>(orderRepository.save(orderData.get()), HttpStatus.OK);
     }
 
-    public void deleteOrder(String orderId) {
-        boolean isExists = orderRepository.existsById(orderId);
-        if(!isExists) {
-            throw new IllegalStateException(
-                    "Order ID: " + orderId + "not found!"
-            );
+    public ResponseEntity deleteOrder(String orderId) {
+        Optional<Order> orderData = orderRepository.findById(orderId);
+        if (orderData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         orderRepository.deleteById(orderId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

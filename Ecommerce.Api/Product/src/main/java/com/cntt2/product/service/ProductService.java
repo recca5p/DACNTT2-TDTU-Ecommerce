@@ -8,12 +8,15 @@ import com.cntt2.product.repository.BrandRepository;
 import com.cntt2.product.repository.CategoryRepository;
 import com.cntt2.product.repository.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -33,7 +36,9 @@ public class ProductService {
         return slug.toLowerCase(Locale.ENGLISH);
     }
 
-    public List<Product> getProducts(
+    ///////////////////////////////////////////////////////////////////////////////
+
+    public ResponseEntity<List<Product>> getProducts(
             List<String> idList,
             String slug,
             String categorySlug
@@ -57,48 +62,55 @@ public class ProductService {
         if(slug != null) {
             //find products by slug and categories
             if(!categories.isEmpty()) {
-                return productRepository.findBySlugContainingAndCategory_SlugIn(slug, categories);
+                return ResponseEntity.ok(
+                        productRepository.findBySlugContainingAndCategory_SlugIn(slug, categories));
             }
 
-            return productRepository.findBySlugContaining(slug);
+            return ResponseEntity.ok(productRepository.findBySlugContaining(slug));
         }
 
         //find products by categories
         if(!categories.isEmpty()) {
-            return productRepository.findByCategory_SlugIn(categories);
+            return ResponseEntity.ok(productRepository.findByCategory_SlugIn(categories));
         }
 
         //find products by id
         if(idList != null) {
-            return productRepository.findByIdIn(idList);
+            return ResponseEntity.ok(productRepository.findByIdIn(idList));
         }
         
-        return productRepository.findAll();
+        return ResponseEntity.ok(productRepository.findAll());
     }
 
-    public Product getSingleProduct(String productSlug) {
-        return productRepository.findBySlug(productSlug).orElseThrow(
-                () -> new IllegalStateException("Product not found!")
-        );
+    public ResponseEntity<Product> getSingleProduct(String productSlug) {
+        Optional<Product> productData = productRepository.findBySlug(productSlug);
+        if (productData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Product>(productData.get(), HttpStatus.OK);
     }
 
-    public Product createProduct(ProductRequest request, String userId) {
+    public ResponseEntity<Product> createProduct(ProductRequest request, String userId) {
         //find brand data
-        Brand brandData = brandRepository.findById(request.brand()).orElseThrow(
-                () -> new IllegalStateException("Brand ID: " + request.brand() + "not found!")
-        );
+        Optional<Brand> brandData = brandRepository.findById(request.brand());
+        if (brandData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
         //find category data
         List<Category> cateList = new ArrayList<>();
-        Category categoryChild = categoryRepository.findById(request.category()).orElseThrow(
-                () -> new IllegalStateException("Category child ID: " + request.category() + "not found!")
-        );
-        cateList.add(categoryChild);
+        Optional<Category> categoryChild = categoryRepository.findById(request.category());
+        if (categoryChild.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        cateList.add(categoryChild.get());
 
-        if(!categoryChild.getParent().isEmpty()) {
-            Category categoryParent = categoryRepository.findById(categoryChild.getParent()).orElseThrow(
-                    () -> new IllegalStateException("Category parent ID: " + request.category() + "not found!")
-            );
-            cateList.add(categoryParent);
+        if(!categoryChild.get().getParent().isEmpty()) {
+            Optional<Category> categoryParent = categoryRepository.findById(categoryChild.get().getParent());
+            if (categoryParent.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            cateList.add(categoryParent.get());
         }
 
         Product product = Product.builder()
@@ -108,67 +120,73 @@ public class ProductService {
                 .condition(request.condition())
                 .description(request.description())
                 .quantity(request.quantity())
-                .brand(brandData)
-                .category(categoryChild)
+                .brand(brandData.get())
+                .category(categoryChild.get())
                 .thumbnail(request.thumbnail())
                 .images(request.images())
                 .createdBy(userId)
                 .updatedBy(userId)
                 .build();
 
-        return productRepository.save(product);
+        return new ResponseEntity<Product>(productRepository.save(product), HttpStatus.OK);
     }
 
-    public Product updateProduct(String productSlug, ProductRequest request, String userId) {
+    public ResponseEntity<Product> updateProduct(String productSlug, ProductRequest request, String userId) {
         //find product data
-        Product productData = productRepository.findBySlug(productSlug).orElseThrow(
-                () -> new IllegalStateException("Product slug: " + productSlug + "not found!")
-        );
+        Optional<Product> productData = productRepository.findBySlug(productSlug);
+        if(productData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         //update
         if(request.name() != null) {
-            productData.setName(request.name());
-            productData.setSlug(toSlug(request.name()));
+            productData.get().setName(request.name());
+            productData.get().setSlug(toSlug(request.name()));
         }
-        if(request.price() != null) productData.setPrice(request.price());
-        if(request.condition() != null) productData.setCondition(request.condition());
-        if(request.description() != null) productData.setDescription(request.description());
-        if(request.quantity() != null) productData.setQuantity(request.quantity());
+        if(request.price() != null) productData.get().setPrice(request.price());
+        if(request.condition() != null) productData.get().setCondition(request.condition());
+        if(request.description() != null) productData.get().setDescription(request.description());
+        if(request.quantity() != null) productData.get().setQuantity(request.quantity());
         if(request.brand() != null) {
             //find brand data
-            Brand brandData = brandRepository.findById(request.brand()).orElseThrow(
-                    () -> new IllegalStateException("Brand ID: " + request.brand() + "not found!")
-            );
-            productData.setBrand(brandData);
+            Optional<Brand> brandData = brandRepository.findById(request.brand());
+            if (brandData.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            productData.get().setBrand(brandData.get());
         }
         if(request.category() != null) {
             //find category data
             List<Category> cateList = new ArrayList<>();
-            Category categoryChild = categoryRepository.findById(request.category()).orElseThrow(
-                    () -> new IllegalStateException("Category child ID: " + request.category() + "not found!")
-            );
-            cateList.add(categoryChild);
-
-            if(!categoryChild.getParent().isEmpty()) {
-                Category categoryParent = categoryRepository.findById(categoryChild.getParent()).orElseThrow(
-                        () -> new IllegalStateException("Category parent ID: " + request.category() + "not found!")
-                );
-                cateList.add(categoryParent);
+            Optional<Category> categoryChild = categoryRepository.findById(request.category());
+            if (categoryChild.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            productData.setCategory(categoryChild);
-        }
-        if(request.thumbnail() != null) productData.setThumbnail(request.thumbnail());
-        if(request.images() != null) productData.setImages(request.images());
-        productData.setUpdatedBy(userId);
+            cateList.add(categoryChild.get());
 
-        return productRepository.save(productData);
+            if(!categoryChild.get().getParent().isEmpty()) {
+                Optional<Category> categoryParent = categoryRepository.findById(categoryChild.get().getParent());
+                if (categoryParent.isEmpty()) {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+                cateList.add(categoryParent.get());
+            }
+
+            productData.get().setCategory(categoryChild.get());
+        }
+        if(request.thumbnail() != null) productData.get().setThumbnail(request.thumbnail());
+        if(request.images() != null) productData.get().setImages(request.images());
+        productData.get().setUpdatedBy(userId);
+
+        return new ResponseEntity<>(productRepository.save(productData.get()), HttpStatus.OK);
     }
 
-    public void deleteProduct(String productSlug) {
-        //find product data
-        Product productData = productRepository.findBySlug(productSlug).orElseThrow(
-                () -> new IllegalStateException("Product slug: " + productSlug + "not found!")
-        );
-        productRepository.deleteBySlug(productSlug);
+    public ResponseEntity deleteProduct(String productId) {
+        Optional<Product> productData = productRepository.findById(productId);
+        if (productData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        productRepository.deleteById(productId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

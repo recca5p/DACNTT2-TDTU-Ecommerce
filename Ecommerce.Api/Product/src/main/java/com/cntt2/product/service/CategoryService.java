@@ -1,14 +1,18 @@
 package com.cntt2.product.service;
 
 import com.cntt2.product.dto.CategoryRequest;
+import com.cntt2.product.model.Brand;
 import com.cntt2.product.model.Category;
 import com.cntt2.product.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.Normalizer;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -26,21 +30,24 @@ public class CategoryService {
         return slug.toLowerCase(Locale.ENGLISH);
     }
 
-    public List<Category> getCategories() {
-        return categoryRepository.findAll();
+    ////////////////////////////////////////////////////////////////////////////////
+
+    public ResponseEntity<List<Category>> getCategories() {
+        return ResponseEntity.ok(categoryRepository.findAll());
     }
 
-    public Category getSingleCategory(String categoryId) {
-        return categoryRepository.findById(categoryId).orElseThrow(
-                () -> new IllegalStateException("Category ID: " + categoryId + "not found!")
-        );
+    public ResponseEntity<Category> getSingleCategory(String categoryId) {
+        Optional<Category> categoryData = categoryRepository.findById(categoryId);
+        if (categoryData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Category>(categoryData.get(), HttpStatus.OK);
     }
 
-    public Category createCategory(CategoryRequest request) {
+    public ResponseEntity<Category> createCategory(CategoryRequest request) {
         if(!request.parent().isEmpty()) {
-            categoryRepository.findById(request.parent()).orElseThrow(
-                    () -> new IllegalStateException("Parent category ID: " + request.parent() + "not found!")
-            );
+            Optional<Category> parentCatgory = categoryRepository.findById(request.parent());
+            if(parentCatgory.isEmpty()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         Category data = Category.builder()
@@ -50,34 +57,38 @@ public class CategoryService {
                 .parent(request.parent())
                 .build();
 
-        return categoryRepository.save(data);
+        return new ResponseEntity<Category>(categoryRepository.save(data), HttpStatus.OK);
     }
 
-    public Category updateCategory(String id, CategoryRequest request) {
-        Category data = categoryRepository.findById(id).orElseThrow(
-                () -> new IllegalStateException("Category ID: " + id + "not found!")
-        );
-
-        if(!request.parent().isEmpty()) {
-            categoryRepository.findById(request.parent()).orElseThrow(
-                    () -> new IllegalStateException("Parent category ID: " + request.parent() + "not found!")
-            );
+    public ResponseEntity<Category> updateCategory(String categoryId, CategoryRequest request) {
+        Optional<Category> categoryData = categoryRepository.findById(categoryId);
+        if (categoryData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        data.setName(request.name());
-        data.setThumbnail(request.thumbnail());
-        data.setParent(request.parent());
+        if(request.name() != null)
+            categoryData.get().setName(request.name());
+            categoryData.get().setSlug(toSlug(request.name()));
+        if(request.thumbnail() != null)
+            categoryData.get().setThumbnail(request.thumbnail());
+        if(request.parent() != null) {
+            if(!request.parent().isEmpty()) {
+                Optional<Category> parentCatgory = categoryRepository.findById(request.parent());
+                if(parentCatgory.isEmpty()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            } else {
+                categoryData.get().setParent(request.parent());
+            }
+        }
 
-        return categoryRepository.save(data);
+        return new ResponseEntity<Category>(categoryRepository.save(categoryData.get()), HttpStatus.OK);
     }
 
-    public void deleteCategory(String id) {
-        boolean isExists = categoryRepository.existsById(id);
-        if(!isExists) {
-            throw new IllegalStateException(
-                    "Category ID: " + id + "not found!"
-            );
+    public ResponseEntity deleteCategory(String categoryId) {
+        Optional<Category> categoryData = categoryRepository.findById(categoryId);
+        if (categoryData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        categoryRepository.deleteById(id);
+        categoryRepository.deleteById(categoryId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
