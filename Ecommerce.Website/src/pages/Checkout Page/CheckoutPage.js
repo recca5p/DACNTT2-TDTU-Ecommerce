@@ -1,12 +1,15 @@
 import { getOrderAPI } from 'api';
 import { NotFound } from 'components';
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { orderStatus } from 'utils/common';
 import { Payment, PriceDetail, ProductsList } from './components';
+import * as Actions from 'actions';
 
 const CheckoutPage = () => {
 	const { orderId } = useParams();
+	const dispatch = useDispatch();
 
 	const [data, setData] = useState(null);
 	const [loaded, setLoaded] = useState(false);
@@ -21,7 +24,11 @@ const CheckoutPage = () => {
 					setLoaded(true);
 				}
 			} catch(error) {	
-				console.log(error);
+				dispatch(Actions.setAlertSnackbar({
+					state: true,
+					type: "error",
+					content: "Get order failed!"
+				}));
 				setLoaded(true);
 			}
 		}
