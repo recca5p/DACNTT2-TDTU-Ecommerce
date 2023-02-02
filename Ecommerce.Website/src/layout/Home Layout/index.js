@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import * as Actions from "actions";
 import { getOrderAPI, postOrderAPI, putOrderAPI } from "api";
 import { orderStatus } from "utils/common";
+import { AlertSnackbar } from "components";
 
 const HomeLayout = () => {
   const dispatch = useDispatch();
@@ -77,6 +78,7 @@ const HomeLayout = () => {
 
   return (
     <>
+	  <AlertSnackbar />
       <Header />
       <div className="min-h-[calc(100vh-230px)] pt-[32px] pb-[64px] px-[24px] 2xl:container 2xl:mx-auto 2xl:px-0">
         <Outlet />

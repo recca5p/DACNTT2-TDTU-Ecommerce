@@ -2,6 +2,7 @@ package com.cntt2.product.repository;
 
 import com.cntt2.product.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -18,6 +19,4 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     List<Product> findByCategory_SlugIn(List<String> categories);
 
     List<Product> findBySlugContainingAndCategory_SlugIn(String slug, List<String> categories);
-
-    void deleteBySlug(String slug);
 }

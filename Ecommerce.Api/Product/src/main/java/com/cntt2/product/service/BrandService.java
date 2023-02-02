@@ -4,11 +4,15 @@ import com.cntt2.product.dto.BrandRequest;
 import com.cntt2.product.model.Brand;
 import com.cntt2.product.repository.BrandRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.net.http.HttpClient;
 import java.text.Normalizer;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -26,45 +30,53 @@ public class BrandService {
         return slug.toLowerCase(Locale.ENGLISH);
     }
 
-    public List<Brand> getBrands() {
-        return brandRepository.findAll();
+    ///////////////////////////////////////////////////////////////////////////
+
+    public ResponseEntity<List<Brand>> getBrands() {
+        return ResponseEntity.ok(brandRepository.findAll());
     }
 
-    public Brand getSingleBrand(String brandId) {
-        return brandRepository.findById(brandId).orElseThrow(
-                () -> new IllegalStateException("Brand ID: " + brandId + "not found!")
-        );
+    public ResponseEntity<Brand> getSingleBrand(String brandId) {
+        Optional<Brand> brandData = brandRepository.findById(brandId);
+        if (brandData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Brand>(brandData.get(), HttpStatus.OK);
     }
 
-    public Brand createBrand(BrandRequest request) {
-        Brand brand = Brand.builder()
+    public ResponseEntity<Brand> createBrand(BrandRequest request) {
+        Brand brandData = Brand.builder()
                 .name(request.name())
-                .slug(request.name())
+                .slug(toSlug(request.name()))
                 .thumbnail(request.thumbnail())
                 .build();
 
-        return brandRepository.save(brand);
+        return new ResponseEntity<Brand>(
+                brandRepository.save(brandData),
+                HttpStatus.OK) ;
     }
 
-    public Brand updateBrand(String brandId, BrandRequest request) {
-        Brand brandData = brandRepository.findById(brandId).orElseThrow(
-                () -> new IllegalStateException("Brand ID: " + brandId + "not found!")
-        );
+    public ResponseEntity<Brand> updateBrand(String brandId, BrandRequest request) {
+        Optional<Brand> brandData = brandRepository.findById(brandId);
+        if (brandData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
-        brandData.setName(request.name());
-        brandData.setSlug(request.name());
-        brandData.setThumbnail(request.thumbnail());
+        if(request.name() != null)
+            brandData.get().setName(request.name());
+            brandData.get().setSlug(toSlug(request.name()));
+        if(request.thumbnail() != null)
+            brandData.get().setThumbnail(request.thumbnail());
 
-        return brandRepository.save(brandData);
+        return new ResponseEntity<Brand>(brandRepository.save(brandData.get()), HttpStatus.OK);
     }
 
-    public void deleteBrand(String brandId) {
-        boolean isExists = brandRepository.existsById(brandId);
-        if(!isExists) {
-            throw new IllegalStateException(
-                    "Brand ID: " + brandId + "not found!"
-            );
+    public ResponseEntity deleteBrand(String brandId) {
+        Optional<Brand> brandData = brandRepository.findById(brandId);
+        if (brandData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         brandRepository.deleteById(brandId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

@@ -10,6 +10,8 @@ import com.cntt2.user.security.TokenManager;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -33,27 +36,31 @@ public class AuthService {
     @Autowired
     private TokenManager tokenManager;
 
-    public AuthResponse signIn(AuthRequest.SignInRequest request) {
-        User userData = userRepository.findByUsername(request.username()).orElseThrow();
-        if(userData == null) {
-            throw new IllegalStateException("Username is not correct!");
+    public ResponseEntity<AuthResponse> signIn(AuthRequest.SignInRequest request) {
+        if(request.username().isEmpty() || request.password().isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if(!passwordEncoder.matches(request.password(), userData.getPassword())) {
-            throw new IllegalStateException("Password is not correct!");
+        //get user
+        Optional<User> userData = userRepository.findByUsername(request.username());
+
+        if(userData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        if(!passwordEncoder.matches(request.password(), userData.get().getPassword())) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         //generate token
-        final String jwtToken = tokenManager.generateJwtToken(userData.getId());
+        final String jwtToken = tokenManager.generateJwtToken(userData.get().getId());
 
-        System.out.println(userData.getUsername());
         //generate data response
-        AuthResponse response = new AuthResponse(userData);
+        AuthResponse response = new AuthResponse(userData.get());
         response.setToken(jwtToken);
 
-        return response;
+        return new ResponseEntity<AuthResponse>(response, HttpStatus.OK);
     }
 
-    public AuthResponse signUp(AuthRequest.SignUpRequest request) {
+    public ResponseEntity<AuthResponse> signUp(AuthRequest.SignUpRequest request) {
         List<Role> userRoles = setRoles(Arrays.asList("USER"));
 
         User user = User.builder()
@@ -77,7 +84,7 @@ public class AuthService {
         AuthResponse response = new AuthResponse(user);
         response.setToken(jwtToken);
 
-        return response;
+        return new ResponseEntity<AuthResponse>(response, HttpStatus.OK);
     }
 
     public UserDetails checkAuth(String tokenHeader) {

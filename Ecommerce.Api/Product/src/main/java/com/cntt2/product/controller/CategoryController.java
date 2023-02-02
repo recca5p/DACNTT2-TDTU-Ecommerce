@@ -6,6 +6,7 @@ import com.cntt2.product.model.Brand;
 import com.cntt2.product.model.Category;
 import com.cntt2.product.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,25 +17,25 @@ import java.util.List;
 public record CategoryController(CategoryService categoryService) {
     //get all categories
     @GetMapping
-    public List<Category> getCategories() {
+    public ResponseEntity<List<Category>> getCategories() {
         return categoryService.getCategories();
     }
 
     //get single category
     @GetMapping(path = "{categoryId}")
-    public Category getSingleCategory(@PathVariable("categoryId") String id) {
+    public ResponseEntity<Category> getSingleCategory(@PathVariable("categoryId") String id) {
         return categoryService.getSingleCategory(id);
     }
 
     //create category
     @PostMapping
-    public Category createCategory(@RequestBody CategoryRequest request) {
+    public ResponseEntity<Category> createCategory(@RequestBody CategoryRequest request) {
         return categoryService.createCategory(request);
     }
 
     //update category
     @PutMapping(path = "{categoryId}")
-    public Category updateCategory(
+    public ResponseEntity<Category> updateCategory(
             @PathVariable("categoryId") String id,
             @RequestBody CategoryRequest request
     ) {
@@ -43,7 +44,7 @@ public record CategoryController(CategoryService categoryService) {
 
     //delete category
     @DeleteMapping(path = "{categoryId}")
-    public void deleteCategory(@PathVariable("categoryId") String id) {
-        categoryService.deleteCategory(id);
+    public ResponseEntity deleteCategory(@PathVariable("categoryId") String id) {
+        return categoryService.deleteCategory(id);
     }
 }
