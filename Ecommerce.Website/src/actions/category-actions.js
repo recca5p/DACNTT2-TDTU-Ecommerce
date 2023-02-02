@@ -1,9 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getCategoryAPI } from "api";
+import * as Actions from 'actions';
 
 export const getAllCategories = createAsyncThunk(
 	'GET categories',
-	async () => {
+	async (value, { dispatch, rejectWithValue }) => {
 		try {
 			const result = await getCategoryAPI();
 
@@ -18,7 +19,12 @@ export const getAllCategories = createAsyncThunk(
 
 			return newData;
 		} catch(error) {
-			console.log(error);
+			dispatch(Actions.setAlertSnackbar({
+				state: true,
+				type: "error",
+				content: "Get categories failed!"
+			}));
+			return rejectWithValue(error.response.data);
 		}
 	}
 )

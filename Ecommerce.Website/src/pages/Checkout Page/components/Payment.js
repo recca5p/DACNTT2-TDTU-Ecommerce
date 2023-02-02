@@ -6,8 +6,12 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { numberWithCommas } from 'utils/convert';
 import { CustomButton } from 'components';
+import { useDispatch } from 'react-redux';
+import * as Actions from 'actions';
 
 const AddPayment = ({ onAdd }) => {
+	const dispatch = useDispatch();
+
 	const [name, setName] = useState("");
 	const [type, setType] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -30,7 +34,11 @@ const AddPayment = ({ onAdd }) => {
 				setType("")
 			}
 		} catch (error) {
-			console.log(error)
+			dispatch(Actions.setAlertSnackbar({
+				state: true,
+				type: "error",
+				content: "Add payment failed!"
+			}));
 		}
 
 		setLoading(false);
@@ -61,6 +69,8 @@ const AddPayment = ({ onAdd }) => {
 }
 
 const Payment = ({ payment, onChange, total }) => {
+	const dispatch = useDispatch();
+
 	const [data, setData] = useState(null);
 	const [loaded, setLoaded] = useState(false);
 
@@ -82,7 +92,11 @@ const Payment = ({ payment, onChange, total }) => {
 					setLoaded(true);
 				}
 			} catch (error) {
-				console.log(error);
+				dispatch(Actions.setAlertSnackbar({
+					state: true,
+					type: "error",
+					content: "Get payment list failed!"
+				}));
 				setLoaded(true);
 			}
 		}

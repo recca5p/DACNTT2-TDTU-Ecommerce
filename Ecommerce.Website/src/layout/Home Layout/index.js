@@ -41,7 +41,11 @@ const HomeLayout = () => {
 				}
 			}
 		} catch(error) {
-			console.log(error);
+			dispatch(Actions.setAlertSnackbar({
+				state: true,
+				type: "error",
+				content: "Get cart data failed!"
+			}));
 		}
 	}
 
@@ -59,7 +63,11 @@ const HomeLayout = () => {
 				products: cartList
 			});
 		} catch(error) {
-			console.log(error);
+			dispatch(Actions.setAlertSnackbar({
+				state: true,
+				type: "error",
+				content: "Update cart failed!"
+			}));
 		}
 	}
 
