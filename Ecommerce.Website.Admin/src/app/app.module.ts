@@ -18,6 +18,7 @@ import { BrandComponent } from './pages/productmanagement/brand/brand.component'
 import { CategoryComponent } from './pages/productmanagement/category/category.component';
 import { OrderComponent } from './pages/order-manament/order/order.component';
 import { UserComponent } from './pages/user-manament/user/user.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 registerLocaleData(en);
 
@@ -28,7 +29,8 @@ registerLocaleData(en);
     BrandComponent,
     CategoryComponent,
     OrderComponent,
-    UserComponent
+    UserComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

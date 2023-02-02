@@ -1,3 +1,4 @@
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { UserComponent } from './pages/user-manament/user/user.component';
 import { OrderComponent } from './pages/order-manament/order/order.component';
 import { CategoryComponent } from './pages/productmanagement/category/category.component';
@@ -47,6 +48,11 @@ const routes: Routes = [
         component: UserComponent,
       },
     ],
+  },
+  {
+    path: '**',
+    pathMatch: 'full',
+    component: NotFoundComponent,
   },
 ];
 
