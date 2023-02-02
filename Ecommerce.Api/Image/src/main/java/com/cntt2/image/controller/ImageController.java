@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -30,9 +31,9 @@ public class ImageController {
     }
 
     @PostMapping
-    public String addPhoto(@RequestParam("image") MultipartFile image, Model model)
+    public List<String> addPhoto(@RequestParam("image") List<MultipartFile> images, Model model)
             throws IOException {
-        String id = imageService.addPhoto(image);
-        return id;
+        List<String> ids = imageService.addPhoto(images);
+        return ids;
     }
 }
