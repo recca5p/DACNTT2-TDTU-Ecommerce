@@ -12,6 +12,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("api/v1/payment")
+@CrossOrigin("*")
 public record PaymentController(PaymentService paymentService) {
 
     //get all payment
