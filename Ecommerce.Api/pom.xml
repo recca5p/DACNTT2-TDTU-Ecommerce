@@ -12,7 +12,6 @@
     <module>Image</module>
     <module>History</module>
     <module>Payment</module>
-    <module>Payment</module>
   </modules>
 
   <parent>

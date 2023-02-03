@@ -47,7 +47,11 @@ function ProductInfo() {
 				navigate(`/checkout/${result.data.id}`)
 			}
 		} catch(error) {
-			console.log(error);
+			dispatch(Actions.setAlertSnackbar({
+				state: true,
+				type: "error",
+				content: "Quick buy failed!"
+			}));
 		}
 
 		setLoading(false);
