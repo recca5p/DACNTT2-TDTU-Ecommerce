@@ -23,6 +23,7 @@ import { ProductDetailComponent } from './pages/dashboard/productmanagement/prod
 import { AuthorizeComponent } from './pages/authorize/authorize.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
 
 registerLocaleData(en);
 
@@ -49,6 +50,7 @@ registerLocaleData(en);
     NzLayoutModule,
     NzMenuModule,
     NzDropDownModule,
+    NzAlertModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent],

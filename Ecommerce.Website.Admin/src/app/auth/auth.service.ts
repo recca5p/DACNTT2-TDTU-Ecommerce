@@ -8,14 +8,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root',
 })
 export class AuthService {
-  private _apiEndpoint: string = `${environment.end_points.product_service}`;
+  private _apiEndpoint: string = `${environment.end_points.auth_service}`;
+  private toket: string =
+    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxZjA5ODdjZi1mMDMyLTQ0YjctYTJiOS0xYjQ2ZDdhNWQ5OTEiLCJleHAiOjE3MTE2MzU1OTUsImlhdCI6MTY3NTM0NzU5NX0.CeVB32Mp9lD031XM-2oISub21ozDQY_PDFSMOH3pJFMqQ1H3BomId46O08i6FHMGcqsEaHYimjq8wLqrCEIrXg';
 
   constructor(private http: HttpClient) {}
 
   signIn(userAccount: UserAccount) {
     let url: string = `${this._apiEndpoint}/signin`;
 
-    return this.http.post(url, userAccount);
+    return this.http.post(url, userAccount).toPromise();
   }
 
   signUp(userAccountInfo: UserAccountInfo) {
@@ -25,18 +27,8 @@ export class AuthService {
   }
 
   authencate() {
-    let url: string = `${this._apiEndpoint}`;
+    let url: string = `${this._apiEndpoint}?token=Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxZjA5ODdjZi1mMDMyLTQ0YjctYTJiOS0xYjQ2ZDdhNWQ5OTEiLCJleHAiOjE3MTE2MzU1OTUsImlhdCI6MTY3NTM0NzU5NX0.CeVB32Mp9lD031XM-2oISub21ozDQY_PDFSMOH3pJFMqQ1H3BomId46O08i6FHMGcqsEaHYimjq8wLqrCEIrXg`;
 
-    const options = {
-      headers: new HttpHeaders({
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Access-Control-Allow-Headers':
-          'Origin, X-Requested-With, Content-Type, Accept',
-      }),
-      withCredentials: true,
-    };
-
-    return this.http.get(url);
+    return true;
   }
 }

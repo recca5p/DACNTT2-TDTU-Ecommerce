@@ -1,10 +1,8 @@
 export class UserAccount {
-  private id: string;
   private username: string;
   private password: string;
 
-  constructor(id: string, username: string, password: string) {
-    this.id = id;
+  constructor(username: string, password: string) {
     this.username = username;
     this.password = password;
   }

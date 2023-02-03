@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 @Component({
@@ -6,6 +6,14 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
+  constructor() {}
   isCollapsed = false;
+
+  async ngOnInit() {}
+
+  logOut() {
+    localStorage.removeItem('authorizeToken');
+    location.reload();
+  }
 }

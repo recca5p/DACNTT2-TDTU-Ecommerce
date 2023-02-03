@@ -15,6 +15,13 @@ import { Observable } from 'rxjs';
 export class AuthGuard implements CanActivate {
   constructor(private router: Router, private authService: AuthService) {}
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    if (
+      this.authService.authencate() === false ||
+      localStorage.getItem('authorizeToken') == null ||
+      localStorage.getItem('authorizeToken') == undefined
+    ) {
+      this.router.navigate(['auth']);
+    }
     return true;
   }
 }

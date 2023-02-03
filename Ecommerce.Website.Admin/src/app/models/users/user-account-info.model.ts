@@ -1,6 +1,7 @@
 import { UserRole } from './user-role.model';
 import { UserAccount } from './user-account.model';
 export class UserAccountInfo extends UserAccount {
+  private id: string;
   private fullname: string;
   private avatar: string;
   private balance: number;
@@ -35,7 +36,8 @@ export class UserAccountInfo extends UserAccount {
     accountNonExpired: boolean,
     credentialsNonExpired: boolean
   ) {
-    super(id, username, password);
+    super(username, password);
+    this.id = id;
     this.fullname = fullname;
     this.avatar = avatar;
     this.balance = balance;
