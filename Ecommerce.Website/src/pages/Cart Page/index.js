@@ -104,17 +104,27 @@ const CartPage = () => {
           ))}
         </div>
         <div className="w-full md:max-w-[400px] border p-4">
-			<Link to={`/checkout/${cartData.id}`}>
-			<Button
-				className="
-					bg-indigo-700 hover:bg-indigo-800 font-bold 
-					text-xl normal-case text-white my-[12px] 
-					py-3 rounded-full disabled:bg-indigo-800 mb-4"
-				fullWidth
-			>
-				Go to checkout
-			</Button>
-			</Link>
+			{cartData ? (
+				<Link to={`/checkout/${cartData.id}`}>
+				<Button
+					className="
+						bg-indigo-700 hover:bg-indigo-800 font-bold 
+						text-xl normal-case text-white my-[12px] 
+						py-3 rounded-full disabled:bg-gray-300 mb-4"
+					fullWidth
+				>
+					Go to checkout
+				</Button>
+				</Link>
+			) : (
+				<div className="text-center py-3 font-semibold text-red-700">
+					You need to{" "}
+					<Link to="/auth/sign-in" className="hover:underline text-indigo-700 font-bold">Sign in</Link> 
+					{" "}or{" "}
+					<Link to="/auth/sign-up" className="hover:underline text-indigo-700 font-bold">Sign up</Link> 
+					{" "}before purchase!
+				</div>
+			)}
           <div className="flex justify-between text-lg">
             <div>Items ({cartInfo.quantity})</div>
             <div>{numberWithCommas(cartInfo.total)} VND</div>
