@@ -9,11 +9,19 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 export class DashboardComponent implements OnInit {
   constructor() {}
   isCollapsed = false;
+  userInfo: any;
 
-  async ngOnInit() {}
+  async ngOnInit() {
+    this.getUserInfo();
+  }
+
+  getUserInfo() {
+    this.userInfo = sessionStorage.getItem('userInfo');
+    this.userInfo = JSON.parse(this.userInfo);
+  }
 
   logOut() {
-    localStorage.removeItem('authorizeToken');
+    localStorage.clear();
     location.reload();
   }
 }

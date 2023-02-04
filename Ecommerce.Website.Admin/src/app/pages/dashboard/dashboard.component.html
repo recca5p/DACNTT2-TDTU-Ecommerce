@@ -73,8 +73,7 @@
           </a>
           <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu nzSelectable>
-              <li nz-menu-item>#Username</li>
-              <li nz-menu-item>#Userrole</li>
+              <li nz-menu-item class="font-bold">{{ userInfo.fullname }}</li>
               <li nz-menu-item (click)="logOut()">Logout</li>
             </ul>
           </nz-dropdown-menu>

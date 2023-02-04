@@ -37,6 +37,7 @@ export class AuthorizeComponent implements OnInit {
     if (this.errorCode != 0) {
     } else {
       localStorage.setItem('authorizeToken', result.token);
+      localStorage.setItem('userId', result.id);
       this.router.navigate(['dashboard/welcome']);
     }
   }
