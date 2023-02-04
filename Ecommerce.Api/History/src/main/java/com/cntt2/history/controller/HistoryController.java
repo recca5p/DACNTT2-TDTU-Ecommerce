@@ -12,7 +12,6 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("api/v1/history")
-@CrossOrigin("*")
 public record HistoryController(HistoryService historyService) {
     //get all histories
     @GetMapping

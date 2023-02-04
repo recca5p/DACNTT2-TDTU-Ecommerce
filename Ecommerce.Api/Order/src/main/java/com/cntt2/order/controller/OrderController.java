@@ -12,7 +12,6 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("api/v1/order")
-@CrossOrigin("*")
 public record OrderController(OrderService orderService) {
 
     //get all orders

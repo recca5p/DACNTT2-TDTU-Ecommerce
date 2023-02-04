@@ -12,7 +12,6 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("api/v1/product")
-@CrossOrigin("*")
 public record ProductController(ProductService productService) {
 
     //get all products
