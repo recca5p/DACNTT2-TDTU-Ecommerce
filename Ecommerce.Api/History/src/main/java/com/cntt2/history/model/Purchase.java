@@ -31,9 +31,6 @@ public class Purchase {
     @Column(name="quantity")
     private Integer quantity;
 
-    @Column(name="userId")
-    private String userId;
-
     @CreationTimestamp
     @Column(name="createdDate", nullable = false, updatable = false)
     private Date createdDate;

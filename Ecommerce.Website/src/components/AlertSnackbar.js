@@ -24,7 +24,7 @@ const AlertSnackbar = () => {
 			open={alert.state}
 			onClose={() => handleCloseAlert()}
 			autoHideDuration={3000}
-			className="w-[300px]"
+			className="min-w-[300px] max-w-[500px]"
 		>
 			<Alert
 				onClose={() => handleCloseAlert()}

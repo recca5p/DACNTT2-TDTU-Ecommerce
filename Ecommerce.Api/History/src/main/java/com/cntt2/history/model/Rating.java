@@ -34,9 +34,6 @@ public class Rating {
     @Column(name="productId")
     private String productId;
 
-    @Column(name="userId")
-    private String userId;
-
     @CreationTimestamp
     @Column(name="createdDate", nullable = false, updatable = false)
     private Date createdDate;

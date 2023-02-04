@@ -121,7 +121,7 @@ export default function Header() {
 							)}
 						</div>
 						<form onSubmit={handleSearch} autoComplete="off" className="flex-1 flex items-center" autoCorrect="off">
-							<div className="flex items-center flex-1 h-[48px] border-[2px] border-black mr-4">
+							<div className="flex items-center flex-1 h-[48px] border-[3px] border-gray-500 mr-4 rounded-lg">
 								<SearchIcon className="text-gray-400 ml-4" />
 								<input
 									value={searchKeyword}
@@ -130,9 +130,11 @@ export default function Header() {
 									placeholder="Search for anything"
 									spellCheck={false}
 								/>
+								<div className="border-r-[1px] border-gray-500 py-1 h-full" />
 								<select
 									value={searchCategory}
-									className="box-content h-full px-2 focus:outline-none border-l border-black max-w-[140px] text-ellipsis"
+									style={{ textAlignLast: "center" }}
+									className="box-content px-2 focus:outline-none max-w-[140px] text-ellipsis appearance-none font-semibold text-gray-700"
 									onChange={(e) => setSearchCategory(e.target.value)}
 								>
 									<option value="all">All categories</option>
