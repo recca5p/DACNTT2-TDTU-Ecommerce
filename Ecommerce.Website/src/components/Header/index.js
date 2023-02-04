@@ -37,8 +37,9 @@ export default function Header() {
 		<header>
 			<nav
 				id="header"
-				className="w-full z-30 top-0 2xl:container"
+				className="w-full z-30 top-0 shadow-lg"
 			>
+				<div className="2xl:container mx-auto">
 				<div className="border-b">
 					<div className="2xl:container 2xl:mx-auto 2xl:px-0 flex items-center justify-between px-[60px]">
 						{isLogedIn ? (
@@ -73,7 +74,7 @@ export default function Header() {
 					</div>
 				</div>
 
-				<div className="border-b-[2px] shadow-lg">
+				<div className="border-b-[2px]">
 					<div className="2xl:container 2xl:mx-auto 2xl:px-0 relative min-h-[65px] flex items-center px-[60px] py-4">
 						<Link to="/">
 							<img alt="Logo" src="/large-logo.png" />
@@ -143,6 +144,7 @@ export default function Header() {
 							<CustomButton className="px-[16px] py-[8px] min-w-[168px] h-[42px] text-xl font-normal" type="submit">Search</CustomButton>
 						</form>
 					</div>
+				</div>
 				</div>
 			</nav>
 		</header>
