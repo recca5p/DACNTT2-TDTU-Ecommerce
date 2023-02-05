@@ -19,9 +19,13 @@ public record ProductController(ProductService productService) {
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam(name = "id", required = false) List<String> idList,
             @RequestParam(name = "s", required = false) String slug,
-            @RequestParam(name = "c", required = false) String category
+            @RequestParam(name = "c", required = false) String category,
+            @RequestParam(name = "p", required = false, defaultValue = "0") String page,
+            @RequestParam(name = "l", required = false, defaultValue = "10") String limit
             ) {
-        return productService.getProducts(idList, slug, category);
+        return productService.getProducts(
+                idList, slug, category,
+                Integer.parseInt(page), Integer.parseInt(limit));
     }
 
     //get single product

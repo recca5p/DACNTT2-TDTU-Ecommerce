@@ -8,6 +8,8 @@ import com.cntt2.product.repository.BrandRepository;
 import com.cntt2.product.repository.CategoryRepository;
 import com.cntt2.product.repository.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -41,7 +43,9 @@ public class ProductService {
     public ResponseEntity<List<Product>> getProducts(
             List<String> idList,
             String slug,
-            String categorySlug
+            String categorySlug,
+            Integer page,
+            Integer limit
     ) {
         //create category slug list for filter
         List<String> categories = new ArrayList<>();
@@ -58,25 +62,29 @@ public class ProductService {
             }
         }
 
+        //pagination
+        Pageable pageableRequest = PageRequest.of(page, limit);
+
         //find products by slug
         if(slug != null) {
             //find products by slug and categories
             if(!categories.isEmpty()) {
                 return ResponseEntity.ok(
-                        productRepository.findBySlugContainingAndCategory_SlugIn(slug, categories));
+                        productRepository.findBySlugContainingAndCategory_SlugIn(
+                                slug, categories, pageableRequest));
             }
 
-            return ResponseEntity.ok(productRepository.findBySlugContaining(slug));
+            return ResponseEntity.ok(productRepository.findBySlugContaining(slug, pageableRequest));
         }
 
         //find products by categories
         if(!categories.isEmpty()) {
-            return ResponseEntity.ok(productRepository.findByCategory_SlugIn(categories));
+            return ResponseEntity.ok(productRepository.findByCategory_SlugIn(categories, pageableRequest));
         }
 
         //find products by id
         if(idList != null) {
-            return ResponseEntity.ok(productRepository.findByIdIn(idList));
+            return ResponseEntity.ok(productRepository.findByIdIn(idList, pageableRequest));
         }
         
         return ResponseEntity.ok(productRepository.findAll());
