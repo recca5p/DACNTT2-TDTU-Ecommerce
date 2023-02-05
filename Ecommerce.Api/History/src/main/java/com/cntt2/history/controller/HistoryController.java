@@ -12,24 +12,19 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("api/v1/history")
-@CrossOrigin("*")
 public record HistoryController(HistoryService historyService) {
     //get all histories
     @GetMapping
     public ResponseEntity<HistoryResponse> getHistories(
-            @RequestParam(name = "productId", required = false) List<String> productId,
-            @RequestAttribute String userId) {
-
-        return historyService.getHistories(productId, userId);
+            @RequestParam(name = "productId", required = false) List<String> productId
+    ) {
+        return historyService.getHistories(productId);
     }
 
     //create order
     @PostMapping
-    public ResponseEntity createOrder(
-            @RequestBody HistoryRequest historyRequest,
-            @RequestAttribute String userId
-    ) {
-        return historyService.postHistory(historyRequest, userId);
+    public ResponseEntity createOrder(@RequestBody HistoryRequest historyRequest) {
+        return historyService.postHistory(historyRequest);
     }
 
 }

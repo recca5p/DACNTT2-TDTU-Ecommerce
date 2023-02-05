@@ -46,6 +46,7 @@ const HomeLayout = () => {
 				type: "error",
 				content: "Get cart data failed!"
 			}));
+			localStorage.removeItem("cart");
 		}
 	}
 
