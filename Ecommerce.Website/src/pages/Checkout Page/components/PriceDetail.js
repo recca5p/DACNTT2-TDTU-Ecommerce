@@ -6,9 +6,11 @@ import { useDispatch } from 'react-redux';
 import { historyType, orderStatus } from 'utils/common';
 import { numberWithCommas } from 'utils/convert';
 import * as Actions from 'actions';
+import { useNavigate } from 'react-router-dom';
 
 const PriceDetail = ({ data, payment }) => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const [loading, setLoading] = useState(false);
 
 	const countQuantity = (products) => {
@@ -47,7 +49,9 @@ const PriceDetail = ({ data, payment }) => {
 			}
 
 			//reduce payment balance
-			await putPaymentAPI(`/${payment?.id}`, { balance: payment.balance - data.total })
+			await putPaymentAPI(`/${payment?.id}`, { balance: payment.balance - data.total });
+
+			navigate("/account/purchase");
 		} catch(error) {
 			dispatch(Actions.setAlertSnackbar({
 				state: true,

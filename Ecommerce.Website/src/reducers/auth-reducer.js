@@ -20,6 +20,13 @@ const authSlice = createSlice({
 	builder.addCase(Actions.setAlertSnackbar.fulfilled, (state, action) => {
 		state.alert = action.payload
 	});
+	builder.addCase(Actions.signOutAccount, (state) => {
+		state.isLogedIn = false;
+		state.data = null;
+		state.token = null;
+
+		localStorage.clear();
+	});
     builder.addMatcher(
       isAnyOf(Actions.signInAccount.fulfilled, Actions.signUpAccount.fulfilled),
       (state, action) => {
