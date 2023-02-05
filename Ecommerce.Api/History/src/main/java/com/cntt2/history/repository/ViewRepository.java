@@ -6,6 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ViewRepository extends JpaRepository<View, String> {
-    List<View> findByUserId(String userId);
-    List<View> findByProductIdInAndUserId(List<String> productId, String userId);
+    List<View> findByProductIdIn(List<String> productId);
 }

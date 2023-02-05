@@ -66,49 +66,50 @@ export default function ListCart() {
           leaveTo="transform opacity-0 scale-95"
         >
           <Menu.Items className="absolute right-0 mt-2 w-[550px] origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <div className="p-5">
+            <div className="p-5 shadow-xl border border-[#ccc] rounded-lg">
               <Menu.Item>
                 <Fragment>
-                  {productsCart.length > 0 && (
-                    <div>
-                      {productsCart.map((item) => (
-                        <div className="flex justify-start items-center gap-x-3" key={item.id}>
-                          <img
-                            src={item.thumbnail}
-                            alt={item.name}
-                            className="w-14 h-14 shadow-md p-1 rounded-md"
-                          />
-                          <span className="flex-1">{item.name?.slice(0, 20) + "..."}</span>
-                          <span>SL: {item.quantity}</span>
-                          <span>
-                            Giá: {item.price?.toLocaleString()} VNĐ
-                          </span>
-                          <button
-                            onClick={() => {
-                              localStorage.removeItem("productsCart");
-                            }}
-                            className="bg-red-600 font-bold text-white p-2 rounded-md"
-                          >
-                            Xoá
-                          </button>
-                        </div>
-                      ))}
-                      <div className="flex justify-end items-center text-white">
-                        <Button
-						  component={Link}
-						  to={"/cart"}
-                          className="
-						    normal-case text-white
-						  	p-3 bg-indigo-700 rounded-md border
-							transition-all ease-linear duration-200 hover:bg-white 
-							hover:text-indigo-700 hover:border hover:border-indigo-700
-						  "
-                        >
-                          Checkout
-                        </Button>
-                      </div>
-                    </div>
-                  )}
+				  {Array.isArray(productsCart) && (
+					productsCart.length > 0 ? (
+						<div>
+							{productsCart.map((item) => (
+								<div className="flex justify-start items-center gap-x-3" key={item.id}>
+								<Link to={`/product/${item.slug}`}>
+								<img
+									src={`${process.env.REACT_APP_API_URL}/image/${item.thumbnail}`}
+									alt="product"
+									className="w-14 h-14 shadow-md p-1 rounded-md hover:scale-110 transition-all ease-out duration-200"
+								/>
+								</Link>
+								<Link to={`/product/${item.slug}`} className="flex-1 font-semibold text-ellipsis line-clamp-1">{item.name}</Link>
+								<span>Qty: {item.quantity}</span>
+								<span className="font-bold text-orange-700">
+									{item.price?.toLocaleString()} VNĐ
+								</span>
+								</div>
+							))}
+							<div className="flex justify-end items-center text-white">
+								<Button
+								component={Link}
+								to={"/cart"}
+								className="
+									normal-case text-white
+									p-3 bg-indigo-700 rounded-md border
+									transition-all ease-linear duration-200 hover:bg-white 
+									hover:text-indigo-700 hover:border hover:border-indigo-700
+								"
+								>
+								Checkout
+								</Button>
+							</div>
+						</div>
+					) : (
+						<div className="text-xl text-gray-500 font-bold text-center">
+							Your cart is empty
+						</div>
+					)
+				  )}
+                  
                 </Fragment>
               </Menu.Item>
             </div>

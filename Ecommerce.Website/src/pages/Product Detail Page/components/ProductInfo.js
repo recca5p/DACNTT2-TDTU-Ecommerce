@@ -4,7 +4,6 @@ import CustomButton from "components/CustomButton";
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import PaymentIcon from '@mui/icons-material/Payment';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,31 +11,36 @@ import StarRating from 'components/StarRating';
 import { postOrderAPI } from 'api';
 import { useNavigate } from 'react-router-dom';
 import * as Actions from 'actions';
+import { Loading } from 'components';
 
-function ProductInfo() {
+const BuyNowButton = ({ data, quantity }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const [quantity, setQuantity] = useState(1);
 	const [loading, setLoading] = useState(false);
-
 	const isLogedIn = useSelector(({ auth }) => auth.isLogedIn);
-	const product = useSelector(({ product }) => product.data);
-	const statistics = useSelector(({ product }) => product.statics);
 
 	const handleQuickBuy = async () => {
+		if(!isLogedIn) {
+			return dispatch(Actions.setAlertSnackbar({
+				state: true,
+				type: "info",
+				content: "You need to sign in!"
+			}));
+		};
+		
 		setLoading(true);
 
 		try {
 			const body = {
 				products: [
 					{
-						id: product.id,
-						name: product.name,
-						slug: product.slug,
-						price: product.price,
+						id: data.id,
+						name: data.name,
+						slug: data.slug,
+						price: data.price,
 						quantity: quantity,
-						thumbnail: product.thumbnail
+						thumbnail: data.thumbnail
 					}
 				]
 			}
@@ -57,20 +61,70 @@ function ProductInfo() {
 		setLoading(false);
 	};
 
+	return (
+		<CustomButton 
+			className={`block mb-3 rounded-full w-[200px]`} 
+			onClick={() => handleQuickBuy()}
+			disabled={loading}
+		>
+			{loading ? (
+				<span className="inline-flex items-center"><Loading /> Processing...</span>
+			) : (
+				<span className="inline-flex items-center"><PaymentIcon className="w-[18px] h-[18px] mr-1" /> Buy It Now</span>
+			)}
+		</CustomButton>
+	)
+}
+
+const AddToCartButton = ({ data, quantity }) => {
+	const dispatch = useDispatch();
+	const [loading, setLoading] = useState(false);
+
+	const isLogedIn = useSelector(({ auth }) => auth.isLogedIn);
+
 	const handleAddToCart = () => {
+		setLoading(true);
 		const newItem = { 
-			id: product.id,
-			name: product.name,
-			slug: product.slug,
-			price: product.price,
+			id: data.id,
+			name: data.name,
+			slug: data.slug,
+			price: data.price,
 			quantity: quantity,
-			thumbnail: product.thumbnail
+			thumbnail: data.thumbnail
 		};
 		dispatch(Actions.addToCart({
 			data: newItem,
 			isLogedIn
 		}));
+		dispatch(Actions.setAlertSnackbar({
+			state: true,
+			type: "info",
+			content: `Add "${data.name}" to cart`
+		}));
+		setLoading(false);
 	};
+
+	return (
+		<CustomButton 
+			className={`block mb-3 rounded-full w-[200px] !bg-orange-600 hover:!bg-orange-700 disabled:bg-gray-300 ${loading ? 'cursor-wait' : ''}`}
+			onClick={() => handleAddToCart()}
+			disabled={loading}
+		>
+			<div className="inline-flex items-center">
+				<AddShoppingCartIcon className="w-[18px] h-[18px] mr-1" /> Add To Cart
+			</div>
+		</CustomButton>
+	)
+}
+
+function ProductInfo() {
+	const [quantity, setQuantity] = useState(1);
+
+	const product = useSelector(({ product }) => product.data);
+	const statistics = useSelector(({ product }) => product.statics);
+
+	
+
 
 	const countPurchase = (data) => {
 		let result = 0;
@@ -149,34 +203,8 @@ function ProductInfo() {
 					</div>
 					{product.quantity ? (
 					<div className="flex-1">
-						<CustomButton 
-							className={`block mb-3 rounded-full w-[200px] disabled:bg-gray-300 ${loading ? 'cursor-wait' : ''}`} 
-							onClick={() => handleQuickBuy()}
-							disabled={loading}
-						>
-							<div className="inline-flex items-center">
-								<PaymentIcon className="w-[18px] h-[18px] mr-1" /> Buy It Now
-							</div>
-						</CustomButton>
-						<CustomButton 
-							className={`block mb-3 rounded-full w-[200px] !bg-orange-600 hover:!bg-orange-700 disabled:bg-gray-300 ${loading ? 'cursor-wait' : ''}`}
-							onClick={() => handleAddToCart()}
-							disabled={loading}
-						>
-							<div className="inline-flex items-center">
-								<AddShoppingCartIcon className="w-[18px] h-[18px] mr-1" /> Add To Cart
-							</div>
-						</CustomButton>
-						{/* <CustomButton 
-							className={`block mb-3 rounded-full w-[200px] bg-white border border-indigo-700 ${loading ? 'cursor-wait' : ''}
-							!text-indigo-700 hover:text-indigo-700 hover:bg-slate-200 disabled:bg-gray-300 disabled:border-0 disabled:!text-white`}
-							onClick={() => {}}
-							disabled={loading}
-						>
-							<div className="inline-flex items-center">
-								<FavoriteBorderIcon className="w-[18px] h-[18px] mr-1" /> Add To Watchlist
-							</div>
-						</CustomButton> */}
+						<BuyNowButton data={product} quantity={quantity} />
+						<AddToCartButton data={product} quantity={quantity} />
 					</div>
 					) : null}
 				</div>

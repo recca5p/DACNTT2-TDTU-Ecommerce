@@ -34,21 +34,21 @@ public class HistoryService {
     }
 
     public ResponseEntity<HistoryResponse> getHistories(
-            List<String> productId,
-            String userId
+            List<String> productId
     ) {
+        System.out.println("get");
         List<View> viewData;
         List<Purchase> purchaseData;
         List<Rating> ratingData;
 
         if(productId != null) {
-            viewData = viewRepository.findByProductIdInAndUserId(productId, userId);
-            purchaseData = purchaseRepository.findByProductIdInAndUserId(productId, userId);
-            ratingData = ratingRepository.findByProductIdInAndUserId(productId, userId);
+            viewData = viewRepository.findByProductIdIn(productId);
+            purchaseData = purchaseRepository.findByProductIdIn(productId);
+            ratingData = ratingRepository.findByProductIdIn(productId);
         } else {
-            viewData = viewRepository.findByUserId(userId);
-            purchaseData = purchaseRepository.findByUserId(userId);
-            ratingData = ratingRepository.findByUserId(userId);
+            viewData = viewRepository.findAll();
+            purchaseData = purchaseRepository.findAll();
+            ratingData = ratingRepository.findAll();
         }
 
         HistoryResponse response = HistoryResponse.builder()
@@ -60,7 +60,8 @@ public class HistoryService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity postHistory(HistoryRequest request, String userId) {
+    public ResponseEntity postHistory(HistoryRequest request) {
+        System.out.println("post");
         if(request.type() == null || !containType(request.type())) {
             throw new IllegalArgumentException("Invalid type");
         }
@@ -69,7 +70,6 @@ public class HistoryService {
             View data = View.builder()
                     .type(request.type())
                     .productId(request.productId())
-                    .userId(userId)
                     .build();
             System.out.println(data);
             return ResponseEntity.ok(viewRepository.save(data));
@@ -80,7 +80,6 @@ public class HistoryService {
                     .type(request.type())
                     .quantity(request.quantity())
                     .productId(request.productId())
-                    .userId(userId)
                     .build();
             return ResponseEntity.ok(purchaseRepository.save(data));
         }
@@ -91,7 +90,6 @@ public class HistoryService {
                     .star(request.star())
                     .content(request.content())
                     .productId(request.productId())
-                    .userId(userId)
                     .build();
             return ResponseEntity.ok(ratingRepository.save(data));
         }

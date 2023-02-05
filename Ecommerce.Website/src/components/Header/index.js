@@ -37,8 +37,9 @@ export default function Header() {
 		<header>
 			<nav
 				id="header"
-				className="w-full z-30 top-0 2xl:container"
+				className="w-full z-30 top-0 shadow-lg"
 			>
+				<div className="2xl:container mx-auto">
 				<div className="border-b">
 					<div className="2xl:container 2xl:mx-auto 2xl:px-0 flex items-center justify-between px-[60px]">
 						{isLogedIn ? (
@@ -73,7 +74,7 @@ export default function Header() {
 					</div>
 				</div>
 
-				<div className="border-b-[2px] shadow-lg">
+				<div className="border-b-[2px]">
 					<div className="2xl:container 2xl:mx-auto 2xl:px-0 relative min-h-[65px] flex items-center px-[60px] py-4">
 						<Link to="/">
 							<img alt="Logo" src="/large-logo.png" />
@@ -120,7 +121,7 @@ export default function Header() {
 							)}
 						</div>
 						<form onSubmit={handleSearch} autoComplete="off" className="flex-1 flex items-center" autoCorrect="off">
-							<div className="flex items-center flex-1 h-[48px] border-[2px] border-black mr-4">
+							<div className="flex items-center flex-1 h-[48px] border-[3px] border-gray-500 mr-4 rounded-lg">
 								<SearchIcon className="text-gray-400 ml-4" />
 								<input
 									value={searchKeyword}
@@ -129,9 +130,11 @@ export default function Header() {
 									placeholder="Search for anything"
 									spellCheck={false}
 								/>
+								<div className="border-r-[1px] border-gray-500 py-1 h-full" />
 								<select
 									value={searchCategory}
-									className="box-content h-full px-2 focus:outline-none border-l border-black max-w-[140px] text-ellipsis"
+									style={{ textAlignLast: "center" }}
+									className="box-content px-2 focus:outline-none max-w-[140px] text-ellipsis appearance-none font-semibold text-gray-700"
 									onChange={(e) => setSearchCategory(e.target.value)}
 								>
 									<option value="all">All categories</option>
@@ -143,6 +146,7 @@ export default function Header() {
 							<CustomButton className="px-[16px] py-[8px] min-w-[168px] h-[42px] text-xl font-normal" type="submit">Search</CustomButton>
 						</form>
 					</div>
+				</div>
 				</div>
 			</nav>
 		</header>
