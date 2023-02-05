@@ -34,5 +34,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/v1/product/**", "/api/v1/category/**", "/api/v1/brand/**").permitAll()
                 .anyRequest().authenticated();
+        http.cors();
     }
 }

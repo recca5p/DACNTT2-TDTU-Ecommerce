@@ -1,3 +1,4 @@
+import { NzMessageModule } from 'ng-zorro-antd/message';
 import { CreateProductComponent } from './pages/dashboard/productmanagement/product/create-product/create-product.component';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -28,6 +29,7 @@ import { AuthorizeComponent } from './pages/authorize/authorize.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { LightboxModule } from 'ngx-lightbox';
 
 registerLocaleData(en);
 
@@ -59,6 +61,7 @@ registerLocaleData(en);
     NzTableModule,
     NzDividerModule,
     NzImageModule,
+    NzMessageModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent],

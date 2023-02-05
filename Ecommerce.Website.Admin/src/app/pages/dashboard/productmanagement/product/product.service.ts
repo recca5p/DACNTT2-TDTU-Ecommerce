@@ -1,5 +1,5 @@
 import { environment } from 'environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 export class ProductService {
   private _apiProductEndpoint: string = `${environment.end_points.product_service}`;
   private _apiImageEndpoint: string = `${environment.end_points.image_service}`;
+  private authorizeToken = localStorage.getItem('authorizeToken');
 
   constructor(private http: HttpClient) {}
 
@@ -21,5 +22,34 @@ export class ProductService {
     let url: string = `${this._apiImageEndpoint}`;
 
     return this.http.post(url, data).toPromise();
+  }
+
+  createProduct(data: any) {
+    let url: string = `${this._apiProductEndpoint}`;
+
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: '*/*',
+        'Access-Control-Allow-Origin': '*',
+        Authorization: `Bearer ${this.authorizeToken}`,
+      }),
+    };
+
+    return this.http.post(url, data, options).toPromise();
+  }
+
+  deleteProduct(id: any) {
+    let url: string = `${this._apiProductEndpoint}/${id}`;
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: '*/*',
+        'Access-Control-Allow-Origin': '*',
+        Authorization: `Bearer ${this.authorizeToken}`,
+      }),
+    };
+
+    return this.http.delete(url, options);
   }
 }

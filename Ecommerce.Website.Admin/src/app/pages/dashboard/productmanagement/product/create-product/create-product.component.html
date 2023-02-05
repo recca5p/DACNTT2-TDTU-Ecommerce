@@ -1,5 +1,4 @@
 <form #form="ngForm" class="mt-16 px-64">
-  {{ form.value | json }}
   <div class="overflow-hidden shadow sm:rounded-md">
     <div class="bg-white px-4 py-5 sm:p-6">
       <div class="grid grid-cols-6 gap-6">
@@ -99,9 +98,7 @@
           <input
             class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer"
             type="file"
-            name="thumbnail"
-            ngModel
-            (change)="uploadThumbnail($event)"
+            (change)="previewThumbnail($event)"
           />
           <p
             class="mt-1 text-sm text-gray-500 dark:text-gray-300"
@@ -113,19 +110,31 @@
         <div class="col-span-6">
           <img src="{{ thumbnailUrl }}" class="h-24" />
         </div>
+        <div>
+          <button
+            *ngIf="thumnailUploaded"
+            (click)="uploadThumbnail()"
+            class="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+          >
+            Upload
+          </button>
+        </div>
+        <div *ngIf="uploadThumbnailSuccess == 1" class="items-center">
+          <p class="text-green-400">Upload success</p>
+        </div>
+        <div *ngIf="uploadThumbnailSuccess == -1">
+          <p class="text-red-500">Upload failed</p>
+        </div>
 
         <div class="col-span-12">
-          <div class="col-span-12">
+          <div>
             <label class="block mb-2 text-sm font-medium"
               >Upload product images</label
             >
             <input
               class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer"
               type="file"
-              multiple
-              ngModel
-              name="images"
-              (change)="uploadImages($event)"
+              (change)="previewImage($event)"
             />
             <p
               class="mt-1 text-sm text-gray-500 dark:text-gray-300"
@@ -135,14 +144,40 @@
             </p>
           </div>
           <div class="col-span-6">
-            <img src="{{ thumbnailUrl }}" class="h-24" />
+            <img src="{{ imageUrl }}" class="h-24" />
+          </div>
+          <div>
+            <button
+              *ngIf="imageUploaded"
+              (click)="uploadImages()"
+              class="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 my-2"
+            >
+              Upload
+            </button>
+          </div>
+          <div>
+            <p class="text-black">{{ imageIds.length }} image(s) uploaded</p>
+          </div>
+          <div *ngIf="uploadImageSuccess == 1" class="items-center">
+            <p class="text-green-400">Upload success</p>
+          </div>
+          <div *ngIf="uploadImageSuccess == -1">
+            <p class="text-red-500">Upload failed</p>
           </div>
         </div>
       </div>
     </div>
     <div class="px-4 py-3 text-right sm:px-6">
       <button
+        routerLink="/dashboard/product-manage/product"
         type="submit"
+        class="inline-flex justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white mr-2 shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+      >
+        Back
+      </button>
+      <button
+        type="submit"
+        (click)="createProduct(form.value)"
         class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
       >
         Create
