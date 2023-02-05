@@ -74,9 +74,10 @@ public class OrderService {
 
     public ResponseEntity<List<Order>> getOrders(List<String> status, String userId) {
         if(status != null) {
-            return ResponseEntity.ok(orderRepository.findByStatusInAndCreatedBy(status, userId));
+            return ResponseEntity.ok(
+                    orderRepository.findByStatusInAndCreatedByOrderByUpdatedDateDesc(status, userId));
         }
-        return ResponseEntity.ok(orderRepository.findByCreatedBy(userId));
+        return ResponseEntity.ok(orderRepository.findByCreatedByOrderByUpdatedDateDesc(userId));
     }
 
     public ResponseEntity<Order> getSingleOrder(String orderId) {

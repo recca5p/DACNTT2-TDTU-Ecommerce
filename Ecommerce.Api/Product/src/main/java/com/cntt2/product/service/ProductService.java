@@ -70,21 +70,27 @@ public class ProductService {
             //find products by slug and categories
             if(!categories.isEmpty()) {
                 return ResponseEntity.ok(
-                        productRepository.findBySlugContainingAndCategory_SlugIn(
+                        productRepository.findBySlugContainingAndCategory_SlugInOrderByCreatedDateDesc(
                                 slug, categories, pageableRequest));
             }
 
-            return ResponseEntity.ok(productRepository.findBySlugContaining(slug, pageableRequest));
+            return ResponseEntity.ok(
+                    productRepository.findBySlugContainingOrderByCreatedDateDesc(
+                            slug, pageableRequest));
         }
 
         //find products by categories
         if(!categories.isEmpty()) {
-            return ResponseEntity.ok(productRepository.findByCategory_SlugIn(categories, pageableRequest));
+            return ResponseEntity.ok(
+                    productRepository.findByCategory_SlugInOrderByCreatedDateDesc(
+                            categories, pageableRequest));
         }
 
         //find products by id
         if(idList != null) {
-            return ResponseEntity.ok(productRepository.findByIdIn(idList, pageableRequest));
+            return ResponseEntity.ok(
+                    productRepository.findByIdInOrderByCreatedDateDesc(
+                            idList, pageableRequest));
         }
         
         return ResponseEntity.ok(productRepository.findAll());

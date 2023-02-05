@@ -13,11 +13,11 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, String> {
     Optional<Product> findBySlug(String slug);
 
-    List<Product> findByIdIn(List<String> idList, Pageable pageable);
+    List<Product> findByIdInOrderByCreatedDateDesc(List<String> idList, Pageable pageable);
 
-    List<Product> findBySlugContaining(String slug, Pageable pageable);
+    List<Product> findBySlugContainingOrderByCreatedDateDesc(String slug, Pageable pageable);
 
-    List<Product> findByCategory_SlugIn(List<String> categories, Pageable pageable);
+    List<Product> findByCategory_SlugInOrderByCreatedDateDesc(List<String> categories, Pageable pageable);
 
-    List<Product> findBySlugContainingAndCategory_SlugIn(String slug, List<String> categories, Pageable pageable);
+    List<Product> findBySlugContainingAndCategory_SlugInOrderByCreatedDateDesc(String slug, List<String> categories, Pageable pageable);
 }
