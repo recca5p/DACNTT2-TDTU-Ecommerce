@@ -59,4 +59,9 @@ export class ProductComponent implements OnInit {
 
     location.reload();
   }
+
+  navigateToProductDetail(id: any) {
+    localStorage.setItem('slug', id);
+    this.router.navigate(['dashboard/product-manage/product-detail/' + id]);
+  }
 }

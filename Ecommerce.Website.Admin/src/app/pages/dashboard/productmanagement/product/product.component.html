@@ -22,7 +22,11 @@
   <tbody>
     <tr *ngFor="let data of basicTable.data">
       <td>
-        <a class="text-blue-400 font-bold">{{ data.name }}</a>
+        <a
+          class="text-blue-400 font-bold"
+          (click)="navigateToProductDetail(data.slug)"
+          >{{ data.name }}</a
+        >
       </td>
       <td>{{ data.price | currency : "VND" }}</td>
       <td>{{ data.quantity }}</td>
