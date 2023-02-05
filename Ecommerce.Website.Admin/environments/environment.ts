@@ -7,6 +7,10 @@ export const environment = {
     user_service: 'http://localhost:8081/api/v1/user',
     auth_service: 'http://localhost:8081/api/v1/auth',
     product_service: 'http://localhost:8082/api/v1/product',
+    category_service: 'http://localhost:8082/api/v1/category',
+    brand_service: 'http://localhost:8082/api/v1/brand',
+    order_service: 'http://localhost:8083/api/v1/order',
+    image_service: 'http://localhost:8086/api/v1/image',
   },
 };
 /*

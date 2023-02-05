@@ -1,3 +1,5 @@
+import { CreateProductComponent } from './pages/dashboard/productmanagement/product/create-product/create-product.component';
+import { ProductDetailComponent } from './pages/dashboard/productmanagement/product/product-detail/product-detail.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { WelcomeComponent } from './pages/dashboard/welcome/welcome.component';
 import { AuthorizeComponent } from './pages/authorize/authorize.component';
@@ -12,7 +14,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'auth' },
+  { path: '', pathMatch: 'full', redirectTo: '/dashboard/welcome' },
   { path: 'auth', component: AuthorizeComponent },
   {
     path: 'dashboard',
@@ -29,6 +31,14 @@ const routes: Routes = [
           {
             path: 'product',
             component: ProductComponent,
+          },
+          {
+            path: 'product-detail/:id',
+            component: ProductDetailComponent,
+          },
+          {
+            path: 'create-product',
+            component: CreateProductComponent,
           },
           {
             path: 'category',

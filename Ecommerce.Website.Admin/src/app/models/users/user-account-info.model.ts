@@ -17,40 +17,22 @@ export class UserAccountInfo extends UserAccount {
   private accountNonExpired: boolean;
   private credentialsNonExpired: boolean;
 
-  constructor(
-    id: string,
-    username: string,
-    password: string,
-    fullname: string,
-    avatar: string,
-    balance: number,
-    email: string,
-    phone: string,
-    createdDate: Date,
-    updatedDate: Date,
-    roles: UserRole[],
-    enabled: boolean,
-    active: boolean,
-    authorities: any,
-    accountNonLocked: boolean,
-    accountNonExpired: boolean,
-    credentialsNonExpired: boolean
-  ) {
-    super(username, password);
-    this.id = id;
-    this.fullname = fullname;
-    this.avatar = avatar;
-    this.balance = balance;
-    this.email = email;
-    this.phone = phone;
-    this.createdDate = createdDate;
-    this.updatedDate = updatedDate;
-    this.roles = roles;
-    this.enabled = enabled;
-    this.active = active;
-    this.authorities = authorities;
-    this.accountNonLocked = accountNonLocked;
-    this.accountNonExpired = accountNonExpired;
-    this.credentialsNonExpired = credentialsNonExpired;
+  constructor() {
+    super('username', '');
+    this.id = '';
+    this.fullname = '';
+    this.avatar = '';
+    this.balance = 0;
+    this.email = '';
+    this.phone = '';
+    this.createdDate = new Date();
+    this.updatedDate = new Date();
+    this.roles = [];
+    this.enabled = false;
+    this.active = false;
+    this.authorities = false;
+    this.accountNonLocked = false;
+    this.accountNonExpired = false;
+    this.credentialsNonExpired = false;
   }
 }

@@ -1,3 +1,7 @@
+import { CreateProductComponent } from './pages/dashboard/productmanagement/product/create-product/create-product.component';
+import { NzImageModule } from 'ng-zorro-antd/image';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzTableModule } from 'ng-zorro-antd/table';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -39,6 +43,7 @@ registerLocaleData(en);
     ProductDetailComponent,
     AuthorizeComponent,
     DashboardComponent,
+    CreateProductComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +56,9 @@ registerLocaleData(en);
     NzMenuModule,
     NzDropDownModule,
     NzAlertModule,
+    NzTableModule,
+    NzDividerModule,
+    NzImageModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent],

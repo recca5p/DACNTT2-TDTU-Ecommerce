@@ -1,0 +1,152 @@
+<form #form="ngForm" class="mt-16 px-64">
+  {{ form.value | json }}
+  <div class="overflow-hidden shadow sm:rounded-md">
+    <div class="bg-white px-4 py-5 sm:p-6">
+      <div class="grid grid-cols-6 gap-6">
+        <div class="col-span-12">
+          <label class="block mb-2 text-sm font-medium text-gray-900"
+            >Product Name</label
+          >
+          <input
+            type="text"
+            ngModel
+            name="name"
+            class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          />
+        </div>
+
+        <div class="col-span-6">
+          <label class="block mb-2 text-sm font-medium text-gray-900"
+            >Price</label
+          >
+          <input
+            type="number"
+            ngModel
+            name="price"
+            class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          />
+        </div>
+
+        <div class="col-span-6">
+          <label class="block mb-2 text-sm font-medium text-gray-900"
+            >Quantity</label
+          >
+          <input
+            type="number"
+            ngModel
+            name="quantity"
+            class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          />
+        </div>
+
+        <div class="col-span-4">
+          <label for="country" class="block text-sm font-medium text-gray-700"
+            >Condition</label
+          >
+          <select
+            class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+            ngModel
+            name="condition"
+          >
+            <option value="New">New</option>
+          </select>
+        </div>
+
+        <div class="col-span-4">
+          <label for="country" class="block text-sm font-medium text-gray-700"
+            >Category</label
+          >
+          <select
+            class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+            ngModel
+            name="category"
+          >
+            <option *ngFor="let category of catogories" [value]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-span-4">
+          <label class="block text-sm font-medium text-gray-700">Brand</label>
+          <select
+            class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+            ngModel
+            name="brand"
+          >
+            <option *ngFor="let brand of brands" [value]="brand.id">
+              {{ brand.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-span-12">
+          <label class="block text-sm font-medium text-gray-700"
+            >Description</label
+          >
+          <textarea
+            rows="4"
+            ngModel
+            name="description"
+            class="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            placeholder=""
+          ></textarea>
+        </div>
+        <div class="col-span-6">
+          <label class="block mb-2 text-sm font-medium text-gray-900"
+            >Upload thumbnail</label
+          >
+          <input
+            class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer"
+            type="file"
+            name="thumbnail"
+            ngModel
+            (change)="uploadThumbnail($event)"
+          />
+          <p
+            class="mt-1 text-sm text-gray-500 dark:text-gray-300"
+            id="file_input_help"
+          >
+            SVG, PNG, JPG or GIF (MAX. 800x400px).
+          </p>
+        </div>
+        <div class="col-span-6">
+          <img src="{{ thumbnailUrl }}" class="h-24" />
+        </div>
+
+        <div class="col-span-12">
+          <div class="col-span-12">
+            <label class="block mb-2 text-sm font-medium"
+              >Upload product images</label
+            >
+            <input
+              class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer"
+              type="file"
+              multiple
+              ngModel
+              name="images"
+              (change)="uploadImages($event)"
+            />
+            <p
+              class="mt-1 text-sm text-gray-500 dark:text-gray-300"
+              id="file_input_help"
+            >
+              SVG, PNG, JPG or GIF (MAX. 800x400px).
+            </p>
+          </div>
+          <div class="col-span-6">
+            <img src="{{ thumbnailUrl }}" class="h-24" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="px-4 py-3 text-right sm:px-6">
+      <button
+        type="submit"
+        class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+      >
+        Create
+      </button>
+    </div>
+  </div>
+</form>
