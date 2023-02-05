@@ -1,4 +1,4 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { signInAPI, signUpAPI } from "api";
 import * as Actions from 'actions';
 
@@ -45,6 +45,8 @@ export const signUpAccount = createAsyncThunk(
 		}
 	}
 );
+
+export const signOutAccount = createAction('Sign Out');
 
 export const setAlertSnackbar = createAsyncThunk(
 	'Set Alert Snackbar',

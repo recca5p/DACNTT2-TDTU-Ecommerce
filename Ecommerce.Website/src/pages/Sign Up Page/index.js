@@ -27,6 +27,7 @@ const SignUp = () => {
 	phone   : ""
   });
   const [showPassword, setShowPassword] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const handleChangeForm = (e) => {
     setForm({
@@ -44,7 +45,9 @@ const SignUp = () => {
   //handle sign in
   const handleSignIn = (e) => {
     e.preventDefault();
+	setLoading(true);
     dispatch(Actions.signUpAccount(form));
+	setLoading(false);
   };
 
   useEffect(() => {
@@ -142,7 +145,7 @@ const SignUp = () => {
           type="submit"
           className="bg-indigo-700 font-bold text-lg normal-case text-white my-[12px] py-3 rounded-full disabled:bg-slate-300"
           fullWidth
-          disabled={!(form.username && form.password && form.fullname)}
+          disabled={!(form.username && form.password && form.fullname) || loading}
         >
           Sign Up
         </Button>
