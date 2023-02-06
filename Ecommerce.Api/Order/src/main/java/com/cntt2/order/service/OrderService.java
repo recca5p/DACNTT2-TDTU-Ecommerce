@@ -72,7 +72,13 @@ public class OrderService {
 
     ////////////////////////////////////////////////////////////////////////////////////////
 
-    public ResponseEntity<List<Order>> getOrders(List<String> status, String userId) {
+    public ResponseEntity<List<Order>> getOrders(
+            List<String> status,
+            String userId,
+            Boolean isAdmin) {
+        if(isAdmin) {
+            return ResponseEntity.ok(orderRepository.findAll());
+        }
         if(status != null) {
             return ResponseEntity.ok(
                     orderRepository.findByStatusInAndCreatedByOrderByUpdatedDateDesc(status, userId));
