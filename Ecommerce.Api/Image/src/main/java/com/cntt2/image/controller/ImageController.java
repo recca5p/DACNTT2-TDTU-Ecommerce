@@ -18,7 +18,6 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("api/v1/image")
-@CrossOrigin("*")
 public class ImageController {
     @Autowired
     private ImageService imageService;
