@@ -52,4 +52,10 @@ export class ProductService {
 
     return this.http.delete(url, options);
   }
+
+  getProduct(slug: any) {
+    let url: string = `${this._apiProductEndpoint}/${slug}`;
+
+    return this.http.get(url).toPromise();
+  }
 }

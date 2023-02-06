@@ -12,6 +12,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("api/v1/brand")
+
 public record BrandController(BrandService brandService) {
     //get all brands
     @GetMapping
