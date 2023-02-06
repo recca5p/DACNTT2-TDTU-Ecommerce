@@ -58,4 +58,19 @@ export class ProductService {
 
     return this.http.get(url).toPromise();
   }
+
+  updateProduct(data: any, slug: any) {
+    let url: string = `${this._apiProductEndpoint}/${slug}`;
+
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: '*/*',
+        'Access-Control-Allow-Origin': '*',
+        Authorization: `Bearer ${this.authorizeToken}`,
+      }),
+    };
+
+    return this.http.put(url, data, options).toPromise();
+  }
 }

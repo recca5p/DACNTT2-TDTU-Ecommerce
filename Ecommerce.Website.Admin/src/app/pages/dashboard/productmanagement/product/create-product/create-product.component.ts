@@ -48,6 +48,7 @@ export class CreateProductComponent implements OnInit {
   async getCategories() {
     await this.categoryService.getCategories().then((response) => {
       this.catogories = response;
+      this.catogories = this.catogories.filter((c: any) => c.parent != '');
     });
   }
 

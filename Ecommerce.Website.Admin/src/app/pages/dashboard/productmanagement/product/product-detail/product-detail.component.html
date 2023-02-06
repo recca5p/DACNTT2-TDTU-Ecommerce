@@ -1,5 +1,4 @@
 <form #form="ngForm" class="mt-16 px-64">
-  {{ form.value | json }}
   <div class="overflow-hidden shadow sm:rounded-md">
     <div class="bg-white px-4 py-5 sm:p-6">
       <div class="grid grid-cols-6 gap-6">
@@ -50,6 +49,7 @@
             [(ngModel)]="productDetail.condition"
           >
             <option value="New">New</option>
+            <option value="Second-hand">Second-hand</option>
           </select>
         </div>
 
@@ -61,9 +61,13 @@
             class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
             ngModel
             name="category"
-            [(ngModel)]="productDetail.category.name"
+            #category="ngModel"
+            [(ngModel)]="productDetail.category.id"
           >
-            <option>category</option>
+            <option>{{ productDetail.category.name }}</option>
+            <option *ngFor="let category of categories" [value]="category.id">
+              {{ category.name }}
+            </option>
           </select>
         </div>
 
@@ -73,9 +77,13 @@
             class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
             ngModel
             name="brand"
-            [(ngModel)]="productDetail.brand.name"
+            #brand="ngModel"
+            [(ngModel)]="productDetail.brand.id"
           >
-            <option>brand</option>
+            <option>{{ productDetail.brand.name }}</option>
+            <option *ngFor="let brand of brands" [value]="brand.id">
+              {{ brand.name }}
+            </option>
           </select>
         </div>
 
@@ -92,97 +100,121 @@
             placeholder=""
           ></textarea>
         </div>
-        <!-- <div class="col-span-6">
-          <label class="block mb-2 text-sm font-medium text-gray-900"
-            >Upload thumbnail</label
-          >
-          <input
-            class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer"
-            type="file"
-            (change)="previewThumbnail($event)"
-          />
-          <p
-            class="mt-1 text-sm text-gray-500 dark:text-gray-300"
-            id="file_input_help"
-          >
-            SVG, PNG, JPG or GIF (MAX. 800x400px).
-          </p>
-        </div> -->
-        <!-- <div class="col-span-6">
-          <img src="{{ thumbnailUrl }}" class="h-24" />
+        <div class="col-span-12">
+          <div>
+            <label class="block text-sm font-medium text-gray-700"
+              >Thumbnail</label
+            >
+            <!-- <div class="grid grid-cols-2">
+              <div>
+                <input
+                  class="block p-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer"
+                  type="file"
+                  (change)="previewThumbnail($event)"
+                />
+                <p
+                  class="mt-1 text-sm text-gray-500 dark:text-gray-300"
+                  id="file_input_help"
+                >
+                  SVG, PNG, JPG or GIF (MAX. 800x400px).
+                </p>
+              </div>
+              <div class="ml-auto mr-0">
+                <button
+                  *ngIf="tempThumnailUploaded"
+                  class="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white mr-2 shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                  (click)="updateThumbnail()"
+                >
+                  Upload
+                </button>
+              </div>
+            </div> -->
+          </div>
+          <li class="list-none">
+            <div class="grid grid-cols-2 justify-between">
+              <div>
+                <img class="w-32" src="{{ productDetail.thumbnailUrl }}" />
+              </div>
+              <!-- <div class="ml-auto mr-0 grid place-content-center">
+                <button
+                  *ngIf="hasThumbnail == true"
+                  class="inline-flex justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white mr-2 shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                  (click)="deleteThumbnail()"
+                >
+                  Delete
+                </button>
+              </div> -->
+            </div>
+          </li>
         </div>
-        <div>
-          <button
-            *ngIf="thumnailUploaded"
-            (click)="uploadThumbnail()"
-            class="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-          >
-            Upload
-          </button>
-        </div> -->
-        <!-- <div *ngIf="uploadThumbnailSuccess == 1" class="items-center">
-          <p class="text-green-400">Upload success</p>
+        <div class="col-span-12">
+          <div>
+            <label class="block text-sm font-medium text-gray-700"
+              >Images</label
+            >
+            <div class="grid grid-cols-3">
+              <div>
+                <input
+                  class="block p-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer"
+                  type="file"
+                  (change)="previewImage($event)"
+                />
+                <p
+                  class="mt-1 text-sm text-gray-500 dark:text-gray-300"
+                  id="file_input_help"
+                >
+                  SVG, PNG, JPG or GIF (MAX. 800x400px).
+                </p>
+              </div>
+              <div class="grid place-content-center">
+                <p class="text-green-400">
+                  <span class="font-bold">{{ countUploaded }}</span> image(s)
+                  uploaded
+                </p>
+              </div>
+              <div class="ml-auto mr-0">
+                <button
+                  class="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white mr-2 shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                  (click)="updateThumbnail()"
+                >
+                  Upload
+                </button>
+              </div>
+            </div>
+          </div>
+          <li class="list-none" *ngFor="let image of productDetail.imageUrls">
+            <div class="grid grid-cols-2 justify-between">
+              <div>
+                <img class="w-32 py-2" src="{{ image }}" />
+              </div>
+              <div class="ml-auto mr-0 grid place-content-center">
+                <button
+                  class="inline-flex justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white mr-2 shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                  (click)="deleteImage(image)"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </li>
         </div>
-        <div *ngIf="uploadThumbnailSuccess == -1">
-          <p class="text-red-500">Upload failed</p>
-        </div> -->
-
-        <!-- <div class="col-span-12">
-          <div>
-            <label class="block mb-2 text-sm font-medium"
-              >Upload product images</label
-            >
-            <input
-              class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer"
-              type="file"
-              (change)="previewImage($event)"
-            />
-            <p
-              class="mt-1 text-sm text-gray-500 dark:text-gray-300"
-              id="file_input_help"
-            >
-              SVG, PNG, JPG or GIF (MAX. 800x400px).
-            </p>
-          </div>
-          <div class="col-span-6">
-            <img src="{{ imageUrl }}" class="h-24" />
-          </div>
-          <div>
-            <button
-              *ngIf="imageUploaded"
-              (click)="uploadImages()"
-              class="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 my-2"
-            >
-              Upload
-            </button>
-          </div>
-          <div>
-            <p class="text-black">{{ imageIds.length }} image(s) uploaded</p>
-          </div>
-          <div *ngIf="uploadImageSuccess == 1" class="items-center">
-            <p class="text-green-400">Upload success</p>
-          </div>
-          <div *ngIf="uploadImageSuccess == -1">
-            <p class="text-red-500">Upload failed</p>
-          </div>
-        </div> -->
       </div>
     </div>
     <div class="px-4 py-3 text-right sm:px-6">
       <button
         routerLink="/dashboard/product-manage/product"
         type="submit"
-        class="inline-flex justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white mr-2 shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+        class="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white mr-2 shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
       >
         Back
       </button>
-      <!-- <button
+      <button
         type="submit"
-        (click)="createProduct(form.value)"
-        class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        (click)="updateProduct(form.value)"
+        class="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
       >
-        Create
-      </button> -->
+        Save
+      </button>
     </div>
   </div>
 </form>
