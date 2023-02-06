@@ -15,6 +15,8 @@ public class UserInfo implements UserDetails {
     private String username;
     private String password;
     private Boolean enabled;
+
+    private List<Role> roles;
     private List<Authority> authorities;
 
     public UserInfo(String id, String username, String password, Boolean enabled, List<Authority> authorities) {
@@ -22,6 +24,7 @@ public class UserInfo implements UserDetails {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
+        this.roles = roles;
         this.authorities = authorities;
     }
 

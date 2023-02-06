@@ -18,9 +18,10 @@ public record OrderController(OrderService orderService) {
     @GetMapping
     public ResponseEntity<List<Order>> getOrders(
             @RequestParam(name = "status", required = false) List<String> status,
-            @RequestAttribute String userId) {
+            @RequestAttribute String userId,
+            @RequestAttribute Boolean isAdmin) {
 
-        return orderService.getOrders(status, userId);
+        return orderService.getOrders(status, userId, isAdmin);
     }
 
     //get single order

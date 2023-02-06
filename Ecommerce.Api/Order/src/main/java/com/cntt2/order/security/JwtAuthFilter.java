@@ -42,6 +42,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authToken);
 
             //set userId to header
+            Boolean isAdmin = userData
+                    .getRoles()
+                    .stream()
+                    .map(Role :: getName)
+                    .filter("ADMIN"::equals)
+                    .findFirst()
+                    .isPresent();
+            request.setAttribute("isAdmin", isAdmin);
             request.setAttribute("userId",userData.getId());
         }
         filterChain.doFilter(request, response);
