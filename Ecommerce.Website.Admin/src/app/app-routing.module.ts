@@ -1,3 +1,4 @@
+import { CreateBrandComponent } from './pages/dashboard/productmanagement/brand/create-brand/create-brand.component';
 import { CreateProductComponent } from './pages/dashboard/productmanagement/product/create-product/create-product.component';
 import { ProductDetailComponent } from './pages/dashboard/productmanagement/product/product-detail/product-detail.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
@@ -47,6 +48,10 @@ const routes: Routes = [
           {
             path: 'brand',
             component: BrandComponent,
+          },
+          {
+            path: 'create-brand',
+            component: CreateBrandComponent,
           },
         ],
       },
