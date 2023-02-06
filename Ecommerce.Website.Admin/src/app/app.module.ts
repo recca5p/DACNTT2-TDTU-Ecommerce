@@ -32,6 +32,8 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { LightboxModule } from 'ngx-lightbox';
 import { CreateBrandComponent } from './pages/dashboard/productmanagement/brand/create-brand/create-brand.component';
 import { CreateCategoryComponent } from './pages/dashboard/productmanagement/category/create-category/create-category.component';
+import { CreateUserComponent } from './pages/dashboard/user-manament/user/create-user/create-user.component';
+import { UserDetailComponent } from './pages/dashboard/user-manament/user/user-detail/user-detail.component';
 
 registerLocaleData(en);
 
@@ -50,6 +52,8 @@ registerLocaleData(en);
     CreateProductComponent,
     CreateBrandComponent,
     CreateCategoryComponent,
+    CreateUserComponent,
+    UserDetailComponent,
   ],
   imports: [
     BrowserModule,

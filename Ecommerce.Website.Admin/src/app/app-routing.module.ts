@@ -1,3 +1,5 @@
+import { CreateUserComponent } from './pages/dashboard/user-manament/user/create-user/create-user.component';
+import { UserDetailComponent } from './pages/dashboard/user-manament/user/user-detail/user-detail.component';
 import { CreateCategoryComponent } from './pages/dashboard/productmanagement/category/create-category/create-category.component';
 import { CreateBrandComponent } from './pages/dashboard/productmanagement/brand/create-brand/create-brand.component';
 import { CreateProductComponent } from './pages/dashboard/productmanagement/product/create-product/create-product.component';
@@ -76,6 +78,11 @@ const routes: Routes = [
             path: 'user',
             component: UserComponent,
           },
+          {
+            path: 'user-detail/:id',
+            component: UserDetailComponent,
+          },
+          { path: 'create-user', component: CreateUserComponent },
         ],
       },
     ],
