@@ -31,6 +31,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { LightboxModule } from 'ngx-lightbox';
 import { CreateBrandComponent } from './pages/dashboard/productmanagement/brand/create-brand/create-brand.component';
+import { CreateCategoryComponent } from './pages/dashboard/productmanagement/category/create-category/create-category.component';
 
 registerLocaleData(en);
 
@@ -48,6 +49,7 @@ registerLocaleData(en);
     DashboardComponent,
     CreateProductComponent,
     CreateBrandComponent,
+    CreateCategoryComponent,
   ],
   imports: [
     BrowserModule,

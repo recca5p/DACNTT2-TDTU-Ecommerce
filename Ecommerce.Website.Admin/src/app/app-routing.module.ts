@@ -1,3 +1,4 @@
+import { CreateCategoryComponent } from './pages/dashboard/productmanagement/category/create-category/create-category.component';
 import { CreateBrandComponent } from './pages/dashboard/productmanagement/brand/create-brand/create-brand.component';
 import { CreateProductComponent } from './pages/dashboard/productmanagement/product/create-product/create-product.component';
 import { ProductDetailComponent } from './pages/dashboard/productmanagement/product/product-detail/product-detail.component';
@@ -44,6 +45,10 @@ const routes: Routes = [
           {
             path: 'category',
             component: CategoryComponent,
+          },
+          {
+            path: 'create-category',
+            component: CreateCategoryComponent,
           },
           {
             path: 'brand',
