@@ -34,6 +34,10 @@ import { CreateBrandComponent } from './pages/dashboard/productmanagement/brand/
 import { CreateCategoryComponent } from './pages/dashboard/productmanagement/category/create-category/create-category.component';
 import { CreateUserComponent } from './pages/dashboard/user-manament/user/create-user/create-user.component';
 import { UserDetailComponent } from './pages/dashboard/user-manament/user/user-detail/user-detail.component';
+import { OrderDetailComponent } from './pages/dashboard/order-manament/order/order-detail/order-detail.component';
+import { StatisticComponent } from './pages/dashboard/statistic/statistic.component';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 
 registerLocaleData(en);
 
@@ -54,6 +58,8 @@ registerLocaleData(en);
     CreateCategoryComponent,
     CreateUserComponent,
     UserDetailComponent,
+    OrderDetailComponent,
+    StatisticComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,6 +76,8 @@ registerLocaleData(en);
     NzDividerModule,
     NzImageModule,
     NzMessageModule,
+    NzStatisticModule,
+    NzGridModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent],

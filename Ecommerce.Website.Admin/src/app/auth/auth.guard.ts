@@ -34,7 +34,8 @@ export class AuthGuard implements CanActivate {
       userInfo = JSON.parse(userInfo);
 
       adminRole = userInfo.roles.find(
-        (role: { id: string; name: string }) => role.name == 'USER'
+        (role: { id: string; name: string }) =>
+          role.id == 'e11f7947-d41d-461e-bc39-ccdf2164e7p1'
       );
 
       if (adminRole === null || adminRole === undefined) {

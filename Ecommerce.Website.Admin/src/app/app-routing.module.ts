@@ -1,3 +1,5 @@
+import { StatisticComponent } from './pages/dashboard/statistic/statistic.component';
+import { OrderDetailComponent } from './pages/dashboard/order-manament/order/order-detail/order-detail.component';
 import { CreateUserComponent } from './pages/dashboard/user-manament/user/create-user/create-user.component';
 import { UserDetailComponent } from './pages/dashboard/user-manament/user/user-detail/user-detail.component';
 import { CreateCategoryComponent } from './pages/dashboard/productmanagement/category/create-category/create-category.component';
@@ -69,6 +71,10 @@ const routes: Routes = [
             path: 'order',
             component: OrderComponent,
           },
+          {
+            path: 'order-detail/:id',
+            component: OrderDetailComponent,
+          },
         ],
       },
       {
@@ -84,6 +90,10 @@ const routes: Routes = [
           },
           { path: 'create-user', component: CreateUserComponent },
         ],
+      },
+      {
+        path: 'statistic',
+        component: StatisticComponent,
       },
     ],
   },

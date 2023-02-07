@@ -10,8 +10,8 @@
     <div class="sidebar-logo">
       <a routerLink="/dashboard/welcome">
         <img
-          class="w-12 h-12 mx-auto pt-2"
-          src="https://ng.ant.design/assets/img/logo.svg"
+          class="w-24 h-24 mx-auto pt-2"
+          src="../../../assets/small-logo.png"
           alt="logo"
         />
       </a>
@@ -46,6 +46,13 @@
         <ul>
           <li nz-menu-item nzMatchRouter>
             <a routerLink="/dashboard/user-manage/user">User</a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzOpen nzTitle="Statistic" nzIcon="area-chart">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/dashboard/statistic">Sale</a>
           </li>
         </ul>
       </li>
