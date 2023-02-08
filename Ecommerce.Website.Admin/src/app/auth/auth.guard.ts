@@ -39,7 +39,7 @@ export class AuthGuard implements CanActivate {
       );
 
       if (adminRole === null || adminRole === undefined) {
-        this.router.navigate(['auth']);
+        this.router.navigate(['unauthorized']);
       }
     }
     return true;

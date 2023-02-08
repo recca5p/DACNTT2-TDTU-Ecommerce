@@ -1,3 +1,4 @@
+import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
 import { StatisticComponent } from './pages/dashboard/statistic/statistic.component';
 import { OrderDetailComponent } from './pages/dashboard/order-manament/order/order-detail/order-detail.component';
 import { CreateUserComponent } from './pages/dashboard/user-manament/user/create-user/create-user.component';
@@ -18,10 +19,15 @@ import { BrandComponent } from './pages/dashboard/productmanagement/brand/brand.
 import { ProductComponent } from './pages/dashboard/productmanagement/product/product.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { combineLatest } from 'rxjs';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/dashboard/welcome' },
   { path: 'auth', component: AuthorizeComponent },
+  {
+    path: 'unauthorized',
+    component: UnauthorizedComponent,
+  },
   {
     path: 'dashboard',
     component: DashboardComponent,

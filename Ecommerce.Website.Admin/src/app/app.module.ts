@@ -38,6 +38,7 @@ import { OrderDetailComponent } from './pages/dashboard/order-manament/order/ord
 import { StatisticComponent } from './pages/dashboard/statistic/statistic.component';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
 
 registerLocaleData(en);
 
@@ -60,6 +61,7 @@ registerLocaleData(en);
     UserDetailComponent,
     OrderDetailComponent,
     StatisticComponent,
+    UnauthorizedComponent,
   ],
   imports: [
     BrowserModule,
