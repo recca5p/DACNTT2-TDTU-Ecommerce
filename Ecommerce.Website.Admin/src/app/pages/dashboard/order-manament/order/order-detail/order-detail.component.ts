@@ -37,16 +37,20 @@ export class OrderDetailComponent implements OnInit {
       .then((response) => {
         let count = 0;
         this.order = response;
+        localStorage.setItem('updateOrder', JSON.stringify(this.order));
         this.order.products.forEach((product: any) => {
-          this.order.products[0].thumbnail = `${this._apiImageEndpoint}/${product.thumbnail}`;
+          this.order.products[
+            count
+          ].thumbnail = `${this._apiImageEndpoint}/${product.thumbnail}`;
           count++;
         });
-        console.log(this.order);
       });
   }
 
   async updateOrderStatus(formData: any) {
-    let orderUpdateModel: any = this.order;
+    let temp: any = localStorage.getItem('updateOrder');
+
+    let orderUpdateModel: any = JSON.parse(temp);
     orderUpdateModel.status = formData.status;
 
     this.orderService

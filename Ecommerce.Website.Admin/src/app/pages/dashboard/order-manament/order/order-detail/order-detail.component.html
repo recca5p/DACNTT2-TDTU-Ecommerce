@@ -50,14 +50,33 @@
           <label class="block mb-2 text-sm font-medium text-gray-900"
             >Product lists</label
           >
-          <li class="list-none" *ngFor="let item of order.products">
-            <div class="grid grid-cols-4 items-center pl-2">
-              <p>{{ item.name }}</p>
-              <p>{{ item.price }}</p>
-              <p>{{ item.quantity }}</p>
-              <img class="h-32" src="{{ item.thumbnail }}" />
-            </div>
-          </li>
+          <nz-table #basicTable [nzData]="order.products">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Thumbnail</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicTable.data">
+                <td>
+                  <a>{{ data.name }}</a>
+                </td>
+                <td>{{ data.price | currency : "VND" }}</td>
+                <td>{{ data.quantity }}</td>
+                <td>
+                  <img
+                    nz-image
+                    class="w-24"
+                    nzDisablePreview="true"
+                    nzSrc="{{ data.thumbnail }}"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
         </div>
 
         <div class="px-4 py-3 text-right flex">
