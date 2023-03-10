@@ -80,7 +80,6 @@
             #brand="ngModel"
             [(ngModel)]="productDetail.brand.id"
           >
-            <option>{{ productDetail.brand.name }}</option>
             <option *ngFor="let brand of brands" [value]="brand.id">
               {{ brand.name }}
             </option>
